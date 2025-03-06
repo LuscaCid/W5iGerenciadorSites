@@ -1,6 +1,10 @@
+import { NewsCarousel } from "../components/NewsCaroussel"
 
 export const Home = () => {
   return (
-    <div>Home</div>
+    <div>
+      <NewsCarousel />
+      
+    </div>
   )
 }

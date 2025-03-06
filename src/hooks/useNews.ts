@@ -1,12 +1,16 @@
+import { api } from "../services/api"
+
 export function useNews () 
 {
-    function postNews () 
+    const PATH_NAME = 'news';
+    async function postNews () 
     {
-
+       
     }
-    function getNews () 
+    async function getNews () 
     {
-
+        const response = await api.get(`${PATH_NAME}/`);
+        return response.data;
     }
     return {
         getNews, 

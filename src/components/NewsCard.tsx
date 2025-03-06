@@ -8,11 +8,11 @@ interface NewsCardProps
 export function NewsCard (props : NewsCardProps) 
 {
     return (
-        <div className="news-card">
-            <img src="" alt="" />
-            <h2>News Title</h2>
-            <p>News Description</p>
-            <p>Posted on: January 1, 2022</p>
+        <div className="rounded-none relative">
+            <img src={props.img} />
+            <h2 className="absolute top-2 left-2 text-2xl font-bold ">{props.title}</h2>
+            <p>{props.content}</p>
+            <p></p>
         </div>
     );
 }

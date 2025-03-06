@@ -1,6 +1,11 @@
 import { Route, Routes } from "react-router-dom";
 import { Home } from "../pages/Home";
 import { Main } from "../layout/Main";
+import { AdminLogin } from "../pages/AdminLogin";
+import { News } from "../pages/News";
+import { NewsDetail } from "../pages/NewsDetail";
+import { Government } from "../pages/Governo";
+import { Municipio } from "../pages/Municipio";
 
 export function AppRoutes () 
 {
@@ -8,7 +13,11 @@ export function AppRoutes ()
         <Routes>
             <Route element={<Main />} path="/">
                 <Route element={<Home />} path="/" />
-                
+                <Route element={<News />} path="/noticias" />
+                <Route element={<Government />} path="/governo" />
+                <Route element={<Municipio />} path="/municipio" />
+                <Route element={<NewsDetail />} path="/noticia/:id" />
+                <Route element={<AdminLogin />} path="/login" />
             </Route>
         </Routes>
     );
