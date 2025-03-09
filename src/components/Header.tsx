@@ -19,11 +19,9 @@ export function Header ( )
                 setIsSearchWindowOpen(false);
             }
         }
-        document.addEventListener('keydown',listnerCB);
+        window.addEventListener('keydown',listnerCB);
         
-        return () => {
-            document.removeEventListener("keydown", listnerCB);
-        }
+        return () => window.removeEventListener("keydown", listnerCB);
     }, [isSearchWindowOpen])
     return (
         <header 

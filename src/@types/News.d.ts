@@ -3,6 +3,7 @@ export interface Noticia
     id_noticia : number;
     ds_conteudo : string;
     nm_titulo : string;  
+    ds_subtitulo : string;
     dt_publicacao : string;
     nm_img? : string;
     tags? : Array<Tag>

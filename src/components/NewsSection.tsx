@@ -10,14 +10,16 @@ export const NewsSection = ({ news } : Props) =>
 
     // renderizar as noticias com base na
     return (
-        <div className="grid grid-cols-2 gap-2 w-2/3">
+        <div className="grid grid-cols-3 gap-4 w-2/2">
             {
                 news && news.length > 0 && (
                     news.map((notice) => (
                         <NewsCard
                             key={notice.id_noticia}
                             news={notice}
-                            titleSize="md"
+                            titleSize="lg"
+                            titleOutside
+                            textColor="slate-900"
                         />
                     ))
                 )
