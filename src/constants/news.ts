@@ -78,5 +78,27 @@ export default [
         { nm_slug: "esports", dt_cadastro: "2024-03-03" },
         { nm_slug: "olimpiadas", dt_cadastro: "2024-03-06" }
       ]
+    },
+    {
+      id_noticia: 9,
+      nm_titulo: "Esportes eletrônicos ganham espaço nas Olimpíadas",
+      ds_conteudo: "Comitê olímpico discute inclusão de modalidades de eSports nos próximos jogos.",
+      dt_publicacao: "2024-03-06",
+      nm_img: Violao,
+      tags: [
+        { nm_slug: "esports", dt_cadastro: "2024-03-03" },
+        { nm_slug: "olimpiadas", dt_cadastro: "2024-03-06" }
+      ]
+    },
+    {
+      id_noticia: 10,
+      nm_titulo: "Esportes eletrônicos ganham espaço nas Olimpíadas",
+      ds_conteudo: "Comitê olímpico discute inclusão de modalidades de eSports nos próximos jogos.",
+      dt_publicacao: "2024-03-06",
+      nm_img: Violao,
+      tags: [
+        { nm_slug: "esports", dt_cadastro: "2024-03-03" },
+        { nm_slug: "olimpiadas", dt_cadastro: "2024-03-06" }
+      ]
     }
   ];

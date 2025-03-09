@@ -14,16 +14,21 @@ export function Header ( )
 {
     const [ isSearchWindowOpen, setIsSearchWindowOpen ] = useState(false);
     useEffect(() => {
-        document.addEventListener('keydown', (e) => {
+        function listnerCB (e : KeyboardEvent) {
             if (e.key === 'Escape' && isSearchWindowOpen) {
                 setIsSearchWindowOpen(false);
             }
-        });
-    }, [])
+        }
+        document.addEventListener('keydown',listnerCB);
+        
+        return () => {
+            document.removeEventListener("keydown", listnerCB);
+        }
+    }, [isSearchWindowOpen])
     return (
         <header 
             id="header"
-            className="hidden md:flex m-auto top-0 mb-20  gap-10 items-center justify-center w-full bg-zinc-50/50 fixed z-20 backdrop-blur-sm"
+            className="hidden md:flex m-auto top-0 mb-20  gap-10 items-center justify-center w-full bg-zinc-50/60 fixed z-20 backdrop-blur-sm"
         >
             <Logo title="Prefeitura" to="/"/>
             <ul className="flex items-center">
