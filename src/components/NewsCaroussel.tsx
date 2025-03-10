@@ -13,7 +13,7 @@ export const NewsCarousel = ({ news } : Props) =>
 {
     
     return(
-    <section className="flex gap-10 items-center">
+    <section className="flex-col md:flex-row flex gap-10 items-center">
         <Swiper
             modules={[Autoplay, Navigation, Controller]}
             slidesPerView={1}
@@ -21,7 +21,7 @@ export const NewsCarousel = ({ news } : Props) =>
             spaceBetween={20}
             navigation={true}
             grabCursor
-            className="w-2/3"
+            className="w-full md:w-2/3"
         >
             {
                 news.length > 0 && 
@@ -36,7 +36,7 @@ export const NewsCarousel = ({ news } : Props) =>
                 )
             }
         </Swiper>
-            <aside className="w-1/2">
+            <aside className="w-full md:w-1/2">
                 {
                     news && news.length > 0 && (
                         news.map((n) => (
@@ -44,7 +44,7 @@ export const NewsCarousel = ({ news } : Props) =>
                                 {n.tags && n.tags?.length > 0 && (
                                     <Tooltip
                                         enterDelay={300}
-                                        enterNextDelay={300}
+                                        enterNextDelay={300}  
                                         title={`Ver mais noticias sobre ${n.tags[0].nm_slug}`}
                                     >
                                         <div className="flex flex-col w-fit gap-1 mt-5 group cursor-pointer">

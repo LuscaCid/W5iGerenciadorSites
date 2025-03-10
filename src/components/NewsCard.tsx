@@ -39,7 +39,7 @@ export function NewsCard (props : NewsCardProps)
                 src={news.nm_img} 
                 className="rounded-2xl brightness-50 hover:brightness-80 transition duration-200 w-full aspect-video "
             />
-            <footer className={`${titleOutside ? "" : "absolute"}  w-full bottom-2 left-2 flex flex-col gap-2`}>
+            <footer className={`${titleOutside ? "border-b  border-zinc-300" : "absolute"}  w-full bottom-2 left-2 flex flex-col gap-2`}>
                 <h2 className={`font-bold text-${titleSize}  w-[80%] text-${textColor}`}>
                     {news.nm_titulo}
                 </h2>
