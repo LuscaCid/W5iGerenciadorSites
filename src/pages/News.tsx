@@ -25,7 +25,7 @@ export const News = () => {
   }, [ selectedTags ]);
 
   const paginateBackwardsFowards = useCallback((dir : "backwards" | "fowards") => {
-    setPage(dir == "backwards" ? (page -1) : (page + 1));
+    setPage(dir == "backwards" ? (page => page - 1) : (page => page + 1));
   }, []);
 
   useEffect(() => {
@@ -34,8 +34,11 @@ export const News = () => {
   //uma consulta sera feita inicialmente sem filtros, mas ao clicar em tags, aparecerao apenas 
   // noticias com aquelas tags que estão selecionadas
   return (
-    <section className="flex  flex-col-reverse md:flex-row  gap-4 items-start relative mb-10">
-      <main className="md:border-r w-full flex flex-col border-zinc-200/80 p-1 md:pr-6">
+    <section className="flex  flex-col-reverse md:flex-row  gap-4 items-start relative mb-10 ">
+      <main className="md:border-r w-full flex flex-col border-zinc-200/80 p-1 md:pr-6 relative">
+      <span className="rounded-full flex items-center justify-center   h-10 text-nowrap px-3 bg-zinc-100 absolute -top-12 shadow-lg right-4 z-[30]">
+        Pág {page}
+      </span>
         <section className="w-full gap-5  grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 mb-5 ">
           {
             fakenews && fakenews.length > 0 && (
@@ -45,13 +48,14 @@ export const News = () => {
             )
           }
         </section>
-         <footer className="w-full flex justify-between">
+         <footer className="w-full flex justify-between items-center">
           <Button 
             onClick={() => paginateBackwardsFowards('backwards')}
             icon={ArrowLeft}
             title="Anterior"
             disabled={page == 1}
           />
+          
           <Button 
             onClick={() => paginateBackwardsFowards('fowards')}
             icon={ArrowRight}

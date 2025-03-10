@@ -9,14 +9,16 @@ interface ButtonProps
     icon? : LucideIcon;
     iconSize? : number;
     disabled? : boolean;
+    type? : "submit" | "reset" | "button" | undefined;
 }
-export const Button = ({ onClick, title, className, icon : Icon, iconSize = 16, disabled } : ButtonProps) => 
+export const Button = ({ onClick, title, className, icon : Icon, iconSize = 16, disabled, type = "button" } : ButtonProps) => 
 {
     return (
         <button 
             disabled={disabled}
+            type={type}
             onClick={onClick}
-            className={twMerge([`px-6 py-4 cursor-pointer rounded-md bg-zinc-200 hover:bg-zinc-300 ${disabled ? "opacity-60 cursor-not-allowed hover:bg-zinc-200" : ""} transition duration-150 flex items-center ${Icon && "justify-between gap-1"}`], [className])}
+            className={twMerge([`px-6 py-4 flex items-center justify-center cursor-pointer rounded-md bg-zinc-200 hover:bg-zinc-300 ${disabled ? "opacity-60 cursor-not-allowed hover:bg-zinc-200" : ""} transition duration-150 flex items-center ${Icon && "justify-between gap-1"}`], [className])}
         >
             { Icon && <Icon size={iconSize} /> }
             { title }

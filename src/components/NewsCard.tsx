@@ -16,7 +16,7 @@ export function NewsCard (props : NewsCardProps)
     const navigate = useNavigate();
 
     return (
-        <div className="relative cursor-pointer  overflow-hidden rounded-b-2xl ">
+        <div className="relative overflow-hidden rounded-b-2xl ">
             <header className="flex gap-2 items-center absolute z-20 top-2 left-2">
                 { 
                     news.tags && news.tags.length > 0 && news.tags.map((tag) => (
@@ -24,10 +24,10 @@ export function NewsCard (props : NewsCardProps)
                             title={`Pressione para encontrar notícias sobre "${tag.nm_slug}"`}
                             enterDelay={300}
                             enterNextDelay={300}
-                            key={tag.nm_slug} 
+                            key={tag.nm_slug}
                         >
                             <span 
-                                className="rounded-full px-2 text-white py-1 text-xs bg-slate-400/70 backdrop-blur-md"
+                                className="rounded-full px-2 text-white py-1 text-xs bg-slate-400/70 hover:bg-slate-800/70 transition duration-150 backdrop-blur-md cursor-pointer"
                             >
                                 { tag.nm_slug }
                             </span>
@@ -38,12 +38,12 @@ export function NewsCard (props : NewsCardProps)
             <img 
                 onClick={() => navigate(`/noticia/${news.id_noticia}`)}
                 src={news.nm_img} 
-                className={` ${titleOutside ? "rounded-t-2xl rounded-b-none" : "rounded-2xl"}  shadow-lg brightness-50 hover:brightness-80 transition duration-200 w-full aspect-video `}
+                className={` ${titleOutside ? "rounded-t-2xl rounded-b-none cursor-pointer" : "rounded-2xl"}  shadow-lg brightness-50 hover:brightness-80 transition duration-200 w-full aspect-video `}
             />
             <footer className={`${titleOutside ? "bg-zinc-100 rounded-b-2xl px-2 py-4 relative  h-full" : "absolute bottom-2 left-2 "}  w-full flex flex-col gap-2`}>
                 <h2 
                     onClick={() => navigate(`/noticia/${news.id_noticia}`)}
-                    className={`font-bold  text-${titleSize} ${titleOutside ? "w-[80%]" : "w-[75%]"}  text-${textColor} hover:underline`}
+                    className={`font-bold  cursor-pointer  text-${titleSize} ${titleOutside ? "w-[80%]" : "w-[75%]"}  text-${textColor} hover:underline`}
                 >
                     {news.nm_titulo}
                 </h2>

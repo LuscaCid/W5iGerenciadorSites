@@ -40,7 +40,7 @@ export const NewsCarousel = ({ news } : Props) =>
                 {
                     news && news.length > 0 && (
                         news.map((n) => (
-                            <div className="flex flex-col gap-5">
+                            <div key={n.id_noticia + n.ds_conteudo} className="flex flex-col gap-5">
                                 {n.tags && n.tags?.length > 0 && (
                                     <Tooltip
                                         enterDelay={300}
