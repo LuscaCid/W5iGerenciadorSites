@@ -13,7 +13,7 @@ export function MobileHeader ()
         setIsOpenSidebar(!isOpenSidebar);
     }
     return (
-        <header className="md:hidden flex justify-between items-center px-4 py-2 w-full">
+        <header className="md:hidden  bg-zinc-100/60 fixed z-50 backdrop-blur-sm flex justify-between items-center px-4 py-2 w-full">
             <Logo title="Prefeitura" to="/"/>
             <TextButton 
                 icon={Menu}
