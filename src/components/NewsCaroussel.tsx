@@ -1,10 +1,10 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay, Controller } from 'swiper/modules';
 import { Noticia } from "../@types/News";
-import 'swiper/css';
-import "swiper/css/navigation";
 import { NewsCard } from "./NewsCard";
 import { Tooltip } from "@mui/material";
+import "swiper/css/navigation";
+import 'swiper/css';
 interface Props 
 {
     news : Noticia[]
@@ -36,7 +36,7 @@ export const NewsCarousel = ({ news } : Props) =>
                 )
             }
         </Swiper>
-            <aside className="w-full md:w-1/2">
+            <aside className="w-full md:w-1/3">
                 {
                     news && news.length > 0 && (
                         news.map((n) => (

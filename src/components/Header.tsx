@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Logo } from "./Logo";
 import { TextButton } from "../UI/TextButton";
 import { Search, X } from "lucide-react";
@@ -26,14 +26,27 @@ export function Header ( )
     return (
         <header 
             id="header"
-            className="hidden md:flex m-auto top-0 mb-20  gap-10 items-center justify-center w-full bg-zinc-50/60 fixed z-20 backdrop-blur-sm"
+            className="hidden md:flex m-auto top-0 mb-20  gap-10 items-center justify-center w-full bg-zinc-100/60 fixed z-50 backdrop-blur-sm"
         >
             <Logo title="Prefeitura" to="/"/>
             <ul className="flex items-center">
-                <HeaderLink title="Governo" to="/governo" />
-                <HeaderLink title="Notícias" to="/noticias"/>
-                <HeaderLink title="Município"  to="/municipio"/>
-                <HeaderLink title="Transparência"  to="/" className="bg-zinc-500 text-zinc-50  hover:bg-zinc-600"/>
+                <HeaderLink 
+                    title="Governo" 
+                    to="/governo" 
+                />
+                <HeaderLink 
+                    title="Notícias" 
+                    to="/noticias"
+                />
+                <HeaderLink 
+                    title="Município" 
+                    to="/municipio"
+                />
+                <HeaderLink 
+                    title="Transparência" 
+                    to="/" 
+                    className="bg-zinc-500 text-zinc-50  hover:bg-zinc-600"
+                />
                 <Dialog.Root onOpenChange={setIsSearchWindowOpen} open={isSearchWindowOpen}>
                     <Dialog.Trigger asChild>
                         <TextButton 
@@ -80,9 +93,12 @@ interface HeaderLinkProps
 }
 export function HeaderLink ({ title, to, className } : HeaderLinkProps) 
 {
+    const path = useLocation();
+    const pathDictionary = path.pathname.split('/')[1];
+    const route = to.split('/')[1];
     return (
         <Link 
-            className={`px-10 py-8 text-lg hover:bg-blue-500 hover:text-zinc-100 flex items-center justify-center transition duration-150 ${className}`} 
+            className={`${pathDictionary == route ? "border-b-[4px] border-blue-500" : "border-b-[4px] border-transparent" } px-10 py-8 text-lg hover:bg-blue-500 hover:text-zinc-100 flex items-center justify-center transition duration-150 ${className}`} 
             to={to}
         >
             {title}

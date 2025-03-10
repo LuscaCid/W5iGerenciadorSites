@@ -4,7 +4,7 @@ import { ChevronRight } from "lucide-react";
 import { MobileHeader } from "../components/MobileHeader";
 import BackToTop from "../components/BackToTop";
 
-const locationDictionary : Record<string, string>= {
+export const locationDictionary : Record<string, string>= {
     '' : 'Página inicial',
     'noticias' : 'Noticias',
     'governo' : 'Governo',
@@ -21,13 +21,12 @@ export function Main ()
 {
     const path = useLocation();
     const pathDictionary= path.pathname.split('/')[1];
-    console.log(pathDictionary);
     return (
         <section className="h-full flex flex-col justify-between">
             <Header />
             <MobileHeader />
-            <main className=" bg-slate-100 absolute top-17 flex flex-col justify-between  md:top-23 bottom-48 h-screen right-0 left-0 ">
-                <section className="px-6 md:px-56">
+            <main className="absolute top-17 flex flex-col justify-between  md:top-23 bottom-48 h-screen right-0 left-0 ">
+                <section className="px-6 md:px-40 2xl:px-56">
                 <span className="text-lg font-semibold w-fit border-b py-2 my-3 select-none hover border-zinc-200 flex items-center gap-2"> 
                     <ChevronRight size={20}/>
                     {locationDictionary[pathDictionary]} 
