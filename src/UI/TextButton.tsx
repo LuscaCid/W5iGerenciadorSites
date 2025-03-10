@@ -1,6 +1,7 @@
 import { Tooltip } from "@mui/material";
 import { LucideIcon } from "lucide-react";
 import { MouseEvent } from "react";
+import { twMerge } from "tailwind-merge";
 
 interface TextButtonProps 
 {
@@ -21,7 +22,7 @@ export const TextButton = ({ onClick, title, className, icon : Icon, iconSize = 
         >
             <button
                 onClick={onClick}
-                className={`cursor-pointer px-2 py-2 flex items-center w-fit ${Icon && "justify-between"} ${className}`}
+                className={twMerge([`cursor-pointer px-2 py-2 flex items-center w-fit ${Icon && "justify-between"}`, className])}
             >
                 { title }
                 { Icon && <Icon size={iconSize} /> }
