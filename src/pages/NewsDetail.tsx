@@ -11,16 +11,16 @@ export const NewsDetail = () => {
   console.log(noticeFoundById);
   const image = noticeFoundById?.nm_img ? noticeFoundById?.nm_img : "";
   return (
-    <div className="flex flex-col gap-4 items-center">
-      <main className="flex flex-col gap-2 items-start">
-        <img src={image} className="max-w-[300px] md:max-w-[900px] w-full"/>
+    <div className="flex flex-col gap-4 items-center md:px-36 2xl:px-72 ">
+      <main className="flex flex-col gap-2  w-full mb-10">
+        <img src={image} className="w-full"/>
         <Typography 
           fontWeight={"700"}
-          variant="h3"
+          variant="h4"
         >
           {noticeFoundById?.nm_titulo}
         </Typography>
-        <div className="h-[1px] w-full bg-zinc-900/50 mb-5"/>
+        <div className="h-[1px] w-full bg-zinc-300/60 mb-5"/>
         <Typography
           variant="h5"
         >
@@ -39,6 +39,7 @@ export const NewsDetail = () => {
             title="Voltar"
             icon={ArrowLeft}
             onClick={() => navigate(-1)}
+            className="w-fit"
           />
         </footer>
       </main>
