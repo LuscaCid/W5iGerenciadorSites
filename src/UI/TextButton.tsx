@@ -11,8 +11,10 @@ interface TextButtonProps
     icon? : LucideIcon;
     iconSize? : number;
     description? : string;
+    type? : "submit" | "reset" | "button" | undefined;
+
 }
-export const TextButton = ({ onClick, title, className, icon : Icon, iconSize = 16, description} : TextButtonProps) => 
+export const TextButton = ({ onClick, title, className, icon : Icon, iconSize = 16, description, type = "button"} : TextButtonProps) => 
 {
     return (
         <Tooltip
@@ -21,6 +23,7 @@ export const TextButton = ({ onClick, title, className, icon : Icon, iconSize = 
             title={description}
         >
             <button
+                type={type}
                 onClick={onClick}
                 className={twMerge([`cursor-pointer px-2 py-2 flex items-center w-fit ${Icon && "justify-between"}`, className])}
             >
