@@ -21,9 +21,9 @@ export default function BackToTop()
   return (
       <button
         onClick={scrollToTop}
-        className={`${showButton ?  "opacity-100" : "opacity-0 pointer-events-none"} fixed bottom-6 right-6 bg-blue-600 text-white px-4 py-4 rounded-full shadow-lg hover:bg-blue-700 transition duration-200 z-20`}
+        className={`${showButton ?  "opacity-100" : "opacity-0 pointer-events-none"} fixed bottom-6 right-6 bg-blue-600 text-white px-2 py-2 md:px-4 md:py-4 rounded-full shadow-lg hover:bg-blue-700 transition duration-200 z-20`}
       >
-        <ArrowUp /> 
+        <ArrowUp size={20}/> 
       </button>
   );
 }
