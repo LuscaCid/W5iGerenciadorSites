@@ -5,7 +5,7 @@ import { tags } from "../constants/tags";
 import { useCallback, useEffect, useState } from "react";
 import { Tag } from "../@types/News";
 import { Button } from "../UI/Button";
-import { ArrowLeft, ArrowRight, ChevronRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 type PaginationDirection = "backwards" | "fowards";
 export const News = () => {
@@ -24,7 +24,7 @@ export const News = () => {
     setSelectedTags([...selectedTags, selectedTag ])
   }, [ selectedTags ]);
 
-  const paginateBackwardsFowards = useCallback((dir : "backwards" | "fowards") => {
+  const paginateBackwardsFowards = useCallback((dir : PaginationDirection) => {
     setPage(dir == "backwards" ? (page => page - 1) : (page => page + 1));
   }, []);
 

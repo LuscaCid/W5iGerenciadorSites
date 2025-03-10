@@ -1,7 +1,7 @@
-import { ArrowRight, ThumbsDown, ThumbsUp } from "lucide-react";
+import { ThumbsDown, ThumbsUp } from "lucide-react";
 import { Noticia } from "../@types/News";
 import { Button } from "../UI/Button";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Tooltip } from "@mui/material";
 interface NewsCardProps
 {
