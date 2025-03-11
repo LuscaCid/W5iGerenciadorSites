@@ -2,9 +2,10 @@ import { Menu, X } from "lucide-react";
 import { Logo } from "./Logo";
 import { TextButton } from "../UI/TextButton";
 import { useState } from "react";
-import { HeaderLink } from "./Header";
 import { IconButton } from "@mui/material";
 import { HeaderSearchDialog } from "./HeaderSearchDialog";
+import { HeaderLink } from "./HeaderLink";
+import { UserDropdown } from "./UserDropdown";
 
 export function MobileHeader ()
 {
@@ -17,10 +18,13 @@ export function MobileHeader ()
     return (
         <header className="md:hidden  bg-zinc-100/60  fixed z-50 backdrop-blur-lg flex justify-between items-center px-4 py-2 w-full">
             <Logo title="Prefeitura" to="/"/>
-            <TextButton 
-                icon={Menu}
-                onClick={handleOpenSideBar}
-            />
+            <aside>
+                <UserDropdown />
+                <TextButton 
+                    icon={Menu}
+                    onClick={handleOpenSideBar}
+                />
+            </aside>
             <nav className={`absolute ${isOpenSidebar ? "inset-0 flex flex-col z-20" : "hidden"}  bg-zinc-50 transition duration-200  items-center`}>
                 <IconButton
                     color="error"

@@ -36,7 +36,7 @@ export const News = () => {
   }, [ page ]);
   return (
     <section className="flex  flex-col-reverse md:flex-row  gap-4 items-start relative mb-10 ">
-      <main className="md:border-r w-full flex flex-col border-zinc-200/80 p-1 md:pr-6 relative">
+      <main className="md:border-r w-3/4 flex flex-col border-zinc-200/80 p-1 md:pr-6 relative">
         <span className="rounded-full flex items-center justify-center   h-10 text-nowrap px-3 bg-zinc-100 absolute -top-12 shadow-lg right-4 z-[30]">
           Pág {page}
         </span>
@@ -70,14 +70,14 @@ export const News = () => {
         </footer>
       </main>
       {/* tags */}
-      <aside className="flex flex-wrap  p-2 rounded-lg  gap-3 w-full md:w-1/4 md:sticky top-28 z-40">
+      <aside className="flex flex-wrap  p-2 rounded-lg  gap-3 w-full md:w-1/4 md:sticky top-24 z-40">
         <Typography
           variant="h5"
           className="border-b border-zinc-200/80 w-fit text-nowrap pb-1"
         >
           Tags mais relevantes 
         </Typography>
-        <nav className="flex flex-wrap gap-4 w-full">
+        <nav className="flex flex-wrap gap-4 w-full max-h-[700px] pb-4 overflow-auto">
           {
             tags && tags.length > 0 &&  (
               tags.map((tag) => (

@@ -1,9 +1,11 @@
-import { Link, useLocation } from "react-router-dom";
 import { Logo } from "./Logo";
 import { useEffect, useState } from "react";
-import { twMerge } from "tailwind-merge";
 import { HeaderSearchDialog } from "./HeaderSearchDialog";
 import { MenuDropdown } from "./MenuDropdown";
+import { HeaderLink } from "./HeaderLink";
+import { useUserContext } from "../store/user";
+import { UserDropdown } from "./UserDropdown";
+
 /**
  * @summary Header para desktop sizes
  * @author Lucas Cid
@@ -12,6 +14,7 @@ import { MenuDropdown } from "./MenuDropdown";
  */
 export function Header ( ) 
 {
+    const user = useUserContext((state) => state.user);
     const [ isSearchWindowOpen, setIsSearchWindowOpen ] = useState(false);
     const [ isMenuDropdownOpen, setIsMenuDropdownOpen ] = useState(false);
     useEffect(() => {
@@ -52,10 +55,10 @@ export function Header ( )
                 <HeaderLink 
                     onClick={handleCloseDialog}
                     title="Transparência" 
-                    to="/" 
+                    to="https://w5i-portal-transparencia-frontend.vercel.app/" 
                     className="bg-zinc-500 text-zinc-50  hover:bg-zinc-600"
+                    target="_blank"
                 />
-                
                 <HeaderSearchDialog 
                     isSearchWindowOpen={isSearchWindowOpen}
                     setIsSearchWindowOpen={setIsSearchWindowOpen}
@@ -64,31 +67,10 @@ export function Header ( )
                     isMenuDropdownOpen={isMenuDropdownOpen}
                     setIsMenuDropdownOpen={setIsMenuDropdownOpen}
                 />
-
             </ul>
+            {
+                user && <UserDropdown />
+            }
         </header>
-    );
-}
-
-interface HeaderLinkProps 
-{
-    to : string;
-    title : string;
-    className? : string;
-    onClick : () => void;
-}
-export function HeaderLink ({ title, to, className, onClick } : HeaderLinkProps) 
-{
-    const path = useLocation();
-    const pathDictionary = path.pathname.split('/')[1];
-    const route = to.split('/')[1];
-    return (
-        <Link 
-            onClick={onClick}
-            className={twMerge([`${pathDictionary == route ? "border-b-[4px] border-blue-500" : "border-b-[4px] border-transparent" } px-10 py-8 text-lg hover:bg-blue-500 hover:text-zinc-100 flex items-center justify-center transition duration-150 `], [className]) } 
-            to={to}
-        >
-            {title}
-        </Link > 
     );
 }

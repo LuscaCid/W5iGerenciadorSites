@@ -8,9 +8,10 @@ const noticias: Noticia[] = [
   {
     id_noticia: 1,
     ds_conteudo: "A inteligência artificial está revolucionando diversos setores.",
-    nm_titulo: "IA e o Futuro da Tecnologia",
+    nm_titulo: "IA e o Futuro da Tecnologia ",
     ds_subtitulo: "Como a inteligência artificial está moldando o mundo.",
     dt_publicacao: "2024-03-09T10:00:00Z",
+    dt_atualizacao: "2024-03-09T10:00:00Z",
     nm_img: DefaultImage,
     tags: [
       { id_tag : 1, nm_slug: "inteligencia-artificial", dt_cadastro: "2024-01-15T08:30:00Z" },
@@ -23,6 +24,7 @@ const noticias: Noticia[] = [
     nm_titulo: "O Impacto dos Exercícios na Saúde",
     ds_subtitulo: "Descubra os benefícios de manter uma rotina ativa.",
     dt_publicacao: "2024-03-08T14:00:00Z",
+    dt_atualizacao: "2024-03-08T14:00:00Z",
     nm_img: Busao,
     tags: [
       { id_tag : 3, nm_slug: "saude", dt_cadastro: "2024-02-01T09:45:00Z" },
@@ -35,6 +37,7 @@ const noticias: Noticia[] = [
     nm_titulo: "Nutrição e Alimentação Saudável",
     ds_subtitulo: "Como sua dieta pode impactar sua qualidade de vida.",
     dt_publicacao: "2024-03-07T09:30:00Z",
+    dt_atualizacao: "2024-03-07T09:30:00Z",
     nm_img: Violao,
     tags: [
       { id_tag : 5, nm_slug: "nutricao", dt_cadastro: "2024-02-10T11:00:00Z" },
@@ -47,6 +50,7 @@ const noticias: Noticia[] = [
     nm_titulo: "Investimentos em 2024",
     ds_subtitulo: "Onde investir seu dinheiro este ano?",
     dt_publicacao: "2024-03-06T18:45:00Z",
+    dt_atualizacao: "2024-03-06T18:45:00Z",
     nm_img: upa,
     tags: [
       { id_tag : 7, nm_slug: "economia", dt_cadastro: "2024-02-05T14:00:00Z" },
@@ -59,6 +63,7 @@ const noticias: Noticia[] = [
     nm_titulo: "Moda Sustentável: O Futuro do Vestuário",
     ds_subtitulo: "Como as marcas estão investindo em materiais ecológicos.",
     dt_publicacao: "2024-03-05T12:15:00Z",
+    dt_atualizacao: "2024-03-05T12:15:00Z",
     nm_img: Busao,
     tags: [
       { id_tag : 9, nm_slug: "moda", dt_cadastro: "2024-01-20T09:00:00Z" },
@@ -71,6 +76,7 @@ const noticias: Noticia[] = [
     nm_titulo: "Criptomoedas em Alta",
     ds_subtitulo: "O que esperar do mercado cripto nos próximos anos?",
     dt_publicacao: "2024-03-04T17:00:00Z",
+    dt_atualizacao: "2024-03-04T17:00:00Z",
     nm_img: Violao,
     tags: [
       { id_tag : 1, nm_slug: "blockchain", dt_cadastro: "2024-02-12T14:30:00Z" },
@@ -83,6 +89,7 @@ const noticias: Noticia[] = [
     nm_titulo: "O Poder da Leitura",
     ds_subtitulo: "Por que ler pode melhorar sua vida?",
     dt_publicacao: "2024-03-03T09:50:00Z",
+    dt_atualizacao: "2024-03-03T09:50:00Z",
     nm_img: upa,
     tags: [
       { id_tag : 1, nm_slug: "educacao", dt_cadastro: "2024-01-25T10:30:00Z" },
@@ -95,6 +102,7 @@ const noticias: Noticia[] = [
     nm_titulo: "Viagens Sustentáveis",
     ds_subtitulo: "Como viajar sem prejudicar o meio ambiente.",
     dt_publicacao: "2024-03-02T11:30:00Z",
+    dt_atualizacao: "2024-03-02T11:30:00Z",
     nm_img: Busao,
     tags: [
       { id_tag : 1, nm_slug: "turismo", dt_cadastro: "2024-02-03T08:40:00Z" },
@@ -107,6 +115,7 @@ const noticias: Noticia[] = [
     nm_titulo: "Programação: A Habilidade do Futuro",
     ds_subtitulo: "Por que aprender a programar é essencial?",
     dt_publicacao: "2024-03-01T15:00:00Z",
+    dt_atualizacao: "2024-03-01T15:00:00Z",
     nm_img: DefaultImage,
     tags: [
       { id_tag : 1, nm_slug: "tecnologia", dt_cadastro: "2024-01-30T14:20:00Z" },
@@ -119,6 +128,7 @@ const noticias: Noticia[] = [
     nm_titulo: "Mudanças Climáticas e Seus Impactos",
     ds_subtitulo: "Como podemos nos preparar para o futuro?",
     dt_publicacao: "2024-02-28T13:20:00Z",
+    dt_atualizacao: "2024-02-28T13:20:00Z",
     nm_img: upa,
     tags: [
       { id_tag : 1, nm_slug: "meio-ambiente", dt_cadastro: "2024-02-07T10:15:00Z" },
