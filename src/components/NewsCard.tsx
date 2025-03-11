@@ -1,8 +1,9 @@
-import { ThumbsDown, ThumbsUp } from "lucide-react";
+import { Pencil, ThumbsDown, ThumbsUp, Trash } from "lucide-react";
 import { Noticia } from "../@types/News";
 import { Button } from "../UI/Button";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Tooltip } from "@mui/material";
+import { useUserContext } from "../store/user";
 interface NewsCardProps
 {
     news : Partial<Noticia>
@@ -14,7 +15,7 @@ export function NewsCard (props : NewsCardProps)
 {
     const { news, titleSize = '2xl', titleOutside = false, textColor = "black" } = props;
     const navigate = useNavigate();
-
+    const user = useUserContext((state) => state.user);
     return (
         <div className="relative overflow-hidden rounded-b-2xl ">
             <header className="flex gap-2 items-center absolute z-20 top-2 left-2">
@@ -40,7 +41,7 @@ export function NewsCard (props : NewsCardProps)
                 src={news.nm_img} 
                 className={` ${titleOutside ? "rounded-t-2xl rounded-b-none cursor-pointer" : "rounded-2xl"}  shadow-lg brightness-50 hover:brightness-80 transition duration-200 w-full aspect-video `}
             />
-            <footer className={`${titleOutside ? "bg-zinc-100 rounded-b-2xl px-2 py-4 relative  h-full" : "absolute bottom-2 left-2 "}  w-full flex flex-col gap-2`}>
+            <footer className={`${titleOutside ? "bg-zinc-100 rounded-b-2xl px-2 py-4 relative h-full" : "absolute bottom-2 left-2 "}  w-full flex flex-col gap-2`}>
                 <h2 
                     onClick={() => navigate(`/noticia/${news.id_noticia}`)}
                     className={`font-bold  cursor-pointer  text-${titleSize} ${titleOutside ? "w-[80%]" : "w-[75%]"}  text-${textColor} hover:underline`}
@@ -50,7 +51,7 @@ export function NewsCard (props : NewsCardProps)
                 {
                     titleOutside && (
                         <>
-                            <p className="">
+                            <p className={`${user ? "w-[90%]" : "w-full"}`}>
                                 {news.ds_subtitulo}
                             </p>
                             <div className="flex items-center gap-1 absolute top-2 right-2 z-30">
@@ -69,12 +70,38 @@ export function NewsCard (props : NewsCardProps)
                     )
                 }
                 <NavLink 
-                    className={`absolute right-3 bottom-2 p-1 self-end w-fit flex-row-reverse items-center gap-1 px-2 text-sm  bg-transparent hover:bg-transparent  rounded-none border-b border-b-transparent ${titleOutside ? " hidden" : "text-white hover:border-b-zinc-50 "}`}
+                    className={`absolute right-3 bottom-2 p-1 self-end w-fit flex-row-reverse items-center gap-1 px-2 text-sm  bg-transparent hover:bg-transparent  rounded-none border-b border-b-transparent ${titleOutside ? " hidden " : "text-white hover:border-b-zinc-50 "}`}
                     to={`/noticia/${news.id_noticia}`}
                 >
                     Saiba mais
                 </NavLink>
-          
+                {
+                    user && (
+                        <section className="absolute top-10 right-2 flex flex-col gap-2">
+                            <Tooltip
+                                enterDelay={300}
+                                title="Editar notícia"
+                            >
+                                <NavLink 
+                                    className={"rounded-lg bg-blue-500 p-2 flex items-center justify-center shadow-lg"} 
+                                    to={`/noticia/${news.id_noticia}`}
+                                >
+                                    <Pencil size={16} className="text-white"/>
+                                </NavLink>
+                            </Tooltip>
+                            <Tooltip
+                                enterDelay={300}
+                                title="Excluir notícia"
+                            >
+                                <Button 
+                                    onClick={() => console.log("a")}
+                                    icon={Trash}
+                                    className="bg-red-500 p-2 text-white hover:bg-red-600 shadow-lg"
+                                />
+                            </Tooltip>
+                        </section>
+                    )
+                }
             </footer>
         </div>
     );

@@ -5,13 +5,16 @@ import { tags } from "../constants/tags";
 import { useCallback, useEffect, useState } from "react";
 import { Tag } from "../@types/News";
 import { Button } from "../UI/Button";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Plus } from "lucide-react";
+import { useUserContext } from "../store/user";
+import { Tag as TagComponent } from "../components/Tag";
 
 type PaginationDirection = "backwards" | "fowards";
 export const News = () => {
   const [ selectedTags, setSelectedTags ] = useState<Array<Tag>>([]);
   const [ page, setPage ] = useState<number>(1);
-  
+  const user = useUserContext((state) => state.user);
+
   const handleSelectTag = useCallback((selectedTag : Tag) => {
     const tagAlreadySelected = selectedTags.find((tag) => tag.id_tag == selectedTag.id_tag);
     if (tagAlreadySelected) 
@@ -24,21 +27,19 @@ export const News = () => {
     setSelectedTags([...selectedTags, selectedTag ])
   }, [ selectedTags ]);
 
-  const paginateBackwardsFowards = useCallback((dir : PaginationDirection) => {
+  const paginateBackwardsFowards = useCallback((dir : PaginationDirection ) => {
     setPage(dir == "backwards" ? (page => page - 1) : (page => page + 1));
   }, []);
 
   useEffect(() => {
 
   }, [ page ]);
-  //uma consulta sera feita inicialmente sem filtros, mas ao clicar em tags, aparecerao apenas 
-  // noticias com aquelas tags que estão selecionadas
   return (
     <section className="flex  flex-col-reverse md:flex-row  gap-4 items-start relative mb-10 ">
       <main className="md:border-r w-full flex flex-col border-zinc-200/80 p-1 md:pr-6 relative">
-      <span className="rounded-full flex items-center justify-center   h-10 text-nowrap px-3 bg-zinc-100 absolute -top-12 shadow-lg right-4 z-[30]">
-        Pág {page}
-      </span>
+        <span className="rounded-full flex items-center justify-center   h-10 text-nowrap px-3 bg-zinc-100 absolute -top-12 shadow-lg right-4 z-[30]">
+          Pág {page}
+        </span>
         <section className="w-full gap-5  grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 mb-5 ">
           {
             fakenews && fakenews.length > 0 && (
@@ -46,6 +47,11 @@ export const News = () => {
                 <NewsCard key={news.id_noticia} textColor="black" news={news}  titleOutside/>
               ))
             )
+          }
+          {
+            user && (
+              <NewNoticeCard />
+            ) 
           }
         </section>
          <footer className="w-full flex justify-between items-center">
@@ -55,7 +61,6 @@ export const News = () => {
             title="Anterior"
             disabled={page == 1}
           />
-          
           <Button 
             onClick={() => paginateBackwardsFowards('fowards')}
             icon={ArrowRight}
@@ -76,19 +81,12 @@ export const News = () => {
           {
             tags && tags.length > 0 &&  (
               tags.map((tag) => (
-                <Tooltip
+                <TagComponent 
                   key={tag.id_tag}
-                  enterDelay={400}
-                  enterNextDelay={400}
-                  title="Marcar para filtrar resultados"
-                >
-                  <span 
-                    onClick={() => handleSelectTag(tag)}
-                    className={`w-fit select-none transition shadow-lg duration-200 rounded-full py-1 px-3  text-nowrap overflow-ellipsis overflow-hidden  cursor-pointer ${selectedTags.find((selectedTag) => selectedTag.id_tag === tag.id_tag) ? "bg-blue-500 text-zinc-50 hover:bg-blue-600" : "bg-zinc-100 hover:bg-zinc-300"} transition duration-150`}
-                  >
-                    {tag.nm_slug}
-                  </span>
-                </Tooltip>
+                  selectedTags={selectedTags}
+                  tag={tag}
+                  handleSelectTag={handleSelectTag}
+                />
               ))
             )
           }
@@ -96,4 +94,18 @@ export const News = () => {
       </aside>
     </section>
   )
+}
+
+
+const NewNoticeCard = () => {
+  return (
+    <div className="w-full bg-zinc-200 h-full hover:border-[3px] border-dashed border-zinc-400 rounded-2xl cursor-pointer hover:bg-zinc-300 transition duration-150 flex items-center justify-center">
+      <main className="flex flex-col gap-2 items-center">
+        <Plus size={55} className="text-zinc-400 "/>
+        <span className="text-zinc-400 text-lg">
+          Adicionar nova notícia
+        </span>
+      </main>
+    </div>
+  );
 }
