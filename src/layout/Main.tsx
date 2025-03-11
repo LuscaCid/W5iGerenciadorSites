@@ -3,13 +3,14 @@ import { Header } from "../components/Header";
 import { ChevronRight } from "lucide-react";
 import { MobileHeader } from "../components/MobileHeader";
 import BackToTop from "../components/BackToTop";
+import { useEffect } from "react";
 
 export const locationDictionary : Record<string, string>= {
     '' : 'Página inicial',
-    'noticias' : 'Noticias',
+    'noticias' : 'Notícias',
     'governo' : 'Governo',
     'municipio' : 'Município',
-    'noticia' : 'Home -> Noticia detalhada',
+    'noticia' : 'Home → Notícia',
     'login' : 'Acesso administrativo'
 }
 
@@ -22,6 +23,9 @@ export function Main ()
 {
     const path = useLocation();
     const pathDictionary= path.pathname.split('/')[1];
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }, [path])
     return (
         <section className="h-screen flex flex-col justify-between  ">
             <Header />

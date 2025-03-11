@@ -10,11 +10,13 @@ interface ButtonProps
     iconSize? : number;
     disabled? : boolean;
     type? : "submit" | "reset" | "button" | undefined;
+    form? : string;
 }
-export const Button = ({ onClick, title, className, icon : Icon, iconSize = 16, disabled, type = "button" } : ButtonProps) => 
+export const Button = ({ onClick, title, className, icon : Icon, iconSize = 16, disabled, type = "button", form } : ButtonProps) => 
 {
     return (
         <button 
+            form={form}
             disabled={disabled}
             type={type}
             onClick={onClick}

@@ -31,7 +31,7 @@ export const Tag = ({ tag, handleSelectTag, selectedTags } : Props) => {
                 </div>
                 {
                     user && (
-                        <div className=" flex items-center gap-2 ">
+                        <div className=" flex items-center gap-1 ">
                             <IconButton color="info">
                                 <Pencil size={15}/>
                             </IconButton>   

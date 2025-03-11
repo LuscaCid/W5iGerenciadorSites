@@ -4,7 +4,7 @@ import { User } from "../@types/User";
 interface UserContext 
 {
     user : User|undefined;
-    setUser : (newUser : User) => void;
+    setUser : (newUser : User|undefined) => void;
 }
 export const useUserContext = create<UserContext>((set) => ({
     setUser : (newUser) => set({ user : newUser }),

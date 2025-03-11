@@ -14,6 +14,8 @@ export const tags = [
     { id_tag : 13, nm_slug: "desenvolvimento-pessoal", dt_cadastro: "2024-01-27T12:10:00Z" },
     { id_tag : 14, nm_slug: "turismo", dt_cadastro: "2024-02-03T08:40:00Z" },
     { id_tag : 15, nm_slug: "programacao", dt_cadastro: "2024-02-01T16:10:00Z" },
-    { id_tag : 16, nm_slug: "meio-ambiente", dt_cadastro: "2024-02-07T10:15:00Z" }
-] as const;
-  
+    { id_tag : 16, nm_slug: "meio-ambiente", dt_cadastro: "2024-02-07T10:15:00Z" },
+    { id_tag : 17, nm_slug: "meio-ambiente", dt_cadastro: "2024-02-07T10:15:00Z" },
+    { id_tag : 18, nm_slug: "meio-amb", dt_cadastro: "2024-02-07T10:15:00Z" },
+    { id_tag : 19, nm_slug: "miente", dt_cadastro: "2024-02-07T10:15:00Z" },
+]

@@ -17,8 +17,8 @@ export function NewsCard (props : NewsCardProps)
     const navigate = useNavigate();
     const user = useUserContext((state) => state.user);
     return (
-        <div className="relative overflow-hidden rounded-b-2xl ">
-            <header className="flex gap-2 items-center absolute z-20 top-2 left-2">
+        <div className="relative overflow-hidden rounded-b-2xl  rounded-t-2xl  group">
+            <header className="flex gap-2 items-center absolute z-20 top-3 left-3">
                 { 
                     news.tags && news.tags.length > 0 && news.tags.map((tag) => (
                         <Tooltip
@@ -39,12 +39,12 @@ export function NewsCard (props : NewsCardProps)
             <img 
                 onClick={() => navigate(`/noticia/${news.id_noticia}`)}
                 src={news.nm_img} 
-                className={` ${titleOutside ? "rounded-t-2xl rounded-b-none cursor-pointer" : "rounded-2xl"}  shadow-lg brightness-50 hover:brightness-80 transition duration-200 w-full aspect-video `}
+                className={` ${titleOutside ? "group-hover:scale-105 rounded-t-2xl rounded-b-none cursor-pointer" : "rounded-2xl"}  shadow-lg brightness-50 hover:brightness-80 transition duration-200 w-full aspect-video `}
             />
-            <footer className={`${titleOutside ? "bg-zinc-100 rounded-b-2xl px-2 py-4 relative h-full" : "absolute bottom-2 left-2 "}  w-full flex flex-col gap-2`}>
+            <footer className={`${titleOutside ? "bg-zinc-100 rounded-b-2xl px-3 py-5 relative h-full" : "absolute bottom-2 left-2 "}  w-full flex flex-col gap-2`}>
                 <h2 
                     onClick={() => navigate(`/noticia/${news.id_noticia}`)}
-                    className={`font-bold  cursor-pointer  text-${titleSize} ${titleOutside ? "w-[80%]" : "w-[75%]"}  text-${textColor} hover:underline`}
+                    className={`font-bold cursor-pointer  text-${titleSize} ${titleOutside ? "w-[80%]" : "w-[75%]"}  text-${textColor} hover:underline`}
                 >
                     {news.nm_titulo}
                 </h2>
@@ -54,7 +54,7 @@ export function NewsCard (props : NewsCardProps)
                             <p className={`${user ? "w-[90%]" : "w-full"}`}>
                                 {news.ds_subtitulo}
                             </p>
-                            <div className="flex items-center gap-1 absolute top-2 right-2 z-30">
+                            <div className="flex items-center gap-1 absolute top-2 right-3 z-30">
                                 <Button 
                                     icon={ThumbsUp}
                                     onClick={() => console.log()}
@@ -77,16 +77,16 @@ export function NewsCard (props : NewsCardProps)
                 </NavLink>
                 {
                     user && (
-                        <section className="absolute top-10 right-2 flex flex-col gap-2">
+                        <section className="absolute top-10 right-3 flex flex-col gap-2">
                             <Tooltip
                                 enterDelay={300}
                                 title="Editar notícia"
                             >
                                 <NavLink 
-                                    className={"rounded-lg bg-blue-500 p-2 flex items-center justify-center shadow-lg"} 
+                                    className={"rounded-lg bg-blue-400 text-zinc-50 hover:bg-blue-500 transition duration-300 p-2 flex items-center justify-center shadow-lg"} 
                                     to={`/noticia/${news.id_noticia}`}
                                 >
-                                    <Pencil size={16} className="text-white"/>
+                                    <Pencil size={16} />
                                 </NavLink>
                             </Tooltip>
                             <Tooltip
@@ -96,7 +96,7 @@ export function NewsCard (props : NewsCardProps)
                                 <Button 
                                     onClick={() => console.log("a")}
                                     icon={Trash}
-                                    className="bg-red-500 p-2 text-white hover:bg-red-600 shadow-lg"
+                                    className="bg-red-400 p-2 text-zinc-50 transition duration-300 hover:bg-red-500 shadow-lg"
                                 />
                             </Tooltip>
                         </section>
