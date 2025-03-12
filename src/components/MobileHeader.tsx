@@ -6,11 +6,13 @@ import { IconButton } from "@mui/material";
 import { HeaderSearchDialog } from "./HeaderSearchDialog";
 import { HeaderLink } from "./HeaderLink";
 import { UserDropdown } from "./UserDropdown";
+import { useUserContext } from "../store/user";
 
 export function MobileHeader ()
 {
     const [ isOpenSidebar, setIsOpenSidebar ] = useState(false);
     const [ isSearchWindowOpen, setIsSearchWindowOpen ] = useState(false);
+    const user = useUserContext((state) => state.user);
 
     const handleOpenSideBar = () => {
         setIsOpenSidebar(!isOpenSidebar);
@@ -19,7 +21,9 @@ export function MobileHeader ()
         <header className="md:hidden  bg-zinc-100/60  fixed z-50 backdrop-blur-lg flex justify-between items-center px-4 py-2 w-full">
             <Logo title="Prefeitura" to="/"/>
             <aside>
-                <UserDropdown />
+                {
+                    user && <UserDropdown />
+                }
                 <TextButton 
                     icon={Menu}
                     onClick={handleOpenSideBar}

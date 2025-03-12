@@ -37,7 +37,7 @@ export const News = () => {
   return (
     <section className="flex  flex-col-reverse md:flex-row  gap-4 items-start relative mb-10 ">
       <main className="md:border-r w-3/4 flex flex-col border-zinc-200/80 p-1 md:pr-6 relative">
-        <span className="rounded-full flex items-center justify-center   h-10 text-nowrap px-3 bg-zinc-100 absolute -top-12 shadow-lg right-4 z-[30]">
+        <span className="rounded-full flex items-center justify-center   h-10 text-nowrap px-3 bg-zinc-100 absolute -top-12 shadow-lg right-4 z-[30] text-sm select-none">
           Pág {page}
         </span>
         <section className="w-full gap-5  grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 mb-5 ">
