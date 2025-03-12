@@ -17,7 +17,7 @@ export function NewsCard (props : NewsCardProps)
     const navigate = useNavigate();
     const user = useUserContext((state) => state.user);
     return (
-        <div className="relative overflow-hidden rounded-b-2xl  rounded-t-2xl  group">
+        <div className="relative max-h-[380px] overflow-hidden rounded-b-2xl  rounded-t-2xl  group">
             <header className="flex gap-2 items-center absolute z-20 top-3 left-3">
                 { 
                     news.tags && news.tags.length > 0 && news.tags.map((tag) => (
@@ -41,10 +41,10 @@ export function NewsCard (props : NewsCardProps)
                 src={news.nm_img} 
                 className={` ${titleOutside ? "group-hover:scale-105 rounded-t-2xl rounded-b-none cursor-pointer" : "rounded-2xl"}  shadow-lg brightness-50 hover:brightness-80 transition duration-200 w-full aspect-video `}
             />
-            <footer className={`${titleOutside ? "bg-zinc-100 rounded-b-2xl px-3 py-5 relative h-full" : "absolute bottom-2 left-2 "}  w-full flex flex-col gap-2`}>
+            <footer className={`${titleOutside ? "bg-zinc-100 rounded-b-2xl px-3 py-5 h-full relative max-h-[192px]" : "absolute bottom-2 left-2 "}  w-full flex flex-col gap-2`}>
                 <h2 
                     onClick={() => navigate(`/noticia/${news.id_noticia}`)}
-                    className={`font-bold cursor-pointer  text-${titleSize} ${titleOutside ? "w-[80%]" : "w-[75%]"}  text-${textColor} hover:underline`}
+                    className={`font-bold cursor-pointer overflow-ellipsis overflow-hidden text-${titleSize} ${titleOutside ? "w-[80%]" : "w-[75%]"}  text-${textColor} hover:underline`}
                 >
                     {news.nm_titulo}
                 </h2>

@@ -29,7 +29,7 @@ export const UserDropdown = () => {
                     >
                         <img src={DefaultUser} alt="Imagem do usuário"/>
                     </main>
-                    <span className='select-none hover:underline'>Olá, {user?.nm_usuario}</span>
+                    <span className='hidden  md:flex select-none hover:underline'>Olá, {user?.nm_usuario}</span>
 
                 </div>
             </Dropdown.Trigger>

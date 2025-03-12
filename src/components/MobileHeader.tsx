@@ -20,7 +20,7 @@ export function MobileHeader ()
     return (
         <header className="md:hidden  bg-zinc-100/60  fixed z-50 backdrop-blur-lg flex justify-between items-center px-4 py-2 w-full">
             <Logo title="Prefeitura" to="/"/>
-            <aside>
+            <aside className="flex items-center gap-3">
                 {
                     user && <UserDropdown />
                 }

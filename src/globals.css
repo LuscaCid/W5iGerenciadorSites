@@ -34,6 +34,13 @@
     left: 10px;
     font-size: 30px;
   }
+
+  .no-scrollbar::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+  .scrollbar-view::-webkit-scrollbar-thumb  {
+    background-color: rgba(156, 156, 156, 0.479) ;
+  }
 }
   body, button, input,textarea {
   -webkit-font-smoothing: antialiased;
@@ -45,6 +52,7 @@
 ::-webkit-scrollbar {
   width: 5px;
 }
+  
 ::-webkit-scrollbar-thumb {
   background-color: rgba(156, 156, 156, 0.479) ;
   border-radius: 99px;
@@ -80,12 +88,4 @@
     margin: 0;
   }
 
-  .scrollbar-hide {
-    -ms-overflow-style: none;  /* Para Internet Explorer e Edge */
-    scrollbar-width: none;  /* Para Firefox */
-  }
-  
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;  /* Para Chrome, Safari e Opera */
-  }
 }

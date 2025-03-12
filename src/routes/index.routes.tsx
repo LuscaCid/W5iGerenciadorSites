@@ -5,7 +5,7 @@ import { AppRoutes } from "./App.routes";
 export function Router () 
 {
     const setUser = useUserContext(state => state.setUser);
-    // setUser({nm_email : "lucasfelipaaa@gmail.com", nm_usuario : "Lucas Cid"})
+    setUser({nm_email : "lucasfelipaaa@gmail.com", nm_usuario : "Lucas Cid"})
     return (
         <BrowserRouter>
             <AppRoutes />
