@@ -5,16 +5,20 @@ import { tags } from "../constants/tags";
 import { useCallback, useEffect, useState } from "react";
 import { Tag } from "../@types/News";
 import { Button } from "../UI/Button";
-import { ArrowLeft, ArrowRight, EllipsisVertical, Plus } from "lucide-react";
+import {ArrowLeft, ArrowRight, EllipsisVertical, Plus} from "lucide-react";
 import { useUserContext } from "../store/user";
 import { Tag as TagComponent } from "../components/Tag";
+import {useNavigate} from "react-router-dom";
 
-type PaginationDirection = "backwards" | "fowards";
+type PaginationDirection = "backwards" | "forwards";
+
 export const News = () => {
   const [ selectedTags, setSelectedTags ] = useState<Array<Tag>>([]);
   const [ page, setPage ] = useState<number>(1);
   const [ tagsVisible, setTagsVisible ] = useState(false);
+
   const user = useUserContext((state) => state.user);
+  const navigate = useNavigate();
 
   const handleSelectTag = useCallback((selectedTag : Tag) => {
     const tagAlreadySelected = selectedTags.find((tag) => tag.id_tag == selectedTag.id_tag);
@@ -28,7 +32,7 @@ export const News = () => {
     setSelectedTags([...selectedTags, selectedTag ])
   }, [ selectedTags ]);
 
-  const paginateBackwardsFowards = useCallback((dir : PaginationDirection ) => {
+  const paginateBackwardsForwards = useCallback((dir : PaginationDirection ) => {
     setPage(dir == "backwards" ? (page => page - 1) : (page => page + 1));
   }, []);
   const toggleTagsVisibility = useCallback(() => {
@@ -43,6 +47,10 @@ export const News = () => {
         <span className="rounded-full flex items-center justify-center   h-10 text-nowrap px-3 bg-zinc-100 absolute -top-12 shadow-lg right-4 z-[30] text-sm select-none">
           Pág {page}
         </span>
+        <Button
+            icon={Plus}
+            onClick={() => navigate("/noticia")}
+        />
         <section className="w-full gap-5  grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 mb-5 ">
           {
             fakenews && fakenews.length > 0 && (
@@ -59,13 +67,13 @@ export const News = () => {
         </section>
          <footer className="w-full flex justify-between items-center">
           <Button 
-            onClick={() => paginateBackwardsFowards('backwards')}
+            onClick={() => paginateBackwardsForwards('forwards')}
             icon={ArrowLeft}
             title="Anterior"
             disabled={page == 1}
           />
           <Button 
-            onClick={() => paginateBackwardsFowards('fowards')}
+            onClick={() => paginateBackwardsForwards('forwards')}
             icon={ArrowRight}
             title="Próxima"
             className="flex-row-reverse"

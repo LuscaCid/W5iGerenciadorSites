@@ -3,15 +3,12 @@ import {Tooltip} from "@mui/material";
 import {Camera, Check} from "lucide-react";
 import {ChangeEvent, FormEvent, useState} from "react";
 import {Button} from "../UI/Button.tsx";
-import { useNews} from "../hooks/useNews.ts";
 import {Noticia} from "../@types/News";
 
 interface Props {
     news? : Noticia
 }
 export const NewsDetailAdmin = ({ news } : Props) => {
-
-    const { postNews } = useNews();
 
     const [ newsData, setNewsData ] = useState({
         image : news ? news.nm_img : "",

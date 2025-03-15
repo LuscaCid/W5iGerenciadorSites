@@ -5,7 +5,8 @@ import { ArrowLeft, } from "lucide-react";
 import { formatDate, formatDistanceToNow } from 'date-fns';
 import { ptBR } from "date-fns/locale"
 import { useUserContext } from "../store/user";
-import {NewsDetailAdmin} from "../components/NewsDetailAdmin.tsx";
+import { NewsDetailAdmin } from "../components/NewsDetailAdmin.tsx";
+import {NewsDetailClient} from "../components/NewsDetailClient.tsx";
 
 export const NewsDetail = () => {
 
@@ -19,21 +20,9 @@ export const NewsDetail = () => {
     <div className="flex flex-col gap-4 items-center  md:px-36 2xl:px-72 ">
       <main className="flex flex-col gap-3 w-full h-full mb-10">
         {
+          //entre a manipulacao de edicao de um formulario e apenas visualizacao
           !user ? (
-            <>
-              <h1 className="font-[700] text-4xl text-zinc-800">
-                {noticeFoundById?.nm_titulo}
-              </h1>
-              <h3 className="text-2xl font-[600] text-zinc-600">
-                {noticeFoundById?.ds_subtitulo}
-              </h3>
-              <p className="text-md text-zinc-500">
-                {
-                  noticeFoundById?.ds_conteudo
-                }
-              </p>
-              <img src={newsData.image} className="w-full rounded-2xl shadow-lg"/>
-            </>
+            <NewsDetailClient news={noticeFoundById!}/>
           ) : (
              <NewsDetailAdmin />
           ) 

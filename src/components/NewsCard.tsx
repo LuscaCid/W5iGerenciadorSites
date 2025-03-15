@@ -36,7 +36,7 @@ export function NewsCard (props : NewsCardProps)
                     ))
                 }
             </header>
-            <img 
+            <img
                 onClick={() => navigate(`/noticia/${news.id_noticia}`)}
                 src={news.nm_img} 
                 className={` ${titleOutside ? "group-hover:scale-105 rounded-t-2xl rounded-b-none cursor-pointer" : "rounded-2xl"}  shadow-lg brightness-50 hover:brightness-80 transition duration-200 w-full aspect-video `}
@@ -44,14 +44,14 @@ export function NewsCard (props : NewsCardProps)
             <footer className={`${titleOutside ? "bg-zinc-100 rounded-b-2xl px-3 py-5 h-full relative max-h-[192px]" : "absolute bottom-2 left-2 "}  w-full flex flex-col gap-2`}>
                 <h2 
                     onClick={() => navigate(`/noticia/${news.id_noticia}`)}
-                    className={`font-bold cursor-pointer overflow-ellipsis overflow-hidden text-${titleSize} ${titleOutside ? "w-[80%]" : "w-[75%]"}  text-${textColor} hover:underline`}
+                    className={`font-bold cursor-pointer overflow-ellipsis  text-${titleSize} ${titleOutside ? "w-[80%]" : "w-[75%]"}  text-${textColor} hover:underline`}
                 >
                     {news.nm_titulo}
                 </h2>
                 {
                     titleOutside && (
                         <>
-                            <p className={`${user ? "w-[90%]" : "w-full"}`}>
+                            <p className={`${user ? "w-[90%]" : "w-full"} overflow-hidden overflow-ellipsis `}>
                                 {news.ds_subtitulo}
                             </p>
                             <div className="flex items-center gap-1 absolute top-2 right-3 z-30">
