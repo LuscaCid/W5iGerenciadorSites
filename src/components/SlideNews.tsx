@@ -13,8 +13,9 @@ export const SlideNews = ({ news } : SlideNewsProps) =>
     const navigate = useNavigate();
     return (
         <SwiperSlide>
-            <img 
-                src={news.nm_img} 
+            <img
+                alt={"imagem da noticia"}
+                src={news.url_thumbimg ? news.url_thumbimg : news.images && news.images[0].url ? news.images[0].url : "" }
             />
             <footer className="absolute bottom-2 left-2 ">
                 <h2 className="font-bold text-2xl">{news.nm_titulo}</h2>
