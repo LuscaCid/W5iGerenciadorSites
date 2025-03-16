@@ -14,31 +14,37 @@ export const NewsDetail = () => {
   const navigate = useNavigate();
   const user = useUserContext((state) => state.user)
 
-  const noticeFoundById = fakeNews.find((notice) => notice.id_noticia! == Number(params!.id!));
+  const noticeFoundById = params.id ? fakeNews.find((notice) => notice.id_noticia! == Number(params.id!)) : undefined;
 
   return (
-    <div className="flex flex-col gap-4 items-center  md:px-36 2xl:px-72 ">
+    <div className="flex flex-col gap-4 items-center  md:px-36 2xl:px-60 ">
       <main className="flex flex-col gap-3 w-full h-full mb-10">
         {
-          //entre a manipulacao de edicao de um formulario e apenas visualizacao
-          !user ? (
-            <NewsDetailClient news={noticeFoundById!}/>
+          user ? (
+             <NewsDetailAdmin news={noticeFoundById} />
           ) : (
-             <NewsDetailAdmin />
-          ) 
+            <NewsDetailClient news={noticeFoundById!}/>
+          )
         }
         <footer className="flex flex-col gap-3">
           {/* autor */}
-          <span></span>
-          {/* data de publicacao da noticia no portal */}
-          <div className="self-end text-zinc-600 text-sm flex gap-2 items-center">
-            <span>
-              {formatDate(noticeFoundById!.dt_publicacao!, "dd/MM/yyyy  HH'h'mm")}
-            </span>
-            <span>
-              Atualizado { formatDistanceToNow(noticeFoundById!.dt_publicacao!, { addSuffix : true, locale : ptBR } )}
-            </span>
-          </div>
+          {
+            noticeFoundById && (
+              <>
+                <span></span>
+                {/* data de publicacao da noticia no portal */}
+                <div className="self-end text-zinc-600 text-sm flex gap-2 items-center">
+                  <span>
+                    {formatDate(noticeFoundById!.dt_publicacao!, "dd/MM/yyyy  HH'h'mm")}
+                  </span>
+                  <span>
+                    Atualizado { formatDistanceToNow(noticeFoundById!.dt_publicacao!, { addSuffix : true, locale : ptBR } )}
+                  </span>
+                </div>
+              </>
+              )
+          }
+
           <section className="flex items-center w-full justify-between">
             <Button 
               title="Voltar"

@@ -4,6 +4,7 @@ import { Button } from "../UI/Button";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Tooltip } from "@mui/material";
 import { useUserContext } from "../store/user";
+
 interface NewsCardProps
 {
     news : Partial<Noticia>
@@ -14,10 +15,13 @@ interface NewsCardProps
 export function NewsCard (props : NewsCardProps) 
 {
     const { news, titleSize = '2xl', titleOutside = false, textColor = "black" } = props;
+
     const navigate = useNavigate();
+
     const user = useUserContext((state) => state.user);
+
     return (
-        <div className="relative max-h-[380px] overflow-hidden rounded-b-2xl  rounded-t-2xl  group">
+        <div className="relative  overflow-hidden rounded-b-2xl  rounded-t-2xl  group">
             <header className="flex gap-2 items-center absolute z-20 top-3 left-3">
                 { 
                     news.tags && news.tags.length > 0 && news.tags.map((tag) => (
@@ -37,8 +41,9 @@ export function NewsCard (props : NewsCardProps)
                 }
             </header>
             <img
+                alt={"Imagem de apresentacao da noticia"}
                 onClick={() => navigate(`/noticia/${news.id_noticia}`)}
-                src={news.nm_img} 
+                src={news.url_thumbimg}
                 className={` ${titleOutside ? "group-hover:scale-105 rounded-t-2xl rounded-b-none cursor-pointer" : "rounded-2xl"}  shadow-lg brightness-50 hover:brightness-80 transition duration-200 w-full aspect-video `}
             />
             <footer className={`${titleOutside ? "bg-zinc-100 rounded-b-2xl px-3 py-5 h-full relative max-h-[192px]" : "absolute bottom-2 left-2 "}  w-full flex flex-col gap-2`}>

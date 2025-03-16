@@ -20,9 +20,21 @@ export const NewsDetailClient = ({ news } : Props) => {
             </p>
             <img
                 alt={"imagem da noticia"}
-                src={news.nm_img}
+                src={news.url_thumbimg}
                 className="w-full rounded-2xl shadow-lg"
             />
+            {
+                news.images.length > 0 && (
+                    news.images.map((img) => (
+                        <img
+                            key={img.key}
+                            src={img.url}
+                            alt={"Imagem da noticia em questao"}
+                            className={"w-full rounded-2xl shadow-lg"}
+                        />
+                    ))
+                )
+            }
         </>
     )
 }
