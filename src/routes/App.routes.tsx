@@ -17,6 +17,7 @@ export function AppRoutes ()
                 <Route element={<Government />} path="/governo" />
                 <Route element={<Municipio />} path="/municipio" />
                 <Route element={<NewsDetail />} path="/noticia/:id" />
+                <Route element={<NewsDetail />} path="/noticia/" />
                 <Route element={<AdminLogin />} path="/login" />
             </Route>
         </Routes>

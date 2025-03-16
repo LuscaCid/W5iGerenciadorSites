@@ -3,12 +3,12 @@ import fakenews from "../constants/news";
 import { NewsCard } from "../components/NewsCard";
 import { tags } from "../constants/tags";
 import { useCallback, useEffect, useState } from "react";
-import { Tag } from "../@types/News";
 import { Button } from "../UI/Button";
-import {ArrowLeft, ArrowRight, EllipsisVertical, Plus} from "lucide-react";
+import { ArrowLeft, ArrowRight, EllipsisVertical, Plus } from "lucide-react";
 import { useUserContext } from "../store/user";
 import { Tag as TagComponent } from "../components/Tag";
 import {useNavigate} from "react-router-dom";
+import { Tag } from "../@types/Tag";
 
 type PaginationDirection = "backwards" | "forwards";
 
@@ -44,13 +44,20 @@ export const News = () => {
   return (
     <section className="flex  flex-col-reverse md:flex-row  gap-12 items-start relative mb-10 ">
       <main className="md:border-r w-full md:w-3/4 flex flex-col border-zinc-200/80 p-1 md:pr-6 relative">
-        <span className="rounded-full flex items-center justify-center   h-10 text-nowrap px-3 bg-zinc-100 absolute -top-12 shadow-lg right-4 z-[30] text-sm select-none">
-          Pág {page}
-        </span>
-        <Button
-            icon={Plus}
-            onClick={() => navigate("/noticia")}
-        />
+        <div className="flex items-center gap-2 justify-center absolute -top-12 right-4 z-[30]">
+          <span className="rounded-full flex items-center justify-center   h-10 text-nowrap px-3 bg-zinc-100  shadow-lg  text-sm select-none">
+            Pág {page}
+          </span>
+          {
+            user && (
+              <Button
+                className=" shadow-lg h-10 w-10 p-2 items-center justify-center bg-green-500 hover:bg-green-600 rounded-full"
+                icon={Plus}
+                onClick={() => navigate("/noticia")}
+              />
+            )
+          }
+        </div>
         <section className="w-full gap-5  grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 mb-5 ">
           {
             fakenews && fakenews.length > 0 && (
