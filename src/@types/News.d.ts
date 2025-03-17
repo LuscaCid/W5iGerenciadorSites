@@ -8,9 +8,11 @@ export interface Noticia
     ds_conteudo : string;
     nm_titulo : string;  
     ds_subtitulo : string;
-    dt_publicacao : string;
+    images : Image[]
+    nu_dislike?: number;
+    nu_like? : number;
+    dt_publicacao? : string;
     dt_atualizacao? : string;
     url_thumbimg? : string;
     tags? : Array<Tag>
-    images : Image[]
 }

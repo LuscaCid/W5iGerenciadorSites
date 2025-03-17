@@ -1,7 +1,7 @@
 import { IconButton, Tooltip } from "@mui/material";
-import { Tag as TagType } from "../@types/News";
 import { useUserContext } from "../store/user";
 import { Pencil, Trash } from "lucide-react";
+import {Tag as TagType} from "../@types/Tag";
 
 interface Props 
 {

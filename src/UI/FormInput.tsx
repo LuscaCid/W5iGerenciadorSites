@@ -71,7 +71,7 @@ export const HookFormInput = <T extends string>(
                     {...register(name, { required : requiredInput, valueAsNumber : type === "number"},)}
                     id={id}
                     placeholder={placeholder}
-                    className={`${errors ? "focus:outline-[2] w-full disabled:opacity-80 disabled:cursor-not-allowed " : "focus:outline-zinc-100"} rounded-lg  ${type == 'file' ?  "sr-only w-10 ": "" } bg-transparent absolute inset-0 focus:ring-zinc-200 focus:ring-[4px] transition-all duration-200 ${Icon ? "px-7" : "px-3" }`} 
+                    className={`${errors ? "focus:outline-none w-full disabled:opacity-80 disabled:cursor-not-allowed " : "focus:outline-blue-400"} rounded-lg  ${type == 'file' ?  "sr-only w-10 ": "" } bg-transparent absolute inset-0 focus:ring-blue-300 focus:ring-[4px] transition-all duration-150 ${Icon ? "px-7" : "px-3" }`}
                     type={type === "password" ? passwordVisible ? "text" : "password" : type }
                 />
                 {

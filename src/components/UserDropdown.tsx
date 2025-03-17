@@ -1,5 +1,5 @@
 import * as Dropdown from '@radix-ui/react-dropdown-menu';
-import DefaultUser from "../../public/default-avatar.png";
+import DefaultUser from "/default-avatar.png";
 import { CustomDropdownItem } from './CustomDropdownItem';
 import { LogOut, Mail } from 'lucide-react';
 import { useUserContext } from '../store/user';
@@ -11,6 +11,7 @@ export const UserDropdown = () => {
     const navigate = useNavigate();
     const handleLogout = () => {
         setUser(undefined);
+        localStorage.removeItem('@gerenciador-user')
         navigate('/');
     }
     return (
