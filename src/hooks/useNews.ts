@@ -17,7 +17,7 @@ export function useNews ()
     const PATH_NAME = 'news';
     async function postNews (data : FormData)
     {   
-        const response = await api.post(`/${PATH_NAME}/`, { data });
+        const response = await api.post(`/${PATH_NAME}/`, data);
         return response.data;
     }
     async function getNews (payload : GetNewsDto)
