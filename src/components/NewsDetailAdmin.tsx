@@ -1,6 +1,6 @@
 import {NewsDetailInput} from "./NewsDetailInputs.tsx";
 import {Tooltip} from "@mui/material";
-import {Camera, Check, Pencil, Plus, Trash} from "lucide-react";
+import {Camera, Check, Plus, Search} from "lucide-react";
 import {ChangeEvent, FormEvent, useCallback, useEffect, useState} from "react";
 import {Button} from "../UI/Button.tsx";
 import {Noticia} from "../@types/News";
@@ -10,8 +10,13 @@ import {useSiteContext} from "../store/site.ts";
 import {useNews} from "../hooks/useNews.ts";
 import {useMutation} from "@tanstack/react-query";
 import {useNewsContext} from "../store/news.ts";
+import {ImageSlotFc} from "./ImageSlot.tsx";
+import {useToastContext} from "../store/toast.ts";
+import * as Dialog from "@radix-ui/react-dialog";
+import {TagSearchDialog} from "./TagSearch.tsx";
+import {Tag} from "../@types/Tag";
 
-type ImageSlot = {
+export type ImageSlot = {
     fileName : string;
     id : number|string;
     file : File
@@ -27,9 +32,13 @@ export const NewsDetailAdmin = ({ news } : Props) => {
     const user = useUserContext(state => state.user);
     const site = useSiteContext(state => state.site);
     const newsContext = useNewsContext();
+    const openToast = useToastContext(state => state.open);
 
-    const [ thumbnail, setThumbnail ] = useState<string>(news ? news.url_thumbimg! : DefaultImage);
+    const [ selectedTags, setSeletectedTags ] = useState<Tag[]>([]);
     const [ imageSlots, setImageSlots ] = useState<ImageSlot[]>([]);
+    const [ thumbnailSlot, setThumbnailSlot ] = useState<ImageSlot>({
+        url : news ? news?.url_thumbimg : DefaultImage,
+    } as ImageSlot);
     const [ newsData, setNewsData ] = useState<Noticia>({
         url_thumbimg : news ? news.url_thumbimg : DefaultImage,
         images : news ? news.images : [],
@@ -45,6 +54,8 @@ export const NewsDetailAdmin = ({ news } : Props) => {
     const { mutateAsync : postNewsAsync, isPending } = useMutation({
         mutationFn : postNews,
         onSuccess : (data : { news : Noticia, message : string }) => {
+            openToast("Notícia salva com sucesso", "success");
+
             if (news)
             {
                 newsContext.setNews(
@@ -52,7 +63,7 @@ export const NewsDetailAdmin = ({ news } : Props) => {
                         if(n.id_noticia == news.id_noticia){
                             return {
                                 ...news,
-                                ...data
+                                ...data,
                             }
                         }
                         return n;
@@ -64,9 +75,7 @@ export const NewsDetailAdmin = ({ news } : Props) => {
         }
     })
 
-
-
-    const handleSubmit = useCallback((e : FormEvent) => {
+    const handleSubmit = useCallback(async(e : FormEvent) => {
         e.preventDefault();
 
         const formData = new FormData();
@@ -74,17 +83,21 @@ export const NewsDetailAdmin = ({ news } : Props) => {
         formData.append("nm_titulo", newsData.nm_titulo);
         formData.append("ds_subtitulo", newsData.ds_subtitulo);
         formData.append("ds_conteudo", newsData.ds_conteudo);
+
+        //ao enviar ao backend, é necessario passar o filename
         formData.append("url_thumbimg", newsData.url_thumbimg!);
         formData.append("id_site", site!.id_site.toString());
         formData.append("id_usuario", user!.id_usuario.toString());
 
         if (news) formData.append("id_noticia", news.id_noticia.toString());
 
+        if (thumbnailSlot) formData.append("images", thumbnailSlot.file);
+
         imageSlots.forEach((slot) => formData.append('images', slot.file))
 
-        postNewsAsync(formData);
+        await postNewsAsync(formData);
 
-    }, [ newsData, imageSlots, postNewsAsync, news, site, user ]);
+    }, [ newsData, imageSlots, postNewsAsync, news, site, user, thumbnailSlot ]);
 
     const handleChangeSlotImage = useCallback((e : ChangeEvent<HTMLInputElement>, id : number|string) => {
         if (e.target.files)
@@ -109,35 +122,20 @@ export const NewsDetailAdmin = ({ news } : Props) => {
         }
     }, [ imageSlots ]);
 
+    async function urlToFile(url: string, fileName: string, mimeType?: string): Promise<File>
+    {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        return new File([blob], fileName, { type: mimeType || blob.type });
+    }
+
     const handleChangeImage = useCallback((e : ChangeEvent<HTMLInputElement>) => {
         const file = e.target!.files![0];
         const imageObject = URL.createObjectURL(file);
 
-        setNewsData({ ...newsData, url_thumbimg: file.name });
-        setThumbnail(imageObject);
-
-        const alreadyChanged = imageSlots.find((slot) => slot.id == "thumbImage" )
-
-        if (alreadyChanged)
-        {
-            setImageSlots(
-                imageSlots.map((slot) => {
-                    if (slot.id == alreadyChanged.id)
-                    {
-                        return {
-                            ...alreadyChanged,
-                            file : file,
-                            id : alreadyChanged.id,
-                            fileName : file.name
-                        }
-                    }
-                    return slot;
-                })
-            )
-            return;
-        }
-        setImageSlots([...imageSlots, { file : file, id : "thumbImage", fileName : file.name }])
-    }, [ imageSlots, newsData ]);
+        setNewsData({ ...newsData, url_thumbimg : file.name });
+        setThumbnailSlot({ file, id: "thumb", fileName: file.name, url : imageObject })
+    }, [ newsData ]);
 
     const handleAddNewSlot = useCallback(() => {
         setImageSlots([...imageSlots, { id : imageSlots.length + 1 } as ImageSlot])
@@ -145,21 +143,31 @@ export const NewsDetailAdmin = ({ news } : Props) => {
 
     const handleRemoveSlot = useCallback((id : string|number) => {
         setImageSlots(imageSlots.filter((slot) => slot.id != id))
-    }, [ imageSlots ])
+    }, [ imageSlots ]);
+
     useEffect(() => {
-        if (news && news.images && news.images.length > 0)
-        {
-            const slotsFromNewsImages = news.images.map((img, idx) => (
-                {
-                    url : img.url,
-                    fileName : img.fileName,
-                    id : idx,
-                    file : { name : img.fileName, type : img.contentType, size : img.fileSize } as File
-                } as ImageSlot
-            ))
+        async function mapImageSlotsFromNewsImages () {
+            const slotsFromNewsImages =  await Promise.all(
+                news!.images
+                    .filter((img) => img.url != thumbnailSlot.url)
+                    .map(async(img, idx) => {
+                    const file = await urlToFile(img.url, img.fileName, img.contentType);
+                    return {
+                        url : img.url,
+                        fileName : img.fileName,
+                        id : idx,
+                        file
+                    } as ImageSlot
+                })
+            );
             setImageSlots(slotsFromNewsImages);
         }
-    }, [news]);
+
+        if (news && news.images && news.images.length > 0)
+        {
+            mapImageSlotsFromNewsImages();
+        }
+    }, [ news, thumbnailSlot ]);
     return (
         <form
             onSubmit={handleSubmit}
@@ -188,10 +196,30 @@ export const NewsDetailAdmin = ({ news } : Props) => {
                 variant="paragraph"
                 maxLength={2000}
             />
+            <h5 className={"text-lg"}>
+                Tags
+            </h5>
+            <section className={"rounded-2xl bg-zinc-50 border border-zinc-200 p-4"}>
+                <Dialog.Root>
+                    <Dialog.Trigger asChild>
+                        <Button
+                            icon={Search}
+                            className={"p-2 "}
+                        />
+                    </Dialog.Trigger>
+                    <Dialog.Portal >
+                        <Dialog.Overlay className={"z-50 fixed inset-0 w-screen bg-zinc-900/30 backdrop-blur-md"}/>
+                        <TagSearchDialog
+                            selectedTags={selectedTags}
+                            setSelectedTags={setSeletectedTags}
+                        />
+                    </Dialog.Portal>
+                </Dialog.Root>
+            </section>
             <section className="relative">
                 <img
                     alt={"Imagem de thumbnail da noticia"}
-                    src={thumbnail}
+                    src={thumbnailSlot.url}
                     className="w-full rounded-2xl shadow-lg "
                 />
 
@@ -225,49 +253,12 @@ export const NewsDetailAdmin = ({ news } : Props) => {
                     {
                         imageSlots.length > 0 && (
                             imageSlots.map((slot, idx) => (
-                                <div
-                                    key={idx.toString()}
-                                    className={"group overflow-hidden relative shadow-lg rounded-lg"}
-                                >
-                                    <img
-                                        className={"w-full rounded-lg max-w-[500px] aspect-video"}
-                                        alt={"imagem da noticia"}
-                                        src={slot.url ? slot.url : DefaultImage}
-
-                                    />
-                                    <div
-                                        className={"absolute right-2 -top-14 group-hover:top-2 transition-all duration-300 opacity-20 group-hover:opacity-100  flex items-center gap-2"}
-                                    >
-                                        <Button
-                                            description={"Excluir notícia"}
-                                            className={"rounded-full bg-red-500 shadow-lg text-zinc-100 h-10 w-10 p-0 items-center justify-center z-50 hover:bg-red-600"}
-                                            icon={Trash}
-                                            onClick={() => handleRemoveSlot(slot.id)}
-                                        />
-
-                                        <Tooltip
-                                            enterDelay={300}
-                                            enterNextDelay={300}
-                                            title={"Editar imagem"}
-                                        >
-
-                                            <label
-                                                className={"text-zinc-50 shadow-lg cursor-pointer rounded-full flex items-center justify-center h-10 w-10 bg-blue-400 hover:bg-blue-500  duration-150"}
-                                                htmlFor={"image_slot" + idx.toString()}
-                                            >
-                                                <Pencil size={15} />
-                                            </label>
-
-                                        </Tooltip>
-                                    </div>
-
-                                    <input
-                                        onChange={(e) => handleChangeSlotImage(e, slot.id)}
-                                        className={"sr-only"}
-                                        id={"image_slot" + idx.toString()}
-                                        type={"file"}
-                                    />
-                                </div>
+                                <ImageSlotFc
+                                    handleChangeSlotImage={handleChangeSlotImage}
+                                    idx={idx}
+                                    handleRemoveSlot={handleRemoveSlot}
+                                    slot={slot}
+                                />
 
                             ))
                         )

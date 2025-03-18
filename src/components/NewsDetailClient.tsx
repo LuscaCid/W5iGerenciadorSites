@@ -26,7 +26,7 @@ export const NewsDetailClient = ({ news } : Props) => {
             {
                 news.images.length > 0 && (
                     news.images.map((img) => (
-                        <img
+                        img.url !== news.url_thumbimg && <img
                             key={img.key}
                             src={img.url}
                             alt={"Imagem da noticia em questao"}

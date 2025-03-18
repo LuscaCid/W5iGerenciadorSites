@@ -14,6 +14,7 @@ import {useSiteContext} from "../store/site.ts";
 import {NewsCardSkeleton} from "../components/NewsCardSkeleton.tsx";
 import {useNews} from "../hooks/useNews.ts";
 import {useNewsContext} from "../store/news.ts";
+import {getTagsActions} from "../@shared/TagsActions.ts";
 
 type PaginationDirection = "backwards" | "forwards";
 
@@ -23,6 +24,7 @@ export const News = () => {
   const [ tagsVisible, setTagsVisible ] = useState(false);
   const queryClient = useQueryClient();
 
+  const { handleSelectTag } = getTagsActions({ setSelectedTags, selectedTags });
   const { getNews } = useNews();
 
   const setNews = useNewsContext(state => state.setNews)
@@ -45,21 +47,9 @@ export const News = () => {
         console.log(e);
       }
     },
-    queryKey: [ "news", page, tags ],
+    queryKey: [ "news" ],
     refetchOnWindowFocus : false,
   })
-
-  const handleSelectTag = useCallback((selectedTag : Tag) => {
-    const tagAlreadySelected = selectedTags.find((tag) => tag.id_tag == selectedTag.id_tag);
-    if (tagAlreadySelected) 
-    {
-      setSelectedTags(
-        selectedTags.filter((tag) => tag.id_tag!== selectedTag.id_tag)
-      );
-      return;
-    }
-    setSelectedTags([...selectedTags, selectedTag ])
-  }, [ selectedTags ]);
 
   const paginateBackwardsForwards = useCallback((dir : PaginationDirection ) => {
     setPage(dir == "backwards" ? (page => page - 1) : (page => page + 1));
@@ -72,12 +62,12 @@ export const News = () => {
   useEffect(() => {
     if (page)
     {
-      queryClient.invalidateQueries({queryKey : ["news"]})
+      queryClient.invalidateQueries({queryKey : [ "news" ]})
     }
-  }, [page]);
+  }, [page, queryClient]);
   return (
     <section className="flex  flex-col-reverse md:flex-row  gap-12 items-start relative mb-10 ">
-      <main className="md:border-r w-full md:w-3/4 flex flex-col border-zinc-200/80 p-1 md:pr-6 relative">
+      <main className="md:border-r w-full md:w-3/4 flex flex-col border-zinc-200/80  md:pr-6 relative">
         <div className="flex items-center gap-2 justify-center absolute -top-12 right-4 z-[30]">
           <span className="rounded-full flex items-center justify-center   h-10 text-nowrap px-3 bg-zinc-100  shadow-lg  text-sm select-none">
             Pág {page}
@@ -96,7 +86,12 @@ export const News = () => {
           {
             !isLoading && data && data.news.length > 0 ? (
               data.news.map((news) => (
-                <NewsCard key={news.id_noticia} textColor="black" news={news}  titleOutside/>
+                <NewsCard
+                  key={news.id_noticia}
+                  textColor="black"
+                  news={news}
+                  titleOutside
+                />
               ))
             ) : isLoading && (
               Array.from({length : 10}).map((_, idx) => (
@@ -112,7 +107,7 @@ export const News = () => {
         </section>
          <footer className="w-full flex justify-between items-center">
           <Button 
-            onClick={() => paginateBackwardsForwards('forwards')}
+            onClick={() => paginateBackwardsForwards('backwards')}
             icon={ArrowLeft}
             title="Anterior"
             disabled={page == 1}
@@ -163,8 +158,12 @@ export const News = () => {
 
 
 const NewNoticeCard = () => {
+  const navigate = useNavigate();
   return (
-    <div className="w-full bg-zinc-200 h-[380px] max-h-[380px]  hover:border-[3px] border-dashed border-zinc-400 rounded-2xl cursor-pointer hover:bg-zinc-300 transition duration-150 flex items-center justify-center">
+    <div
+      onClick={() => navigate("/noticia")}
+      className="w-full bg-zinc-200 h-[380px] max-h-[380px]  hover:border-[3px] border-dashed border-zinc-400 rounded-2xl cursor-pointer hover:bg-zinc-300 transition duration-150 flex items-center justify-center"
+    >
       <main className="flex flex-col gap-2 items-center">
         <Plus size={55} className="text-zinc-400 "/>
         <span className="text-zinc-400 text-lg">
