@@ -15,7 +15,7 @@ export function Toast({ className, title } : IToastProps)
 {
     const { close, isOpen, message, variant } = useToastContext();
 
-    const patternStyle = ` w-80 opacity-0 fixed z-[100] top-5 max-h-[200px] overflow-auto right-2 border rounded-md backdrop-blur-sm p-2 flex flex-col transition duration-500  ${isOpen ? " translate-y-2 opacity-100 " : "-translate-y-20 opacity-0     "} `;
+    const patternStyle = ` w-80 opacity-0 fixed z-[100] top-5 max-h-[200px] overflow-auto right-2 border rounded-md backdrop-blur-sm p-2 flex flex-col transition duration-500  ${isOpen ? " translate-y-2 opacity-100 " : "-translate-y-24 opacity-0     "} `;
 
     const icons  : Record<ToastVariants, JSX.Element > = {
         warning : <OctagonAlert className="text-yellow-700" />,
@@ -38,10 +38,10 @@ export function Toast({ className, title } : IToastProps)
     };
     const applyStyle :ToastStringRecord =
         {
-            info : `border-blue-500 bg-blue-300/50 dark:bg-blue-500/55`,
-            error : `border-red-500 bg-red-300/50 dark:bg-red-500/55`,
-            warning : `border-yellow-500 bg-yellow-300/50 dark:bg-yellow-500/55`,
-            success : `border-green-300 dark:border-green-500 bg-green-300/50 dark:bg-green-500/55 `
+            info : `border-blue-400 bg-blue-300/50 dark:bg-blue-400/55`,
+            error : `border-red-400 bg-red-300/50 dark:bg-red-400/55`,
+            warning : `border-yellow-400 bg-yellow-300/50 dark:bg-yellow-400/55`,
+            success : `border-green-300 dark:border-green-400 bg-green-300/50 dark:bg-green-400/55 `
         };
     //renderiza o icone conforme o tipo de toast passado retornandop um jsx
     const renderIcon = () => icons[variant];
@@ -52,7 +52,7 @@ export function Toast({ className, title } : IToastProps)
             return () => clearTimeout(timeout);
         }
 
-    }, [isOpen]);
+    }, [isOpen, close]);
     return (
         <section className={twMerge([patternStyle, applyStyle[variant], className])}>
             <header className="flex items-center gap-2">
