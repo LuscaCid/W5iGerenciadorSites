@@ -50,7 +50,7 @@ export const HookFormInput = <T extends string>(
     };
     const { register, formState: { errors } } = useFormContext();
 
-    const patternStyle = `transition duration-200 py-2 group  px-3 pl-1 relative w-full ${type == "file"? "cursor-pointer hover:bg-zinc-300 transition duration-200  w-fit rounded-full p-3 flex items-center justify-center" :"rounded-lg  h-10" } mb-1  text-md  bg-zinc-200/60  placeholder:text-zinc-500  ${disabled ? "opacity-70 cursor-not-allowed" : ""}`; 
+    const patternStyle = `transition duration-200 py-2 group  px-14 pl-1 relative w-full ${type == "file"? "cursor-pointer hover:bg-zinc-300 transition duration-200  w-fit rounded-full p-3 flex items-center justify-center" :"rounded-lg  h-10" } mb-1  text-md  bg-zinc-200/60  placeholder:text-zinc-500  ${disabled ? "opacity-70 cursor-not-allowed" : ""}`;
     
     return ( 
         <fieldset className="flex flex-col gap-2">
@@ -58,7 +58,7 @@ export const HookFormInput = <T extends string>(
                 { label }
             </label>
             <div className={twMerge([patternStyle, className ?? undefined])}>
-                { Icon && <Icon size={20}  className="text-black "/> }
+                { Icon && <Icon size={20}  className="text-black ml-1 mt-0.5"/> }
                 <input
                     readOnly={readonly}
                     maxLength={maxLength}
@@ -71,7 +71,7 @@ export const HookFormInput = <T extends string>(
                     {...register(name, { required : requiredInput, valueAsNumber : type === "number"},)}
                     id={id}
                     placeholder={placeholder}
-                    className={`${errors ? "focus:outline-none w-full disabled:opacity-80 disabled:cursor-not-allowed " : "focus:outline-blue-400"} rounded-lg  ${type == 'file' ?  "sr-only w-10 ": "" } bg-transparent absolute inset-0 focus:ring-blue-300 focus:ring-[4px] transition-all duration-150 ${Icon ? "px-7" : "px-3" }`}
+                    className={`${errors ? "focus:outline-none w-full disabled:opacity-80 disabled:cursor-not-allowed " : "focus:outline-blue-400"} rounded-lg  ${type == 'file' ?  "sr-only w-10 ": "" } bg-transparent absolute inset-0 focus:ring-blue-300 focus:ring-[4px] transition-all duration-150 ${Icon ? "px-8" : "px-3" }`}
                     type={type === "password" ? passwordVisible ? "text" : "password" : type }
                 />
                 {

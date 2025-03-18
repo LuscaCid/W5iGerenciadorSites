@@ -5,7 +5,7 @@ import { twMerge } from "tailwind-merge";
 
 interface TextButtonProps 
 {
-    onClick : (e : MouseEvent) => void;
+    onClick? : (e : MouseEvent) => void;
     title? : string;
     className? : string;
     icon? : LucideIcon;

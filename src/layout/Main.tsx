@@ -4,6 +4,7 @@ import { ChevronRight } from "lucide-react";
 import { MobileHeader } from "../components/MobileHeader";
 import BackToTop from "../components/BackToTop";
 import { useEffect } from "react";
+import {Toast} from "../components/Toast.tsx";
 
 export const locationDictionary : Record<string, string>= {
     '' : 'Página inicial',
@@ -30,8 +31,10 @@ export function Main ()
         <section className="h-screen flex flex-col justify-between  ">
             <Header />
             <MobileHeader />
+            <Toast />
             <main className="absolute  top-17 flex flex-col justify-between  md:top-23 bottom-48 h-screen right-0 left-0 ">
-                <section className="px-6 md:px-40 2xl:px-56">
+
+                <section className="px-2 md:px-40 2xl:px-56">
                 <span className="text-lg font-semibold w-fit border-b py-2 my-3 select-none hover border-zinc-200 flex items-center gap-2"> 
                     <ChevronRight size={20}/>
                     {locationDictionary[pathDictionary]} 

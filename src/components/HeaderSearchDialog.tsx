@@ -14,7 +14,7 @@ export function HeaderSearchDialog ({ isSearchWindowOpen, setIsSearchWindowOpen,
     <Dialog.Root onOpenChange={setIsSearchWindowOpen} open={isSearchWindowOpen}>
         <Dialog.Trigger asChild>
             <TextButton 
-                className={`${isMobile ? "bg-zinc-100 w-full items-center justify-center" : ""} hover:bg-blue-200 transition duration-150 py-9.5 px-10`}
+                className={`${isMobile ? "bg-zinc-100 w-full items-center justify-center " : ""} hover:bg-blue-200 transition duration-150 py-9.5 px-10`}
                 onClick={ () => setIsSearchWindowOpen(!isSearchWindowOpen) }
                 icon={Search}
                 iconSize={20}
