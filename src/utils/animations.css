@@ -1,0 +1,85 @@
+.on-open {
+    animation: slidein 0.16s ease-in-out ;
+}
+.on-open-l {
+    animation: slideinl 0.16s ease-in-out ;
+}
+.on-open-modal {
+    animation: openModal 0.16s ease ;
+}
+.on-open-top
+{
+    animation: slideBottom 0.16s ease-in ;
+}
+.stroke-transition
+{
+    transition: stroke-width 0.2s ease-out;
+}
+
+.on-close-modal
+{
+    animation: onCloseModal 0.16s ease;
+}
+.bells {
+    animation : bells infinite ease-in-out
+}
+@keyframes slideBottom
+{
+    from {
+        opacity: 50%;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 100%;
+        transform: translateY(0);
+    }
+}
+@keyframes slideinl {
+    from {
+        opacity: 30%;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 100%;
+        transform: translateX(0);
+    }
+}
+@keyframes slidein {
+    from {
+        opacity: 30%;
+        transform: translateX(8px);
+    }
+    to {
+        opacity: 100%;
+        transform: translateX(0);
+    }
+}
+
+@keyframes openModal {
+    from {
+        opacity: 50%;
+        transform: scale(97%);
+    }
+    to {
+        opacity: 100%;
+        transform: scale(100%);
+    }
+}
+@keyframes onCloseModal {
+    from {
+        opacity: 100%;
+        transform: scale(100%);
+    }
+    to {
+        opacity: 50%;
+        transform: scale(97%);
+    }
+}
+@keyframes bells {
+    from {
+        transform: rotate(45deg);
+    }
+    to {
+        transform: rotate(70deg);
+    }
+}
