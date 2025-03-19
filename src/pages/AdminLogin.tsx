@@ -12,7 +12,7 @@ import {useMutation} from "@tanstack/react-query";
 import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../store/user.ts";
 const formSchema = z.object({
-  nm_login : z.string(),
+  nm_email : z.string(),
   nm_senha : z.string().min(5, { message : "A senha deve ter no mínimo 8 caracteres"})
 });
 export type FormSchemaType = z.infer<typeof formSchema>;
@@ -37,7 +37,7 @@ export const AdminLogin = () => {
       navigate('/noticias');
     },
     onError : (e) => {
-      methods.setError("nm_login", e);
+      methods.setError("nm_email", e);
     }
   });
 
@@ -62,8 +62,8 @@ export const AdminLogin = () => {
             Login
           </Typography>
           <HookFormInput<keyof FormSchemaType>
-            name='nm_login'
-            id='nm_login'
+            name='nm_email'
+            id='nm_email'
             label='Credencias'
             requiredInput
             icon={UserIcon}
