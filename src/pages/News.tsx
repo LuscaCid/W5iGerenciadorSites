@@ -1,53 +1,51 @@
-import { Typography } from "@mui/material"
-// import fakenews from "../constants/news";
 import { NewsCard } from "../components/NewsCard";
-import { tags } from "../constants/tags";
 import {useCallback, useEffect, useState} from "react";
-import { Button } from "../UI/Button";
-import { ArrowLeft, ArrowRight, EllipsisVertical, Plus } from "lucide-react";
+import {Button} from "../UI/Button";
+import {ArrowLeft, ArrowRight, EllipsisVertical, Plus, X} from "lucide-react";
 import { useUserContext } from "../store/user";
 import { Tag as TagComponent } from "../components/Tag";
 import {useNavigate} from "react-router-dom";
-import { Tag } from "../@types/Tag";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {useSiteContext} from "../store/site.ts";
 import {NewsCardSkeleton} from "../components/NewsCardSkeleton.tsx";
 import {useNews} from "../hooks/useNews.ts";
-import {useNewsContext} from "../store/news.ts";
 import {getTagsActions} from "../@shared/TagsActions.ts";
+import {useNewsTagsContext} from "../store/newsTags.ts";
+import {useTags} from "../hooks/useTags.ts";
+import {Input} from "../UI/Input.tsx";
 
 type PaginationDirection = "backwards" | "forwards";
 
 export const News = () => {
-  const [ selectedTags, setSelectedTags ] = useState<Array<Tag>>([]);
+  const { setSelectedTags, selectedTags } = useNewsTagsContext();
   const [ page, setPage ] = useState<number>(1);
   const [ tagsVisible, setTagsVisible ] = useState(false);
   const queryClient = useQueryClient();
-
+  const [ debounce, setDebounce ] = useState(false);
+  const [ query, setQuery ] = useState("");
   const { handleSelectTag } = getTagsActions({ setSelectedTags, selectedTags });
   const { getNews } = useNews();
+  const { getTags } = useTags();
 
-  const setNews = useNewsContext(state => state.setNews)
-  const site = useSiteContext(state => state.site);
   const user = useUserContext((state) => state.user);
   const navigate = useNavigate();
 
+  const { data : tags }=  useQuery({
+    queryFn : async () => await getTags(query),
+    queryKey : ["tags"]
+  })
   const { data, isLoading } = useQuery({
     queryFn : async () => {
       try {
-        const res = await getNews({
+        return await getNews({
           page,
           nm_titulo : '',
-          id_site : site!.id_site!,
-          tags : selectedTags,
+          tags : selectedTags.map((tag) => tag.id_tag).join(","),
         })
-        setNews(res.news);
-        return res;
       } catch(e){
         console.log(e);
       }
     },
-    queryKey: [ "news" ],
+    queryKey: ["news"],
     refetchOnWindowFocus : false,
   })
 
@@ -60,13 +58,28 @@ export const News = () => {
   }, [tagsVisible]);
 
   useEffect(() => {
-    if (page)
+    queryClient.invalidateQueries({queryKey : ["news"]});
+  }, [selectedTags, queryClient, page]);
+
+  useEffect(() => {
+    if (query)
     {
-      queryClient.invalidateQueries({queryKey : [ "news" ]})
+      setDebounce(true);
+      const timeout = setTimeout(() => setDebounce(false), 500);
+      return () => clearTimeout(timeout);
     }
-  }, [page, queryClient]);
+    queryClient.invalidateQueries({queryKey : ["tags"]});
+    setDebounce(false);
+  }, [query, queryClient]);
+
+  useEffect(() => {
+    if (!debounce)
+    {
+      queryClient.invalidateQueries({queryKey : ["tags"]});
+    }
+  }, [ debounce, queryClient ]);
   return (
-    <section className="flex  flex-col-reverse md:flex-row  gap-12 items-start relative mb-10 ">
+    <section className="flex  flex-col-reverse md:flex-row  gap-5 items-start relative mb-10 ">
       <main className="md:border-r w-full md:w-3/4 flex flex-col border-zinc-200/80  md:pr-6 relative">
         <div className="flex items-center gap-2 justify-center absolute -top-12 right-4 z-[30]">
           <span className="rounded-full flex items-center justify-center   h-10 text-nowrap px-3 bg-zinc-100  shadow-lg  text-sm select-none">
@@ -82,7 +95,7 @@ export const News = () => {
             )
           }
         </div>
-        <section className="w-full gap-5  grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 mb-5 ">
+        <section className="w-full gap-5  grid-stre grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 mb-5 ">
           {
             !isLoading && data && data.news.length > 0 ? (
               data.news.map((news) => (
@@ -122,13 +135,28 @@ export const News = () => {
       </main>
       {/* tags */}
       <aside className="flex flex-wrap  p-2 rounded-lg  gap-5 w-full md:w-1/4 md:sticky top-24 z-40">
-        <header className="flex justify-between items-center w-full">
-          <Typography
-            variant="h5"
-            className="border-b border-zinc-200/80 w-fit text-nowrap pb-1"
+        <header className="flex w-full justify-between flex-col  lg:items-start">
+          <h2
+            className="border-b text-2xl font-bold border-zinc-200/80 w-fit text-nowrap pb-1"
           >
             Tags mais relevantes 
-          </Typography>
+          </h2>
+          <fieldset className={"flex gap-2 items-center w-full"}>
+            <Input
+                onChange={(e) => setQuery(e.target.value)}
+                value={query}
+                id={"search"}
+                className={"w-full"}
+                placeholder={"Pesquisar por tags"}
+            />
+            <Button
+                onClick={() => setSelectedTags([])}
+                description={"Limpar filtros"}
+                icon={X}
+                className={" p-[11px] text-sm"}
+            />
+          </fieldset>
+
           <Button 
             icon={EllipsisVertical}
             onClick={toggleTagsVisibility}
@@ -136,8 +164,8 @@ export const News = () => {
             className="md:hidden rounded-full p-2 items-center justify-center shadow-lg h-10 w-10"
           />
         </header>
-     
-        <nav className={`${tagsVisible ? "flex  md:hidden" : "hidden"}  md:flex flex-wrap gap-4 w-full max-h-[700px] pb-4 overflow-y-auto no-scrollbar hover:scrollbar-view`}>
+
+        <nav className={`${tagsVisible ? "flex  md:hidden" : "hidden"} w-full  md:flex flex-wrap gap-4  max-h-[700px] pb-4 overflow-y-auto no-scrollbar hover:scrollbar-view`}>
         {
          tags && tags.length > 0 &&  (
             tags.map((tag) => (
@@ -150,12 +178,12 @@ export const News = () => {
             ))
           )
         }
+
         </nav>
       </aside>
     </section>
   )
 }
-
 
 const NewNoticeCard = () => {
   const navigate = useNavigate();

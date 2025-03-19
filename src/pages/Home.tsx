@@ -1,23 +1,36 @@
-import { Typography } from "@mui/material";
 import { NewsCarousel } from "../components/NewsCaroussel"
 import { NewsSection } from "../components/NewsSection";
-import fakeNews from "../constants/news";
+import {useQuery} from "@tanstack/react-query";
+import {useNews} from "../hooks/useNews.ts";
 
 export const Home = () => {
-  const carouselNews = fakeNews.slice(fakeNews.length / 2, fakeNews.length);
-  const newsSectionNews = fakeNews.slice(0, (fakeNews.length / 2) -2);
+  const { getNews } = useNews();
+  const {data, isLoading} = useQuery({
+      queryFn : async () => await getNews({ page : 1, nm_titulo : "", tags :""  }),
+      queryKey : ["news"]
+  })
+
   return (
     <div className="flex flex-col gap-5 pb-5">
-      <NewsCarousel news={carouselNews}/>
-      <Typography
-        title=""
-        variant="h5"
-        // contentEditable
-        fontSize={"32"}
-      >
-        Mais noticias
-      </Typography>
-      <NewsSection news={newsSectionNews} />
+        {
+            isLoading && (
+                <div>
+                    Carregando...
+                </div>
+            )
+        }
+        {!isLoading && data && data.news && (
+            <>
+                <NewsCarousel news={data.news}/>
+                <h1
+                    className={"text-lg font-semibold "}
+                >
+                    Mais noticias
+                </h1>
+                <NewsSection news={data.news} />
+            </>
+        )}
+
     </div>
   )
 }
