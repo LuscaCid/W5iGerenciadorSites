@@ -5,15 +5,26 @@ import { NewsCard } from "./NewsCard";
 import { Tooltip } from "@mui/material";
 import "swiper/css/navigation";
 import 'swiper/css';
+import {useNavigate} from "react-router-dom";
+import {useNewsTagsContext} from "../store/newsTags.ts";
+import {useCallback} from "react";
+import {Tag} from "../@types/Tag";
 interface Props 
 {
     news : Noticia[]
 }
 export const NewsCarousel = ({ news } : Props) => 
 {
-    
+    const navigate = useNavigate();
+
+    const setSelectedTags = useNewsTagsContext(state => state.setSelectedTags);
+
+    const handleNavigateToNewsWithTagFilter = useCallback((tag: Tag) => {
+        setSelectedTags([tag]);
+        navigate("/noticias")
+    } ,[ navigate, setSelectedTags ])
     return(
-    <section className="flex-col md:flex-row flex gap-10 items-center">
+    <section className="flex-col md:flex-row flex gap-10 items-start">
         <Swiper
             modules={[Autoplay, Navigation, Controller]}
             slidesPerView={1}
@@ -36,31 +47,34 @@ export const NewsCarousel = ({ news } : Props) =>
                 )
             }
         </Swiper>
-            <aside className="w-full md:w-1/3">
-                {
-                    news && news.length > 0 && (
-                        news.map((n) => (
-                            <div key={n.id_noticia + n.ds_conteudo} className="flex flex-col gap-5">
-                                {n.tags && n.tags?.length > 0 && (
-                                    <Tooltip
-                                        enterDelay={300}
-                                        enterNextDelay={300}  
-                                        title={`Ver mais noticias sobre ${n.tags[0].nm_slug}`}
+        <aside className="w-full md:w-1/3">
+            {
+                news && news.length > 0 && (
+                    news.map((n, idx) => (
+                        <div key={n.id_noticia + n.ds_conteudo} className="flex flex-col gap-5">
+                            {n.tags && n.tags.length > 0 && idx < 4 && (
+                                <Tooltip
+                                    enterDelay={300}
+                                    enterNextDelay={300}
+                                    title={`Ver mais noticias sobre ${n.tags[0].nm_slug}`}
+                                >
+                                    <div
+                                        onClick={() => handleNavigateToNewsWithTagFilter(n.tags![0])}
+                                        className="flex flex-col w-fit gap-1 mt-5 group cursor-pointer"
                                     >
-                                        <div className="flex flex-col w-fit gap-1 mt-5 group cursor-pointer">
-                                            <p>
-                                                {n.tags[0].nm_slug}
-                                            </p>
-                                            <div className="h-0.5 bg-zinc-950 w-6 max-w-1/4 group-hover:w-72 transition-all  duration-200 "/> 
-                                        </div>
-                                    </Tooltip>
-                                )}
-                                <h1 className="font-bold">{n.nm_titulo}</h1>
-                            </div> 
-                        ))
-                    )
-                }
-            </aside>
-        </section>
+                                        <p>
+                                            {n.tags[0].nm_slug}
+                                        </p>
+                                        <div className="h-0.5 bg-zinc-950 w-6 max-w-1/4 group-hover:w-72 transition-all  duration-200 "/>
+                                    </div>
+                                </Tooltip>
+                            )}
+                            <h1 className="font-bold">{n.nm_titulo}</h1>
+                        </div>
+                    ))
+                )
+            }
+        </aside>
+    </section>
     ); 
 }

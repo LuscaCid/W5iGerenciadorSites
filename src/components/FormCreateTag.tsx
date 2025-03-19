@@ -1,25 +1,32 @@
 import z from "zod";
 import {FormProvider, useForm} from "react-hook-form";
-import {useCallback, useRef} from "react";
+import {Dispatch, SetStateAction, useCallback, useEffect, useRef} from "react";
 import {useTags} from "../hooks/useTags.ts";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useToastContext} from "../store/toast.ts";
 import {HookFormInput} from "../UI/FormInput.tsx";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {Send, Tag} from "lucide-react";
+import {Send, Tag, Ban} from "lucide-react";
 import {Button} from "../UI/Button.tsx";
+import {useSiteContext} from "../store/site.ts";
+import { Tag as TagType } from "../@types/Tag"
+interface Props {
+    tag? : TagType;
+    setTagToEdit? : Dispatch<SetStateAction<TagType|undefined>>
+}
+
 const formSchema = z.object({
     nm_slug : z.string().min(2, "Tag muito curta").max(30, "Tag muito grande"),
 })
 type FormSearchType = z.infer<typeof formSchema>;
-export const FormCreateTag = () => {
+export const FormCreateTag = ({ tag, setTagToEdit } : Props) => {
     const { open : openToast } = useToastContext();
     const queryClient = useQueryClient();
-
+    const site = useSiteContext(state => state.site);
     const methods = useForm<FormSearchType>({
         resolver : zodResolver(formSchema),
         defaultValues : {
-            nm_slug : "",
+            nm_slug : tag ? tag.nm_slug : "",
         }
     });
     const formRef = useRef<HTMLFormElement|null>(null);
@@ -28,16 +35,37 @@ export const FormCreateTag = () => {
     const { mutateAsync : addTagAsync, isPending } = useMutation({
         mutationFn : addTag,
         mutationKey : ["addTag"],
-        onSuccess : async () => {
-            await queryClient.invalidateQueries({queryKey : ["tags"]});
-            openToast("Tag salva", "success");
+        onSuccess : async (_, variables) => {
+            if (tag)
+            {
+                queryClient.setQueryData(["tags"], (prev : TagType[]) => prev.map(prevTag => {
+                    if (prevTag.id_tag == tag.id_tag) {
+                        return {
+                            ...tag,
+                            nm_slug : variables.nm_slug,
+                        } as TagType;
+                    }
+                    return prevTag;
+                }));
+                openToast("Tag salva", "success");
+
+            }
         }
     });
     const handleSubmit = useCallback(async (data: FormSearchType) =>
     {
-        await addTagAsync(data);
-    }, [ addTagAsync ])
-
+        await addTagAsync({
+            ...data,
+            id_site : site!.id_site,
+            id_tag : tag ? tag.id_tag : undefined
+        });
+    }, [ addTagAsync, site, tag ])
+    useEffect(() => {
+        if (tag)
+        {
+            methods.setValue("nm_slug", tag?.nm_slug)
+        }
+    }, [tag]);
     return (
         <FormProvider { ...methods }>
             <form
@@ -46,7 +74,7 @@ export const FormCreateTag = () => {
                 className={"w-full p-4 relative h-full"}
             >
                 <h4 className={"text-2xl font-bold py-2 border-b border-zinc-200  "}>
-                    Cadastrar tag
+                    {tag ? "Editar tag" : "Cadastrar tag"}
                 </h4>
                 <HookFormInput<keyof FormSearchType>
                     name={"nm_slug"}
@@ -54,14 +82,29 @@ export const FormCreateTag = () => {
                     id={"nm_slug"}
                     icon={Tag}
                 />
-                <Button
-                    className={"p-2 px-3 rounded-lg hover:bg-green-600 bg-green-500 flex items-center flex-row-reverse self-end absolute bottom-2 right-2"}
-                    type={'submit'}
-                    isLoading={isPending}
-                    disabled={isPending}
-                    icon={Send}
-                    title={"Cadastrar"}
-                />
+                <footer className={"self-end flex items-center gap-2 absolute bottom-2 right-2 flex-row-reverse"}>
+
+                    <Button
+                        className={"p-2 px-3 rounded-lg hover:bg-green-600 bg-green-500 flex items-center flex-row-reverse "}
+                        type={'submit'}
+                        isLoading={isPending}
+                        disabled={isPending}
+                        icon={Send}
+                        title={tag ? "Editar" : "Cadastrar"}
+                    />
+                    <Button
+                        className={` p-2 px-3 bg-blue-500 hover:bg-blue-600 ${tag ? "" : "hidden"} flex-row-reverse`}
+                        icon={Ban}
+                        title={"Cancelar"}
+                        description={"Cancelar edição"}
+                        onClick={() => {
+                            if (setTagToEdit)
+                            {
+                                setTagToEdit(undefined)
+                            }
+                        }}
+                    />
+                </footer>
             </form>
         </FormProvider>
 
