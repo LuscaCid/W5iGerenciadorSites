@@ -9,6 +9,7 @@ import {NewsDetailClient} from "../components/NewsDetailClient.tsx";
 import {useQueryClient} from "@tanstack/react-query";
 import {Noticia} from "../@types/News";
 import {useEffect, useState} from "react";
+import {UserAvatar} from "../components/UserAvatar.tsx";
 
 export const NewsDetail = () => {
 
@@ -18,16 +19,18 @@ export const NewsDetail = () => {
   const queryClient = useQueryClient();
 
   const data = queryClient.getQueryData(['news']) as { news : Noticia[] };
-
-  const newsFoundById = params.id ? data.news.find((news) => news.id_noticia! == Number(params.id!)) : undefined;
-  const [ actualNewsSelected,  ] = useState(newsFoundById)
+  const newsFoundById = params.id && data ? data.news.find((news) => news.id_noticia! == Number(params.id!)) : undefined;
+  const [ actualNewsSelected, setActualNewsSelected ] = useState<Noticia|undefined>(newsFoundById);
 
   useEffect(() => {
-    if (!newsFoundById)
+    if (newsFoundById)
     {
-      queryClient.invalidateQueries({queryKey : ["news"]});
+      setActualNewsSelected(newsFoundById);
+      return;
     }
-  }, [ actualNewsSelected, queryClient ]);
+    queryClient.invalidateQueries({queryKey : ["news"]});
+
+  }, [ actualNewsSelected, queryClient, params.id ]);
   return (
     <div className="flex flex-col gap-4 items-center  md:px-36 2xl:px-60 ">
       <main className="flex flex-col gap-3 w-full h-full mb-10">
@@ -43,12 +46,14 @@ export const NewsDetail = () => {
           {
             actualNewsSelected && (
               <>
-                <span></span>
+                <UserAvatar
+                    subtitle={"Publicado em "+ formatDate(actualNewsSelected.dt_publicacao!, "dd/MM/yyyy 'às' HH'h'mm")}
+                    clickable={false}
+                    title={`Por: ${actualNewsSelected.usuario?.nm_usuario}`}
+                />
                 {/* data de publicacao da noticia no portal */}
                 <div className="self-end text-zinc-600 text-sm flex gap-2 items-center">
-                  <span>
-                    {formatDate(actualNewsSelected!.dt_publicacao!, "dd/MM/yyyy  HH'h'mm")}
-                  </span>
+
                   <span>
                     Atualizado { formatDistanceToNow(actualNewsSelected!.dt_publicacao!, { addSuffix : true, locale : ptBR } )}
                   </span>
