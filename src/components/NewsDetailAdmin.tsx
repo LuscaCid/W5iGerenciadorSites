@@ -1,6 +1,6 @@
 import {NewsDetailInput} from "./NewsDetailInputs.tsx";
 import {Tooltip} from "@mui/material";
-import {Camera, Check, Plus, Search} from "lucide-react";
+import {Camera, Check, Plus, Search, X} from "lucide-react";
 import {ChangeEvent, FormEvent, useCallback, useEffect, useState} from "react";
 import {Button} from "../UI/Button.tsx";
 import {Noticia} from "../@types/News";
@@ -15,6 +15,7 @@ import {useToastContext} from "../store/toast.ts";
 import * as Dialog from "@radix-ui/react-dialog";
 import {TagSearchDialog} from "./TagSearch.tsx";
 import {Tag} from "../@types/Tag";
+import { getTagsActions } from '../@shared/TagsActions.ts';
 
 export type ImageSlot = {
     fileName : string;
@@ -33,8 +34,9 @@ export const NewsDetailAdmin = ({ news } : Props) => {
     const site = useSiteContext(state => state.site);
     const newsContext = useNewsContext();
     const openToast = useToastContext(state => state.open);
-
-    const [ selectedTags, setSeletectedTags ] = useState<Tag[]>([]);
+    const [isDialogOpen, setDialogOpen] = useState(false);
+    const [ selectedTags, setSelectedTags ] = useState<Tag[]>(news ? news.tags ?? [] : []);
+    const { handleSelectTag } = getTagsActions({ selectedTags, setSelectedTags })
     const [ imageSlots, setImageSlots ] = useState<ImageSlot[]>([]);
     const [ thumbnailSlot, setThumbnailSlot ] = useState<ImageSlot>({
         url : news ? news?.url_thumbimg : DefaultImage,
@@ -93,6 +95,7 @@ export const NewsDetailAdmin = ({ news } : Props) => {
 
         if (thumbnailSlot) formData.append("images", thumbnailSlot.file);
 
+        selectedTags.forEach((tag) => formData.append("tags", tag.id_tag.toString()));
         imageSlots.forEach((slot) => formData.append('images', slot.file))
 
         await postNewsAsync(formData);
@@ -199,22 +202,42 @@ export const NewsDetailAdmin = ({ news } : Props) => {
             <h5 className={"text-lg"}>
                 Tags
             </h5>
-            <section className={"rounded-2xl bg-zinc-50 border border-zinc-200 p-4"}>
-                <Dialog.Root>
+            <section className={"rounded-2xl bg-zinc-50 border border-zinc-200 p-4 flex flex-wrap gap-2"}>
+                <Dialog.Root open={isDialogOpen} onOpenChange={setDialogOpen}>
                     <Dialog.Trigger asChild>
                         <Button
+                            description={"Buscar tags"}
                             icon={Search}
-                            className={"p-2 "}
+                            className={"p-3"}
                         />
                     </Dialog.Trigger>
                     <Dialog.Portal >
                         <Dialog.Overlay className={"z-50 fixed inset-0 w-screen bg-zinc-900/30 backdrop-blur-md"}/>
                         <TagSearchDialog
+                            setDialogOpen={setDialogOpen}
                             selectedTags={selectedTags}
-                            setSelectedTags={setSeletectedTags}
+                            setSelectedTags={setSelectedTags}
                         />
                     </Dialog.Portal>
                 </Dialog.Root>
+                {
+                    selectedTags.length >0 && (
+                         selectedTags.map((tag)=> (
+                              <span key={tag.id_tag}
+                                  className={"rounded-lg flex items-center bg-zinc-100 p-2 gap-2 border border-zinc-200 hover:bg-zinc-200 transition duration-150"}
+                              >
+                              {tag.nm_slug}
+                                  <Button
+                                     description={"Remover tag"}
+                                     icon={X}
+                                     className={"p-1"}
+                                     onClick={() => handleSelectTag(tag)}
+                              />
+                              </span>
+                            )
+                        )
+                    )
+                }
             </section>
             <section className="relative">
                 <img

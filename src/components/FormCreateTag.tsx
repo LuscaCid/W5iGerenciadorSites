@@ -1,6 +1,6 @@
 import z from "zod";
 import {FormProvider, useForm} from "react-hook-form";
-import {useCallback, useEffect, useRef} from "react";
+import {useCallback, useRef} from "react";
 import {useTags} from "../hooks/useTags.ts";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useToastContext} from "../store/toast.ts";
@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {Send, Tag} from "lucide-react";
 import {Button} from "../UI/Button.tsx";
 const formSchema = z.object({
-    nm_slug : z.string().min(3),
+    nm_slug : z.string().min(2, "Tag muito curta").max(30, "Tag muito grande"),
 })
 type FormSearchType = z.infer<typeof formSchema>;
 export const FormCreateTag = () => {
@@ -37,17 +37,6 @@ export const FormCreateTag = () => {
     {
         await addTagAsync(data);
     }, [ addTagAsync ])
-    useEffect(() => {
-        function enterEvent (e : KeyboardEvent) {
-            if (e.key == "Enter" && formRef.current)
-            {
-                formRef.current.submit();
-            }
-        }
-        document.addEventListener("keypress", enterEvent);
-
-        return () => document.removeEventListener("keypress", enterEvent);
-    }, [formRef]);
 
     return (
         <FormProvider { ...methods }>
