@@ -1,7 +1,5 @@
 import * as Dropdown from "@radix-ui/react-dropdown-menu";
-import { TextButton } from "../UI/TextButton";
-import { Blend, Landmark, LucideIcon, Menu, Newspaper, ShieldUser, UtilityPole } from "lucide-react";
-import { MouseEvent } from "react";
+import { Blend, Landmark, Menu, Newspaper, ShieldUser, UtilityPole } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { CustomDropdownItem } from "./CustomDropdownItem";
 import { Separator } from "./Separator";

@@ -1,15 +1,75 @@
 import {Noticia} from "../@types/News";
+import {useCallback} from "react";
+import {useNewsTagsContext} from "../store/newsTags.ts";
+import {Tag} from "../@types/Tag";
+import {useQueryClient} from "@tanstack/react-query";
+import {useNavigate} from "react-router-dom";
+import {Button} from "../UI/Button.tsx";
+import {FacebookIcon, Instagram} from "lucide-react";
 
 interface  Props {
     news : Noticia
 }
 export const NewsDetailClient = ({ news } : Props) => {
 
+    const setSelectedTags = useNewsTagsContext((state) => (state.setSelectedTags))
+    const queryClient = useQueryClient();
+    const navigate = useNavigate();
+
+    const handleSelectTag = useCallback(async(tag : Tag) => {
+
+        setSelectedTags([tag]);
+        await queryClient.invalidateQueries({queryKey : ["news"]});
+
+        navigate("/noticias");
+    }, [ setSelectedTags, queryClient, navigate ]);
     return (
         <>
-            <h1 className="font-[700] text-4xl text-zinc-800">
-                {news?.nm_titulo}
-            </h1>
+            <header className={"relative max-h-[600px]  rounded-2xl"}>
+                <img
+                    alt={"imagem da noticia"}
+                    src={news.url_thumbimg}
+                    className="w-full rounded-2xl max-h-[600px]  shadow-lg object-cover brightness-75"
+                />
+                <main className={'flex flex-col gap-10 absolute top-1/2 left-1/2 -translate-x-1/2 w-[80%] -translate-y-1/2'}>
+                    <h1 className="font-[600] text-4xl  text-zinc-200">
+                        {news?.nm_titulo}
+                    </h1>
+                    <section className={"flex items-center gap-2"}>
+                        <span className={"text-lg text-zinc-50 font-semibold"}>
+                            Compartilhe
+                        </span>
+                        <Button
+                            className={"rounded-full items-center justify-center h-10 w-10 p-0"}
+                            icon={FacebookIcon}
+                        />
+                        <Button
+                            className={"rounded-full items-center justify-center h-10 w-10 p-0"}
+                        />
+                        <Button
+                            className={"rounded-full items-center justify-center h-10 w-10 p-0"}
+                            icon={Instagram}
+                        />
+                    </section>
+                </main>
+
+                <section className={" top-3 left-3 flex items-center absolute  gap-2"}>
+                    {
+                        news.tags && news.tags.length > 0 && (
+                            news.tags.map((tag) => (
+                                <span
+                                    onClick={() => handleSelectTag(tag)}
+                                    key={tag.id_tag}
+                                    className={"rounded-full flex items-center bg-zinc-200/60 backdrop-blur-md  hover:bg-zinc-300 font-semibold  py-1 px-2 cursor-pointer gap-2    transition duration-150"}
+                                >
+                                    {tag.nm_slug}
+                                </span>
+                            ))
+                        )
+                    }
+                </section>
+            </header>
+
             <h3 className="text-2xl font-[600] text-zinc-600">
                 {news?.ds_subtitulo}
             </h3>
@@ -18,11 +78,6 @@ export const NewsDetailClient = ({ news } : Props) => {
                     news?.ds_conteudo
                 }
             </p>
-            <img
-                alt={"imagem da noticia"}
-                src={news.url_thumbimg}
-                className="w-full rounded-2xl shadow-lg"
-            />
             {
                 news.images.length > 0 && (
                     news.images.map((img) => (
@@ -35,6 +90,7 @@ export const NewsDetailClient = ({ news } : Props) => {
                     ))
                 )
             }
+
         </>
     )
 }

@@ -1,16 +1,48 @@
 import { IconButton, Tooltip } from "@mui/material";
 import { useUserContext } from "../store/user";
-import { Pencil, Trash } from "lucide-react";
+import {Pencil, Trash} from "lucide-react";
 import {Tag as TagType} from "../@types/Tag";
-
+import * as Dialog from "@radix-ui/react-dialog";
+import {CustomDialogContent} from "./CustomDialogContent.tsx";
+import {FormCreateTag} from "./FormCreateTag.tsx";
+import {useCallback, useState} from "react";
+import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import {AlertDialogComponent} from "./AlertDialogComponent.tsx";
+import {useTags} from "../hooks/useTags.ts";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {useToastContext} from "../store/toast.ts";
 interface Props 
 {
     tag : TagType;
     selectedTags : TagType[];
     handleSelectTag : (tag : TagType) => void;
+    canOpen? : boolean;
+    handleEditTag? : (tag : TagType) => void;
 }
-export const Tag = ({ tag, handleSelectTag, selectedTags } : Props) => {
+export const Tag = ({ tag, handleSelectTag, selectedTags, canOpen = true, handleEditTag } : Props) => {
     const user = useUserContext((state) => state.user);
+    const openToast = useToastContext(state => state.open);
+
+    const [ isDialogOpen, setDialogOpen ] = useState<boolean>(false);
+    const queryClient = useQueryClient();
+    const { deleteTag } = useTags();
+
+    const { mutateAsync : deleteTagAsync } = useMutation({
+        mutationFn : deleteTag,
+        mutationKey: ["delete-tag"],
+        onSuccess :(_, variables) => {
+            queryClient.setQueryData(["tag"], (prev : TagType[]) => ({
+                news : prev.filter(tag => tag.id_tag != variables)
+            }))
+            openToast("Tag excluída")
+        },
+        onError : (err) => {
+            openToast(err.message, "error")
+        }
+    })
+    const handleDeleteTag = useCallback(async(id : number) => {
+        await deleteTagAsync(id)
+    }, [deleteTagAsync]);
     return (
         <Tooltip
             key={tag.id_tag}
@@ -23,7 +55,6 @@ export const Tag = ({ tag, handleSelectTag, selectedTags } : Props) => {
             >
                 <div 
                     onClick={() => handleSelectTag(tag)}
-             
                 >
                     <span>
                         {tag.nm_slug}
@@ -32,12 +63,43 @@ export const Tag = ({ tag, handleSelectTag, selectedTags } : Props) => {
                 {
                     user && (
                         <div className=" flex items-center gap-1 ">
-                            <IconButton color="info">
-                                <Pencil size={15}/>
-                            </IconButton>   
-                            <IconButton color="error">
-                                <Trash size={15}/>
-                            </IconButton>   
+                            <Dialog.Root open={isDialogOpen && canOpen} onOpenChange={setDialogOpen}>
+                                <Dialog.Trigger asChild>
+                                    <IconButton
+                                        onClick={() => {
+                                            if (handleEditTag)
+                                            {
+                                                handleEditTag(tag)
+                                            }
+                                        }}
+                                        color="info" >
+                                        <Pencil size={15}/>
+                                    </IconButton>
+                                </Dialog.Trigger>
+                                <Dialog.Portal >
+                                    <Dialog.Overlay className={"z-50 fixed inset-0 w-screen bg-zinc-900/30 backdrop-blur-md"}/>
+                                    <CustomDialogContent className={"w-[90%] h-1/3  lg:h-1/3 lg:w-1/3"}>
+                                        <FormCreateTag tag={tag}/>
+                                    </CustomDialogContent>
+                                </Dialog.Portal>
+                            </Dialog.Root>
+                            <AlertDialog.Root >
+                                <AlertDialog.Trigger asChild>
+                                    <IconButton color="error">
+                                        <Trash size={15}/>
+                                    </IconButton>
+                                </AlertDialog.Trigger>
+                                <AlertDialog.Portal >
+                                    <AlertDialog.Overlay/>
+                                    <AlertDialogComponent
+                                        action={() => handleDeleteTag(tag.id_tag!)}
+                                        title="Excluir Tag?"
+                                        message="confirmar"
+                                        buttonActionMessage="Excluir"
+                                    />
+                                </AlertDialog.Portal>
+                            </AlertDialog.Root>
+
                         </div>
                     )
                 }

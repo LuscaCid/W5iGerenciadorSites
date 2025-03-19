@@ -36,11 +36,11 @@ export const NewsDetailAdmin = ({ news } : Props) => {
     const openToast = useToastContext(state => state.open);
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [ selectedTags, setSelectedTags ] = useState<Tag[]>(news ? news.tags ?? [] : []);
-    const { handleSelectTag } = getTagsActions({ selectedTags, setSelectedTags })
     const [ imageSlots, setImageSlots ] = useState<ImageSlot[]>([]);
     const [ thumbnailSlot, setThumbnailSlot ] = useState<ImageSlot>({
         url : news ? news?.url_thumbimg : DefaultImage,
     } as ImageSlot);
+
     const [ newsData, setNewsData ] = useState<Noticia>({
         url_thumbimg : news ? news.url_thumbimg : DefaultImage,
         images : news ? news.images : [],
@@ -50,6 +50,7 @@ export const NewsDetailAdmin = ({ news } : Props) => {
         id_noticia : 1,
         tags : [],
     });
+    const { handleSelectTag } = getTagsActions({ selectedTags, setSelectedTags });
 
     const { postNews } = useNews();
 
@@ -57,7 +58,6 @@ export const NewsDetailAdmin = ({ news } : Props) => {
         mutationFn : postNews,
         onSuccess : (data : { news : Noticia, message : string }) => {
             openToast("Notícia salva com sucesso", "success");
-
             if (news)
             {
                 newsContext.setNews(
@@ -74,7 +74,8 @@ export const NewsDetailAdmin = ({ news } : Props) => {
                 return;
             }
             newsContext.setNews([...newsContext.news, data.news ])
-        }
+        },
+        retry :2
     })
 
     const handleSubmit = useCallback(async(e : FormEvent) => {
@@ -100,7 +101,7 @@ export const NewsDetailAdmin = ({ news } : Props) => {
 
         await postNewsAsync(formData);
 
-    }, [ newsData, imageSlots, postNewsAsync, news, site, user, thumbnailSlot ]);
+    }, [ newsData, imageSlots, postNewsAsync, news, site, user, thumbnailSlot, selectedTags ]);
 
     const handleChangeSlotImage = useCallback((e : ChangeEvent<HTMLInputElement>, id : number|string) => {
         if (e.target.files)
@@ -223,7 +224,8 @@ export const NewsDetailAdmin = ({ news } : Props) => {
                 {
                     selectedTags.length >0 && (
                          selectedTags.map((tag)=> (
-                              <span key={tag.id_tag}
+                              <span
+                                  key={tag.id_tag}
                                   className={"rounded-lg flex items-center bg-zinc-100 p-2 gap-2 border border-zinc-200 hover:bg-zinc-200 transition duration-150"}
                               >
                               {tag.nm_slug}
@@ -277,6 +279,7 @@ export const NewsDetailAdmin = ({ news } : Props) => {
                         imageSlots.length > 0 && (
                             imageSlots.map((slot, idx) => (
                                 <ImageSlotFc
+                                    key={slot.id}
                                     handleChangeSlotImage={handleChangeSlotImage}
                                     idx={idx}
                                     handleRemoveSlot={handleRemoveSlot}

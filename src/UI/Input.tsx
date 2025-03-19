@@ -41,14 +41,14 @@ export const Input = (
     readonly,
     label,
     onChange,
-    value
+    value,
   }: InputProps) =>
 {
 
   const patternStyle = `transition duration-200 py-2 group  px-14 pl-1 relative w-full ${type == "file"? "cursor-pointer hover:bg-zinc-300 transition duration-200  w-fit rounded-full p-3 flex items-center justify-center" :"rounded-lg  h-10" } mb-1  text-md  bg-zinc-200/60  placeholder:text-zinc-500  ${disabled ? "opacity-70 cursor-not-allowed" : ""}`;
 
   return (
-    <fieldset className="flex flex-col gap-2">
+    <fieldset className="flex flex-col gap-2 w-full">
       <label className="text-md " htmlFor={id} >
         { label }
       </label>
@@ -69,7 +69,7 @@ export const Input = (
           autoComplete="off"
           id={id}
           placeholder={placeholder}
-          className={` rounded-lg  ${type == 'file' ?  "sr-only w-10 ": "" } bg-transparent absolute inset-0 focus:ring-blue-300 focus:ring-[4px] transition-all duration-150 ${Icon ? "px-8" : "px-3" }`}
+          className={` rounded-lg  ${type == 'file' ?  "sr-only w-10 ": "" } focus:outline-none bg-transparent absolute inset-0 focus:ring-blue-300 focus:ring-[4px] transition-all duration-150 ${Icon ? "px-8" : "px-3" }`}
           type={type}
         />
       </div>

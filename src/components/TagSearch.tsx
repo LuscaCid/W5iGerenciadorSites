@@ -1,16 +1,15 @@
-import * as Dialog from "@radix-ui/react-dialog";
 import {DialogTitle} from "@radix-ui/react-dialog";
 import {Dispatch, SetStateAction, useCallback, useEffect, useState} from "react";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {useTags} from "../hooks/useTags.ts";
 import {Button} from "../UI/Button.tsx";
-import {Search, X} from "lucide-react";
+import {Search} from "lucide-react";
 import {Tag} from "../@types/Tag";
 import {getTagsActions} from "../@shared/TagsActions.ts";
 import {Tag as TagComponent} from "./Tag.tsx";
 import {FormCreateTag} from "./FormCreateTag.tsx";
-import {TextButton} from "../UI/TextButton.tsx";
 import { Input } from '../UI/Input.tsx';
+import {CustomDialogContent} from "./CustomDialogContent.tsx";
 
 interface Props {
     selectedTags : Array<Tag>;
@@ -24,6 +23,7 @@ export const TagSearchDialog = ({ setSelectedTags, selectedTags, setDialogOpen }
     const queryClient = useQueryClient();
     const [ debounce, setDebounce ] = useState(false);
     const [ query, setQuery ] = useState("");
+    const [ tagToEdit , setTagToEdit ] = useState<Tag|undefined>();
 
     const { data : tags, isLoading } = useQuery({
         queryFn : async () => getTags(query),
@@ -31,6 +31,9 @@ export const TagSearchDialog = ({ setSelectedTags, selectedTags, setDialogOpen }
         refetchOnWindowFocus : false,
         enabled : query.length == 0 || !debounce
     })
+    const handleSelectTagToEdit = useCallback((tag: Tag) => {
+        setTagToEdit(tag);
+    }, [ setTagToEdit ])
 
     useEffect(() => {
         if (query)
@@ -54,18 +57,7 @@ export const TagSearchDialog = ({ setSelectedTags, selectedTags, setDialogOpen }
         setDialogOpen(false);
     }, [setDialogOpen]);
     return (
-        <Dialog.Content className={"fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 m-auto rounded-2xl border flex flex-col lg:flex-row gap-2 w-[95%] h-[95%] lg:w-[60%] lg:h-[40%]    z-[100] border-zinc-200 bg-zinc-100 "}>
-            <Dialog.Close
-                asChild
-            >
-                <TextButton
-                    className={"absolute z-50 top-2 right-2 hover:bg-red-500 transition duration-200 items-center justify-center flex rounded-lg bg-red-400  cursor-pointer"}
-                    icon={X}
-                    type={"button"}
-                    iconSize={15}
-                />
-
-            </Dialog.Close>
+        <CustomDialogContent>
             <main className={"w-full h-2/3 lg:h-full lg:w-2/3 relative p-4  "}>
                 <DialogTitle className={"text-2xl sr-only"}>
                     Procurar Tags
@@ -95,6 +87,8 @@ export const TagSearchDialog = ({ setSelectedTags, selectedTags, setDialogOpen }
                         tags && tags.length > 0 && (
                             tags.map((tag : Tag) => (
                                 <TagComponent
+                                    handleEditTag={handleSelectTagToEdit}
+                                    canOpen={false}
                                     key={tag.id_tag}
                                     selectedTags={selectedTags}
                                     tag={tag}
@@ -107,8 +101,8 @@ export const TagSearchDialog = ({ setSelectedTags, selectedTags, setDialogOpen }
             </main>
             <div className={"w-full h-[1px] lg:h-full lg:w-[1px] bg-zinc-200"} />
             <aside className={"w-full h-1/3  lg:h-full lg:w-1/3"}>
-                <FormCreateTag />
+                <FormCreateTag setTagToEdit={setTagToEdit} tag={tagToEdit}/>
             </aside>
-        </Dialog.Content>
+        </CustomDialogContent>
     );
 }

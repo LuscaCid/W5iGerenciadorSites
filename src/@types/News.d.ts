@@ -1,5 +1,6 @@
 import {Tag} from "./Tag";
 import {Image} from "./Image";
+import {User} from "./User";
 
 export interface Noticia
 {
@@ -15,4 +16,5 @@ export interface Noticia
     dt_atualizacao? : string;
     url_thumbimg? : string;
     tags? : Array<Tag>
+    usuario? : User;
 }
