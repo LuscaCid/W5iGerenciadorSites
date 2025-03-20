@@ -10,7 +10,7 @@ interface CustomDropdownItemProps
 export const CustomDropdownItem = ({ onClick, title, icon : Icon } : CustomDropdownItemProps) => {
     return (
         <Dropdown.Item
-            className="p-2 items-center justify-between gap-2 flex hover:bg-zinc-200  transition duration-150 cursor-pointer rounded-md"
+            className="p-2 items-center justify-between gap-2 flex hover:bg-zinc-200  hover:outline-none transition duration-150 cursor-pointer rounded-md"
             onClick={onClick}
         >
             <span>
