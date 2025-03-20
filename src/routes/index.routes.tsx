@@ -7,7 +7,7 @@ import {useSiteContext} from "../store/site.ts";
 
 export function Router ()
 {
-    const user = useUserContext(state => state.user);
+    const { user, setUser } = useUserContext();
     const setSite = useSiteContext(state => state.setSite);
 
     setSite({
@@ -30,6 +30,14 @@ export function Router ()
             )
         }
     }, [ user ]);
+    useEffect(() => {
+        const userInLocalStorage = window.localStorage.getItem("@gerenciador-user");
+        if (userInLocalStorage)
+        {
+            const object = JSON.parse(userInLocalStorage);
+            setUser(object);
+        }
+    }, [ setUser ]);
     return (
         <BrowserRouter>
             <AppRoutes />
