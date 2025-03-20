@@ -11,6 +11,9 @@ import {useAuth} from "../hooks/useAuth.ts";
 import {useMutation} from "@tanstack/react-query";
 import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../store/user.ts";
+import {useContextSelector} from "use-context-selector";
+import {toastContext} from "../components/Toast.tsx";
+import {AxiosError} from "axios";
 const formSchema = z.object({
   nm_email : z.string(),
   nm_senha : z.string().min(5, { message : "A senha deve ter no mínimo 8 caracteres"})
@@ -19,7 +22,7 @@ export type FormSchemaType = z.infer<typeof formSchema>;
 export const AdminLogin = () => {
   const { signIn } = useAuth();
   const setUser = useUserContext(state => state.setUser);
-
+  const openToast = useContextSelector(toastContext, (c) => c.open)
   const navigate = useNavigate();
   const methods = useForm<FormSchemaType>({ resolver : zodResolver(formSchema) });
 
@@ -36,8 +39,11 @@ export const AdminLogin = () => {
       localStorage.setItem("@gerenciador-user", JSON.stringify(accessData));
       navigate('/noticias');
     },
-    onError : (e) => {
-      methods.setError("nm_email", e);
+    onError : (err : AxiosError) => {
+      if (err.response)
+      {
+        openToast((err.response.data as { message: string }).message, "error");
+      }
     }
   });
 
@@ -53,7 +59,7 @@ export const AdminLogin = () => {
         <form
           name="form_admin"
           id="form_admin"
-          className='w-fit flex flex-col gap-3 min-w-[600px] rounded-lg'
+          className='w-fit flex flex-col gap-3 min-w-[90%] md:min-w-[600px] rounded-lg'
           onSubmit={methods.handleSubmit(handleSubmitForm)}
         >
           <Typography 
