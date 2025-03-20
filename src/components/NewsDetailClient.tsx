@@ -25,35 +25,32 @@ export const NewsDetailClient = ({ news } : Props) => {
     }, [ setSelectedTags, queryClient, navigate ]);
     return (
         <>
-            <header className={"relative max-h-[600px]  rounded-2xl"}>
+            <header className={"relative max-h-[600px] group rounded-2xl"}>
                 <img
                     alt={"imagem da noticia"}
                     src={news.url_thumbimg}
-                    className="w-full rounded-2xl max-h-[600px]  shadow-lg object-cover brightness-75"
+                    className="w-full rounded-2xl max-h-[600px]  shadow-lg object-cover brightness-50 group-hover:brightness-90 transition duration-150"
                 />
                 <main className={'flex flex-col gap-10 absolute top-1/2 left-1/2 -translate-x-1/2 w-[80%] -translate-y-1/2'}>
-                    <h1 className="font-[600] text-4xl  text-zinc-200">
+                    <h1 className="font-[600] text-4xl  text-zinc-100 group-hover:opacity-0 transition duration-150">
                         {news?.nm_titulo}
                     </h1>
-                    <section className={"flex items-center gap-2"}>
-                        <span className={"text-lg text-zinc-50 font-semibold"}>
-                            Compartilhe
-                        </span>
-                        <Button
-                            className={"rounded-full items-center justify-center h-10 w-10 p-0"}
-                            icon={FacebookIcon}
-                        />
-                        <Button
-                            className={"rounded-full items-center justify-center h-10 w-10 p-0"}
-                        />
-                        <Button
-                            className={"rounded-full items-center justify-center h-10 w-10 p-0"}
-                            icon={Instagram}
-                        />
-                    </section>
-                </main>
 
-                <section className={" top-3 left-3 flex items-center absolute  gap-2"}>
+                </main>
+                <section className={"flex items-center gap-2  absolute bottom-4 right-4"}>
+                    <span className={"text-lg text-zinc-50 font-semibold"}>
+                        Compartilhe
+                    </span>
+                    <Button
+                        className={"rounded-full items-center justify-center h-10 w-10 p-0"}
+                        icon={FacebookIcon}
+                    />
+                    <Button
+                        className={"rounded-full items-center justify-center h-10 w-10 p-0"}
+                        icon={Instagram}
+                    />
+                </section>
+                <section className={" top-3 left-3 flex items-center absolute  gap-2  group-hover:opacity-0 transition duration-150"}>
                     {
                         news.tags && news.tags.length > 0 && (
                             news.tags.map((tag) => (
