@@ -18,7 +18,7 @@ export const useTags = () => {
 
     const addTag  = useCallback(async(payload : CreateTagDto) => {
         const response = await api.post(`${PATH_NAME}/`, payload);
-        return response.data;
+        return response.data as Tag;
     }, []);
 
     const deleteTag = useCallback(async (id: number) => {

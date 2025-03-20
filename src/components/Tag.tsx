@@ -10,7 +10,9 @@ import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import {AlertDialogComponent} from "./AlertDialogComponent.tsx";
 import {useTags} from "../hooks/useTags.ts";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {useToastContext} from "../store/toast.ts";
+import {useContextSelector} from "use-context-selector";
+import {toastContext} from "./Toast.tsx";
+import {AxiosError} from "axios";
 interface Props 
 {
     tag : TagType;
@@ -21,7 +23,7 @@ interface Props
 }
 export const Tag = ({ tag, handleSelectTag, selectedTags, canOpen = true, handleEditTag } : Props) => {
     const user = useUserContext((state) => state.user);
-    const openToast = useToastContext(state => state.open);
+    const openToast = useContextSelector(toastContext, (context) => context.open);
 
     const [ isDialogOpen, setDialogOpen ] = useState<boolean>(false);
     const queryClient = useQueryClient();
@@ -34,10 +36,13 @@ export const Tag = ({ tag, handleSelectTag, selectedTags, canOpen = true, handle
             queryClient.setQueryData(["tag"], (prev : TagType[]) => ({
                 news : prev.filter(tag => tag.id_tag != variables)
             }))
-            openToast("Tag excluída")
+            openToast("Tag excluída", "success")
         },
-        onError : (err) => {
-            openToast(err.message, "error")
+        onError : (err : AxiosError) => {
+            if (err.response)
+            {
+                openToast((err.response.data as { message: string }).message, "error")
+            }
         }
     })
     const handleDeleteTag = useCallback(async(id : number) => {
@@ -54,7 +59,7 @@ export const Tag = ({ tag, handleSelectTag, selectedTags, canOpen = true, handle
                 className={`w-fit select-none flex items-center justify-center gap-2 transition shadow-lg duration-200 rounded-full py-1 px-3  text-nowrap overflow-ellipsis overflow-hidden  cursor-pointer ${selectedTags.find((selectedTag) => selectedTag.id_tag === tag.id_tag) ? "bg-blue-200  hover:bg-blue-300 text-black" : "bg-zinc-100 hover:bg-zinc-300"} transition duration-150`}
             >
                 <div 
-                    onClick={() => handleSelectTag(tag)}
+                    onPointerDown={() => handleSelectTag(tag)}
                 >
                     <span>
                         {tag.nm_slug}
@@ -99,7 +104,6 @@ export const Tag = ({ tag, handleSelectTag, selectedTags, canOpen = true, handle
                                     />
                                 </AlertDialog.Portal>
                             </AlertDialog.Root>
-
                         </div>
                     )
                 }

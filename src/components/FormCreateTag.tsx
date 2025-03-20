@@ -3,13 +3,14 @@ import {FormProvider, useForm} from "react-hook-form";
 import {Dispatch, SetStateAction, useCallback, useEffect, useRef} from "react";
 import {useTags} from "../hooks/useTags.ts";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {useToastContext} from "../store/toast.ts";
 import {HookFormInput} from "../UI/FormInput.tsx";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {Send, Tag, Ban} from "lucide-react";
 import {Button} from "../UI/Button.tsx";
 import {useSiteContext} from "../store/site.ts";
 import { Tag as TagType } from "../@types/Tag"
+import {toastContext} from "./Toast.tsx";
+import {useContextSelector} from "use-context-selector";
 interface Props {
     tag? : TagType;
     setTagToEdit? : Dispatch<SetStateAction<TagType|undefined>>
@@ -20,7 +21,7 @@ const formSchema = z.object({
 })
 type FormSearchType = z.infer<typeof formSchema>;
 export const FormCreateTag = ({ tag, setTagToEdit } : Props) => {
-    const { open : openToast } = useToastContext();
+    const openToast = useContextSelector(toastContext, (context) => context.open);
     const queryClient = useQueryClient();
     const site = useSiteContext(state => state.site);
     const methods = useForm<FormSearchType>({
@@ -35,7 +36,7 @@ export const FormCreateTag = ({ tag, setTagToEdit } : Props) => {
     const { mutateAsync : addTagAsync, isPending } = useMutation({
         mutationFn : addTag,
         mutationKey : ["addTag"],
-        onSuccess : async (_, variables) => {
+        onSuccess : async (data, variables) => {
             if (tag)
             {
                 queryClient.setQueryData(["tags"], (prev : TagType[]) => prev.map(prevTag => {
@@ -48,12 +49,14 @@ export const FormCreateTag = ({ tag, setTagToEdit } : Props) => {
                     return prevTag;
                 }));
                 openToast("Tag salva", "success");
-
+                return;
             }
+            queryClient.setQueryData(["tags"], (prev : TagType[]) => [ ...prev, data ]);
         }
     });
     const handleSubmit = useCallback(async (data: FormSearchType) =>
     {
+
         await addTagAsync({
             ...data,
             id_site : site!.id_site,
@@ -65,26 +68,31 @@ export const FormCreateTag = ({ tag, setTagToEdit } : Props) => {
         {
             methods.setValue("nm_slug", tag?.nm_slug)
         }
-    }, [tag]);
+    }, [tag, methods]);
     return (
         <FormProvider { ...methods }>
-            <form
-                ref={formRef}
-                onSubmit={methods.handleSubmit(handleSubmit)}
-                className={"w-full p-4 relative h-full"}
-            >
-                <h4 className={"text-2xl font-bold py-2 border-b border-zinc-200  "}>
-                    {tag ? "Editar tag" : "Cadastrar tag"}
-                </h4>
-                <HookFormInput<keyof FormSearchType>
-                    name={"nm_slug"}
-                    placeholder={"Nome da tag"}
-                    id={"nm_slug"}
-                    icon={Tag}
-                />
-                <footer className={"self-end flex items-center gap-2 absolute bottom-2 right-2 flex-row-reverse"}>
+            <>
+                <form
+                    id={"form_create_tag"}
+                    name={"form_create_tag"}
+                    ref={formRef}
+                    onSubmit={methods.handleSubmit(handleSubmit)}
+                    className={"w-full p-4 relative h-full"}
+                >
+                    <h4 className={"text-2xl font-bold py-2 border-b border-zinc-200  "}>
+                        {tag ? "Editar tag" : "Cadastrar tag"}
+                    </h4>
+                    <HookFormInput<keyof FormSearchType>
+                        name={"nm_slug"}
+                        placeholder={"Nome da tag"}
+                        id={"nm_slug"}
+                        icon={Tag}
+                    />
 
+                </form>
+                <footer className={"self-end flex items-center gap-2 absolute bottom-2 right-2 flex-row-reverse"}>
                     <Button
+                        form={"form_create_tag"}
                         className={"p-2 px-3 rounded-lg hover:bg-green-600 bg-green-500 flex items-center flex-row-reverse "}
                         type={'submit'}
                         isLoading={isPending}
@@ -100,12 +108,14 @@ export const FormCreateTag = ({ tag, setTagToEdit } : Props) => {
                         onClick={() => {
                             if (setTagToEdit)
                             {
-                                setTagToEdit(undefined)
+                                setTagToEdit(undefined);
+                                methods.setValue("nm_slug", "")
                             }
                         }}
                     />
                 </footer>
-            </form>
+            </>
+
         </FormProvider>
 
     );
