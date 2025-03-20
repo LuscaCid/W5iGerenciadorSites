@@ -1,7 +1,7 @@
 import { NewsCard } from "../components/NewsCard";
 import {useCallback, useEffect, useState} from "react";
 import {Button} from "../UI/Button";
-import {ArrowLeft, ArrowRight, EllipsisVertical, Plus, X} from "lucide-react";
+import {ArrowLeft, ArrowRight, EllipsisVertical, Plus, X, SlidersHorizontal} from "lucide-react";
 import { useUserContext } from "../store/user";
 import { Tag as TagComponent } from "../components/Tag";
 import {useNavigate} from "react-router-dom";
@@ -16,17 +16,18 @@ import {Input} from "../UI/Input.tsx";
 type PaginationDirection = "backwards" | "forwards";
 
 export const News = () => {
-  const { setSelectedTags, selectedTags } = useNewsTagsContext();
+  const { setSelectedTags, selectedTags, title, setTitle } = useNewsTagsContext();
+  const user = useUserContext((state) => state.user);
   const [ page, setPage ] = useState<number>(1);
   const [ tagsVisible, setTagsVisible ] = useState(false);
   const queryClient = useQueryClient();
   const [ debounce, setDebounce ] = useState(false);
   const [ query, setQuery ] = useState("");
   const { handleSelectTag } = getTagsActions({ setSelectedTags, selectedTags });
+
   const { getNews } = useNews();
   const { getTags } = useTags();
 
-  const user = useUserContext((state) => state.user);
   const navigate = useNavigate();
 
   const { data : tags }=  useQuery({
@@ -38,7 +39,7 @@ export const News = () => {
       try {
         return await getNews({
           page,
-          nm_titulo : '',
+          nm_titulo : title,
           tags : selectedTags.map((tag) => tag.id_tag).join(","),
         })
       } catch(e){
@@ -48,6 +49,10 @@ export const News = () => {
     queryKey: ["news"],
     refetchOnWindowFocus : false,
   })
+  const handleClearFilters = useCallback(() => {
+    setTitle("");
+    setSelectedTags([]);
+  },[setSelectedTags, setTitle]);
 
   const paginateBackwardsForwards = useCallback((dir : PaginationDirection ) => {
     setPage(dir == "backwards" ? (page => page - 1) : (page => page + 1));
@@ -94,6 +99,12 @@ export const News = () => {
               />
             )
           }
+          <Button
+            className=" shadow-lg h-10 w-10 p-2 items-center justify-center bg-blue-500 hover:bg-blue-600 rounded-full"
+            icon={SlidersHorizontal}
+            onClick={handleClearFilters}
+            description={"Limpar todos os filtros"}
+          />
         </div>
         <section className="w-full gap-5  grid-stre grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 mb-5 ">
           {
@@ -151,7 +162,7 @@ export const News = () => {
             />
             <Button
                 onClick={() => setSelectedTags([])}
-                description={"Limpar filtros"}
+                description={"Limpar tags"}
                 icon={X}
                 className={" p-[11px] text-sm"}
             />

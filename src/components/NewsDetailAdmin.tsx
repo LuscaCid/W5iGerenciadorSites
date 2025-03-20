@@ -11,11 +11,12 @@ import {useNews} from "../hooks/useNews.ts";
 import {useMutation} from "@tanstack/react-query";
 import {useNewsContext} from "../store/news.ts";
 import {ImageSlotFc} from "./ImageSlot.tsx";
-import {useToastContext} from "../store/toast.ts";
 import * as Dialog from "@radix-ui/react-dialog";
 import {TagSearchDialog} from "./TagSearch.tsx";
 import {Tag} from "../@types/Tag";
 import { getTagsActions } from '../@shared/TagsActions.ts';
+import {useContextSelector} from "use-context-selector";
+import {toastContext} from "./Toast.tsx";
 
 export type ImageSlot = {
     fileName : string;
@@ -33,7 +34,7 @@ export const NewsDetailAdmin = ({ news } : Props) => {
     const user = useUserContext(state => state.user);
     const site = useSiteContext(state => state.site);
     const newsContext = useNewsContext();
-    const openToast = useToastContext(state => state.open);
+    const openToast = useContextSelector(toastContext, (context) => context.open);
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [ selectedTags, setSelectedTags ] = useState<Tag[]>(news ? news.tags ?? [] : []);
     const [ imageSlots, setImageSlots ] = useState<ImageSlot[]>([]);
@@ -80,7 +81,6 @@ export const NewsDetailAdmin = ({ news } : Props) => {
 
     const handleSubmit = useCallback(async(e : FormEvent) => {
         e.preventDefault();
-
         const formData = new FormData();
 
         formData.append("nm_titulo", newsData.nm_titulo);
@@ -173,12 +173,7 @@ export const NewsDetailAdmin = ({ news } : Props) => {
         }
     }, [ news, thumbnailSlot ]);
     return (
-        <form
-            onSubmit={handleSubmit}
-            id="noticia_form"
-            name="noticia_form"
-            className="flex flex-col gap-3"
-        >
+        <form className="flex flex-col gap-3">
             <NewsDetailInput
                 onChangeFn={(e) => setNewsData({ ...newsData, nm_titulo : e.target.value})}
                 value={newsData.nm_titulo ?? ""}
@@ -204,7 +199,10 @@ export const NewsDetailAdmin = ({ news } : Props) => {
                 Tags
             </h5>
             <section className={"rounded-2xl bg-zinc-50 border border-zinc-200 p-4 flex flex-wrap gap-2"}>
-                <Dialog.Root open={isDialogOpen} onOpenChange={setDialogOpen}>
+                <Dialog.Root
+                    open={isDialogOpen}
+                    onOpenChange={setDialogOpen}
+                >
                     <Dialog.Trigger asChild>
                         <Button
                             description={"Buscar tags"}
@@ -294,10 +292,9 @@ export const NewsDetailAdmin = ({ news } : Props) => {
             <Button
                 disabled={isPending}
                 isLoading={isPending}
-                type="submit"
-                form="noticia_form"
+                type="button"
+                onClick={handleSubmit}
                 title="Salvar"
-                onClick={() => console.log("Salvar alterações")}
                 className="flex-row-reverse w-fit self-end bg-green-500 text-zinc-100 hover:bg-green-600"
                 icon={Check}
             />

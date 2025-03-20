@@ -9,8 +9,9 @@ import * as AlertDialog  from "@radix-ui/react-alert-dialog";
 import {useCallback} from "react";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useNews} from "../hooks/useNews.ts";
-import {useToastContext} from "../store/toast.ts";
 import {AlertDialogComponent} from "./AlertDialogComponent.tsx";
+import {useContextSelector} from "use-context-selector";
+import {toastContext} from "./Toast.tsx";
 
 interface NewsCardProps
 {
@@ -23,7 +24,7 @@ export function NewsCard (props : NewsCardProps)
 {
     const { news, titleSize = '2xl', titleOutside = false, textColor = "black" } = props;
     const setSelectedTags = useNewsTagsContext(state => state.setSelectedTags);
-    const openToast = useToastContext(state => state.open);
+    const openToast = useContextSelector(toastContext, (context) => context.open);
     const navigate = useNavigate();
     const { deleteNews } = useNews();
     const queryClient = useQueryClient();
@@ -42,7 +43,7 @@ export function NewsCard (props : NewsCardProps)
         await deleteNewsAsync(id)
     }, [ deleteNewsAsync ])
     return (
-        <div className="relative overflow-hidden h-full min-h-[340px] bg-zinc-100  rounded-b-2xl  rounded-t-2xl   group">
+        <div className="relative overflow-hidden h-full min-h-[340px] bg-zinc-100 rounded-b-2xl rounded-t-2xl group">
             <img
                 alt={"Imagem de apresentacao da noticia"}
                 onClick={() => navigate(`/noticia/${news.id_noticia}`)}
@@ -86,13 +87,13 @@ export function NewsCard (props : NewsCardProps)
                                 <Button 
                                     icon={ThumbsUp}
                                     onClick={() => console.log()}
-                                    className="p-1 text-xs bg-zinc-200/10 backdrop-blur-lg hover:bg-zinc-300"
+                                    className="p-1 text-xs bg-zinc-200/90 backdrop-blur-lg hover:bg-zinc-300"
                                     title={news.nu_like?.toString()}
                                 />
                                 <Button 
                                     icon={ThumbsDown}
                                     onClick={() => console.log()}
-                                    className="p-1 bg-zinc-200/10 backdrop-blur-lg hover:bg-zinc-300"
+                                    className="p-1 bg-zinc-200/90 backdrop-blur-lg hover:bg-zinc-300"
                                 />
                             </div>
                         </>
