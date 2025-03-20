@@ -38,26 +38,25 @@ export const NewsDetailClient = ({ news } : Props) => {
 
                 </main>
                 <section className={"flex items-center gap-2  absolute bottom-4 right-4"}>
-                    <span className={"text-lg text-zinc-50 font-semibold"}>
-                        Compartilhe
-                    </span>
                     <Button
+                        description={"Compartilhar no Facebook"}
                         className={"rounded-full items-center justify-center h-10 w-10 p-0"}
                         icon={FacebookIcon}
                     />
                     <Button
+                        description={"Compartilhar no Instagram"}
                         className={"rounded-full items-center justify-center h-10 w-10 p-0"}
                         icon={Instagram}
                     />
                 </section>
-                <section className={" top-3 left-3 flex items-center absolute  gap-2  group-hover:opacity-0 transition duration-150"}>
+                <section className={" top-3 left-3 flex items-center absolute  gap-2  group-hover:opacity-50 transition duration-150"}>
                     {
                         news.tags && news.tags.length > 0 && (
                             news.tags.map((tag) => (
                                 <span
                                     onClick={() => handleSelectTag(tag)}
                                     key={tag.id_tag}
-                                    className={"rounded-full flex items-center bg-zinc-200/60 backdrop-blur-md  hover:bg-zinc-300 font-semibold  py-1 px-2 cursor-pointer gap-2    transition duration-150"}
+                                    className={"rounded-full flex items-center bg-zinc-200/60 backdrop-blur-md  hover:bg-zinc-300 hover:opacity-100 font-semibold  py-1 px-2 cursor-pointer gap-2    transition duration-150"}
                                 >
                                     {tag.nm_slug}
                                 </span>

@@ -5,13 +5,14 @@ import { useUserContext } from '../store/user';
 import { useNavigate } from 'react-router-dom';
 import { Separator } from './Separator';
 import {UserAvatar} from "./UserAvatar.tsx";
+import {StorageKeys} from "../constants/StorageKeys.ts";
 
 export const UserDropdown = () => {
     const { user, setUser } = useUserContext();
     const navigate = useNavigate();
     const handleLogout = () => {
         setUser(undefined);
-        localStorage.removeItem('@gerenciador-user')
+        localStorage.removeItem(StorageKeys.user)
         navigate('/');
     }
     return (
