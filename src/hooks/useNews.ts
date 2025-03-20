@@ -1,7 +1,14 @@
 import { api } from "../services/api"
 import {Noticia} from "../@types/News";
 import {useSiteContext} from "../store/site.ts";
-
+export interface LikeNewsDto {
+    unlike : boolean;
+    id_news : number;
+}
+export interface DislikeNewsDto {
+    unDislike : boolean;
+    id_news : number;
+}
 export interface GetNewsDto {
     page? : number;
     nm_titulo? : string;
@@ -28,15 +35,21 @@ export function useNews ()
 
     async function deleteNews (id : number)
     {
-        try {
-            await api.delete(`${PATH_NAME}/${id}`);
-        } catch (e) {
-            console.log(e);
-        }
+        await api.delete(`${PATH_NAME}/${id}`);
+    }
+    async function likeNews(payload : LikeNewsDto)
+    {
+        await api.post(`${PATH_NAME}/like`, payload);
+    }
+    async function dislikeNews(payload : DislikeNewsDto)
+    {
+        await api.post(`${PATH_NAME}/dislike`, payload);
     }
     return {
         getNews, 
         postNews,
-        deleteNews
+        deleteNews,
+        likeNews,
+        dislikeNews
     }
 }
