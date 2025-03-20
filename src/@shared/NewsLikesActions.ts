@@ -58,7 +58,6 @@ export function NewsLikesActions ({
         await dislikeAsync({id_news : news.id_noticia!, unDislike : true});
     }, [ toggleDislike, dislikeAsync, news.id_noticia ]);
 
-    //TODO remover like se o usuário ja tiver dado o like
     const dislikeInStorageAndDatabase = useCallback(async (storageLikes : Like[]) => {
         const dislike : Like = { id_news : news.id_noticia! };
         localStorage.setItem(StorageKeys.dislike, JSON.stringify([ ...storageLikes, dislike ]));
