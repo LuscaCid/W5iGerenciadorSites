@@ -1,7 +1,7 @@
 import {Button} from "../UI/Button.tsx";
 import {Pencil, Trash} from "lucide-react";
 import {ImageSlot} from "./NewsDetailAdmin.tsx";
-import DefaultImage from "/default-news-img.avif";
+import DefaultImage from "/default-featured-image.jpg";
 import {Tooltip} from "@mui/material";
 import {ChangeEvent} from "react";
 

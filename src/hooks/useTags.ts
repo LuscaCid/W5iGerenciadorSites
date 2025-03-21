@@ -2,7 +2,7 @@ import {useCallback} from "react";
 import {api} from "../services/api.ts";
 import {Tag} from "../@types/Tag";
 import {useSiteContext} from "../store/site.ts";
-interface CreateTagDto {
+export interface CreateTagDto {
     nm_slug : string;
     id_site : number;
     id_tag? : number;

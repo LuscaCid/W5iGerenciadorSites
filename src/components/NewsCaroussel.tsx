@@ -3,7 +3,9 @@ import { Navigation, Autoplay, Controller } from 'swiper/modules';
 import { Noticia } from "../@types/News";
 import { NewsCard } from "./NewsCard";
 import { Tooltip } from "@mui/material";
+// @ts-ignore
 import "swiper/css/navigation";
+// @ts-ignore
 import 'swiper/css';
 import {useNavigate} from "react-router-dom";
 import {useNewsTagsContext} from "../store/newsTags.ts";
