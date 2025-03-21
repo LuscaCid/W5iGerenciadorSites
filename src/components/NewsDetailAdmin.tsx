@@ -4,12 +4,10 @@ import {Camera, Check, Plus, Search, X} from "lucide-react";
 import {ChangeEvent, FormEvent, useCallback, useEffect, useState} from "react";
 import {Button} from "../UI/Button.tsx";
 import {Noticia} from "../@types/News";
-import DefaultImage from "/default-news-img.avif";
 import {useUserContext} from "../store/user.ts";
 import {useSiteContext} from "../store/site.ts";
 import {useNews} from "../hooks/useNews.ts";
 import {useMutation} from "@tanstack/react-query";
-import {useNewsContext} from "../store/news.ts";
 import {ImageSlotFc} from "./ImageSlot.tsx";
 import * as Dialog from "@radix-ui/react-dialog";
 import {TagSearchDialog} from "./TagSearch.tsx";
@@ -17,6 +15,8 @@ import {Tag} from "../@types/Tag";
 import { getTagsActions } from '../@shared/TagsActions.ts';
 import {useContextSelector} from "use-context-selector";
 import {toastContext} from "./Toast.tsx";
+import DefaultImage from "/default-featured-image.jpg";
+import {AxiosError} from "axios";
 
 export type ImageSlot = {
     fileName : string;
@@ -33,7 +33,6 @@ export const NewsDetailAdmin = ({ news } : Props) => {
 
     const user = useUserContext(state => state.user);
     const site = useSiteContext(state => state.site);
-    const newsContext = useNewsContext();
     const openToast = useContextSelector(toastContext, (context) => context.open);
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [ selectedTags, setSelectedTags ] = useState<Tag[]>(news ? news.tags ?? [] : []);
@@ -57,24 +56,14 @@ export const NewsDetailAdmin = ({ news } : Props) => {
 
     const { mutateAsync : postNewsAsync, isPending } = useMutation({
         mutationFn : postNews,
-        onSuccess : (data : { news : Noticia, message : string }) => {
+        onSuccess : () => {
             openToast("Notícia salva com sucesso", "success");
-            if (news)
+        },
+        onError(err : unknown) {
+            if (err instanceof AxiosError)
             {
-                newsContext.setNews(
-                    newsContext.news.map((n) => {
-                        if(n.id_noticia == news.id_noticia){
-                            return {
-                                ...news,
-                                ...data,
-                            }
-                        }
-                        return n;
-                    })
-                )
-                return;
+                openToast(err.response!.data.message, "error");
             }
-            newsContext.setNews([...newsContext.news, data.news ])
         },
         retry :2
     })
@@ -107,7 +96,6 @@ export const NewsDetailAdmin = ({ news } : Props) => {
         if (e.target.files)
         {
             const file = e.target.files![0];
-
             const imageObject = URL.createObjectURL(file);
             setImageSlots(
                 imageSlots.map((slot) =>{
@@ -243,7 +231,7 @@ export const NewsDetailAdmin = ({ news } : Props) => {
                 <img
                     alt={"Imagem de thumbnail da noticia"}
                     src={thumbnailSlot.url}
-                    className="w-full rounded-2xl shadow-lg "
+                    className="w-full h-fit rounded-2xl shadow-lg "
                 />
 
                 <Tooltip
