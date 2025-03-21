@@ -29,8 +29,9 @@ export function useNews ()
     }
     async function getNews (payload : GetNewsDto)
     {
+        await new Promise(resolve => setTimeout(resolve, 400));
         const response = await api.get(`/${PATH_NAME}?page=${payload.page}&tags=${payload.tags}&nm_titulo=${payload.nm_titulo}&id_site=${site!.id_site}`);
-        return response.data as { news : Noticia[] };
+        return response.data as  Noticia[] ;
     }
 
     async function deleteNews (id : number)

@@ -18,8 +18,8 @@ export const NewsDetail = () => {
   const user = useUserContext((state) => state.user)
   const queryClient = useQueryClient();
 
-  const data = queryClient.getQueryData(['news']) as { news : Noticia[] };
-  const newsFoundById = params.id && data ? data.news.find((news) => news.id_noticia! == Number(params.id!)) : undefined;
+  const data = queryClient.getQueryData(['news']) as Noticia[];
+  const newsFoundById = params.id && data ? data.find((news) => news.id_noticia! == Number(params.id!)) : undefined;
   const [ actualNewsSelected, setActualNewsSelected ] = useState<Noticia|undefined>(newsFoundById);
 
   useEffect(() => {

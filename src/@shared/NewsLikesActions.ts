@@ -34,8 +34,8 @@ export function NewsLikesActions ({
      * @author Lucas Cid
      */
     const toggleDislike = useCallback((plus : boolean) => {
-        queryClient.setQueryData(["news"], (prev : { news : Noticia[] }) => ({
-            news : prev.news.map((prevNews) => {
+        queryClient.setQueryData(["news"], (prev : Noticia[]) => (
+            prev.map((prevNews) => {
                 if (prevNews.id_noticia == news.id_noticia)
                 {
                     return {
@@ -45,7 +45,7 @@ export function NewsLikesActions ({
                 }
                 return prevNews;
             })
-        }));
+        ));
     }, [ queryClient, news ]);
 
     const unDislikeFromStorageAndDatabase = useCallback(async (storageDislikes : Like[]) => {
@@ -98,8 +98,8 @@ export function NewsLikesActions ({
      * @author Lucas Cid
      */
     const toggleLike = useCallback((plus : boolean) => {
-        queryClient.setQueryData(["news"], (prev : { news : Noticia[] }) => ({
-            news : prev.news.map((prevNews) => {
+        queryClient.setQueryData(["news"], (prev : Noticia[]) => (
+            prev.map((prevNews) => {
                 if (prevNews.id_noticia == news.id_noticia)
                 {
                     return {
@@ -109,7 +109,7 @@ export function NewsLikesActions ({
                 }
                 return prevNews;
             })
-        }));
+        ));
     }, [ queryClient, news ]);
 
     const unlikeFromStorageAndDatabase = useCallback(async (storageLikes : Like[]) => {

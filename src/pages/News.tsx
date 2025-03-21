@@ -108,8 +108,8 @@ export const News = () => {
         </div>
         <section className="w-full gap-5  grid-stre grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 mb-5 ">
           {
-            !isLoading && data && data.news.length > 0 ? (
-              data.news.map((news) => (
+            !isLoading && data && data.length > 0 ? (
+              data.map((news) => (
                 <NewsCard
                   key={news.id_noticia}
                   textColor="black"
@@ -119,7 +119,7 @@ export const News = () => {
               ))
             ) : isLoading && (
               Array.from({length : 10}).map((_, idx) => (
-                  <NewsCardSkeleton key={idx} />
+                  <NewsCardSkeleton  key={idx} />
               ))
             )
           }

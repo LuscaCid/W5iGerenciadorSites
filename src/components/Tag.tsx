@@ -13,7 +13,8 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useContextSelector} from "use-context-selector";
 import {toastContext} from "./Toast.tsx";
 import {AxiosError} from "axios";
-interface Props 
+
+interface Props
 {
     tag : TagType;
     selectedTags : TagType[];
@@ -33,9 +34,9 @@ export const Tag = ({ tag, handleSelectTag, selectedTags, canOpen = true, handle
         mutationFn : deleteTag,
         mutationKey: ["delete-tag"],
         onSuccess :(_, variables) => {
-            queryClient.setQueryData(["tag"], (prev : TagType[]) => ({
-                news : prev.filter(tag => tag.id_tag != variables)
-            }))
+            queryClient.setQueryData(["tags"], (prev : TagType[]) => (
+                 prev.filter(tag => tag.id_tag != variables)
+            ))
             openToast("Tag excluída", "success")
         },
         onError : (err : AxiosError) => {
