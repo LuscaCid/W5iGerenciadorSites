@@ -1,13 +1,15 @@
 import {Skeleton} from "@mui/material";
-
-export const NewsCardSkeleton = () => {
+interface Props {
+    width? : number
+}
+export const NewsCardSkeleton = ({ width = 329 } : Props) => {
     return (
-        <div className={"flex flex-col relative rounded-t-2xl  rounded-b-2xl shadow-lg max-h-[380px] w-full h-full max-w-[329px]"}>
+        <div className={`flex flex-col relative rounded-t-2xl  rounded-b-2xl shadow-lg max-h-[380px] w-full h-full max-w-[${width}px]`}>
             <Skeleton
-                className={"rounded-t-2xl bg-zinc-100 border-none"}
+                className={"rounded-t-2xl w-full bg-zinc-100 border-none"}
                 variant="rectangular"
                 animation={"pulse"}
-                width={330} height={185}
+                 height={185}
             />
             <Skeleton
                 animation={"wave"}

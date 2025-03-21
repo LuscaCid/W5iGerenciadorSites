@@ -2,6 +2,7 @@ import { NewsCarousel } from "../components/NewsCaroussel"
 import { NewsSection } from "../components/NewsSection";
 import {useQuery} from "@tanstack/react-query";
 import {useNews} from "../hooks/useNews.ts";
+import {HomeSkeleton} from "../components/HomeSkeleton.tsx";
 
 export const Home = () => {
   const { getNews } = useNews();
@@ -14,20 +15,18 @@ export const Home = () => {
     <div className="flex flex-col gap-5 pb-5">
         {
             isLoading && (
-                <div>
-                    Carregando...
-                </div>
+                <HomeSkeleton />
             )
         }
-        {!isLoading && data && data.news && (
+        {!isLoading && data && data.length > 0 && (
             <>
-                <NewsCarousel news={data.news}/>
+                <NewsCarousel news={data}/>
                 <h1
                     className={"text-lg font-semibold "}
                 >
                     Mais noticias
                 </h1>
-                <NewsSection news={data.news} />
+                <NewsSection news={data} />
             </>
         )}
 
