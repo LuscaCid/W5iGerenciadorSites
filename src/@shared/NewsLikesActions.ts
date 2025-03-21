@@ -27,7 +27,6 @@ export function NewsLikesActions ({
     dislikeAsync,
 } : Props )
 {
-
     /**
      * @summary vai aumentar o numero de dislikes na notícia dentro do contexto em caso de não ter dado o like ainda
      * @param boolean plus, a depender da ação vai diminui um ou aumentar um like

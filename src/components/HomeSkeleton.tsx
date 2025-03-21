@@ -25,6 +25,7 @@ export const HomeSkeleton = () => {
                     }
                 </aside>
             </header>
+            <Skeleton variant={"text"} className={"lg:w-1/4 w-full"}/>
             <main className={"grid grid-cols-1 md:grid-cols-3 gap-4 w-2/2"}>
                 {Array.from({length : 6}).map((_, i) => (
                     <NewsCardSkeleton width={400} key={i} />
