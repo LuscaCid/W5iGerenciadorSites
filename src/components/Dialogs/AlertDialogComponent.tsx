@@ -1,6 +1,6 @@
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
-import "../utils/animations.css"
-import { Button } from "../UI/Button";
+import "../../utils/animations.css"
+import { Button } from "../../UI/Button.tsx";
 import React from "react";
 import { Trash } from "lucide-react";
 interface IAlertDialogProps

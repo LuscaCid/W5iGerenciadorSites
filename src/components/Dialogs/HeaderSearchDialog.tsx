@@ -1,8 +1,8 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import {Dispatch, SetStateAction, useCallback, useEffect} from "react";
-import { TextButton } from "../UI/TextButton";
+import { TextButton } from "../../UI/TextButton.tsx";
 import { Search, X } from "lucide-react";
-import {useNewsTagsContext} from "../store/newsTags.ts";
+import {useNewsTagsContext} from "../../store/newsTags.ts";
 import {useQueryClient} from "@tanstack/react-query";
 
 interface Props {

@@ -3,9 +3,9 @@ import * as Dropdown from "@radix-ui/react-dropdown-menu";
 import { MouseEvent } from "react";
 interface CustomDropdownItemProps 
 {
-    onClick : (e : MouseEvent) => void;
-    title : string;    
+    title : string;
     icon : LucideIcon;
+    onClick? : (e : MouseEvent) => void;
 }
 export const CustomDropdownItem = ({ onClick, title, icon : Icon } : CustomDropdownItemProps) => {
     return (

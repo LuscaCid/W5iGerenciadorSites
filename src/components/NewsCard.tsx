@@ -9,7 +9,7 @@ import * as AlertDialog  from "@radix-ui/react-alert-dialog";
 import {useCallback} from "react";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useNews} from "../hooks/useNews.ts";
-import {AlertDialogComponent} from "./AlertDialogComponent.tsx";
+import {AlertDialogComponent} from "./Dialogs/AlertDialogComponent.tsx";
 import {useContextSelector} from "use-context-selector";
 import {toastContext} from "./Toast.tsx";
 import {Tag} from "../@types/Tag";

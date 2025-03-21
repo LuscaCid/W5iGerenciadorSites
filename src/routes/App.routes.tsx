@@ -6,6 +6,7 @@ import { News } from "../pages/News";
 import { NewsDetail } from "../pages/NewsDetail";
 import { Government } from "../pages/Governo";
 import { Municipio } from "../pages/Municipio";
+import {NotFound} from "../pages/404.tsx";
 
 export function AppRoutes () 
 {
@@ -19,6 +20,7 @@ export function AppRoutes ()
                 <Route element={<NewsDetail />} path="/noticia/:id" />
                 <Route element={<NewsDetail />} path="/noticia/" />
                 <Route element={<AdminLogin />} path="/login" />
+                <Route element={<NotFound/> } path="*"/>
             </Route>
         </Routes>
     );

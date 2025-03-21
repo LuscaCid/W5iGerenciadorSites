@@ -10,7 +10,7 @@ import {useNews} from "../hooks/useNews.ts";
 import {useMutation} from "@tanstack/react-query";
 import {ImageSlotFc} from "./ImageSlot.tsx";
 import * as Dialog from "@radix-ui/react-dialog";
-import {TagSearchDialog} from "./TagSearch.tsx";
+import {TagSearchDialog} from "./Dialogs/TagSearch.tsx";
 import {Tag} from "../@types/Tag";
 import { getTagsActions } from '../@shared/TagsActions.ts';
 import {useContextSelector} from "use-context-selector";
@@ -280,10 +280,10 @@ export const NewsDetailAdmin = ({ news } : Props) => {
             <Button
                 disabled={isPending}
                 isLoading={isPending}
-                type="button"
+                type="submit"
                 onClick={handleSubmit}
                 title="Salvar"
-                className="flex-row-reverse w-fit self-end bg-green-500 text-zinc-100 hover:bg-green-600"
+                className="self-end"
                 icon={Check}
             />
         </form>

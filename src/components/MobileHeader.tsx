@@ -3,16 +3,21 @@ import { Logo } from "./Logo";
 import { TextButton } from "../UI/TextButton";
 import { useState } from "react";
 import { IconButton } from "@mui/material";
-import { HeaderSearchDialog } from "./HeaderSearchDialog";
+import { HeaderSearchDialog } from "./Dialogs/HeaderSearchDialog.tsx";
 import { HeaderLink } from "./HeaderLink";
 import { UserDropdown } from "./UserDropdown";
 import { useUserContext } from "../store/user";
+import {Link} from "../@types/Link";
+import {useQueryClient} from "@tanstack/react-query";
 
 export function MobileHeader ()
 {
     const [ isOpenSidebar, setIsOpenSidebar ] = useState(false);
     const [ isSearchWindowOpen, setIsSearchWindowOpen ] = useState(false);
     const user = useUserContext((state) => state.user);
+
+    const queryClient = useQueryClient();
+    const links = queryClient.getQueryData(['links']) as Link[] ?? [];
 
     const handleOpenSideBar = () => {
         setIsOpenSidebar(!isOpenSidebar);
@@ -61,6 +66,11 @@ export function MobileHeader ()
                     to="/" 
                     className="bg-slate-200 py-3 w-full text-black hover:bg-slate-300"
                 />
+                {
+                    links && links.length > 0 && (
+                       <> a </>
+                    )
+                }
                 <HeaderSearchDialog 
                     isMobile
                     isSearchWindowOpen={isSearchWindowOpen}

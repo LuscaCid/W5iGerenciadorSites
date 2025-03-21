@@ -1,10 +1,11 @@
 import { Logo } from "./Logo";
 import { useEffect, useState } from "react";
-import { HeaderSearchDialog } from "./HeaderSearchDialog";
+import { HeaderSearchDialog } from "./Dialogs/HeaderSearchDialog.tsx";
 import { MenuDropdown } from "./MenuDropdown";
 import { HeaderLink } from "./HeaderLink";
 import { useUserContext } from "../store/user";
 import { UserDropdown } from "./UserDropdown";
+import {Link} from "../@types/Link";
 
 /**
  * @summary Header para desktop sizes
@@ -12,20 +13,23 @@ import { UserDropdown } from "./UserDropdown";
  * @created 06/03/2025
  * @returns 
  */
-export function Header ( ) 
+interface Props {
+    links : Link[]
+}
+export function Header ({ links } : Props)
 {
     const user = useUserContext((state) => state.user);
     const [ isSearchWindowOpen, setIsSearchWindowOpen ] = useState(false);
     const [ isMenuDropdownOpen, setIsMenuDropdownOpen ] = useState(false);
     useEffect(() => {
-        function listnerCB (e : KeyboardEvent) {
+        function listenerCB (e : KeyboardEvent) {
             if (e.key === 'Escape' && isSearchWindowOpen) {
                 setIsSearchWindowOpen(false);
             }
         }
-        window.addEventListener('keydown',listnerCB);
+        window.addEventListener('keydown',listenerCB);
         
-        return () => window.removeEventListener("keydown", listnerCB);
+        return () => window.removeEventListener("keydown", listenerCB);
     }, [isSearchWindowOpen])
     const handleCloseDialog = () => {
         setIsSearchWindowOpen(false);
@@ -63,13 +67,13 @@ export function Header ( )
                     isSearchWindowOpen={isSearchWindowOpen}
                     setIsSearchWindowOpen={setIsSearchWindowOpen}
                 />
-                <MenuDropdown 
+                <MenuDropdown
                     isMenuDropdownOpen={isMenuDropdownOpen}
                     setIsMenuDropdownOpen={setIsMenuDropdownOpen}
                 />
             </ul>
             {
-                user && <UserDropdown />
+                user && <UserDropdown/>
             }
         </header>
     );

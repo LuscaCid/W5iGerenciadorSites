@@ -1,17 +1,17 @@
 import z from "zod";
 import {FormProvider, useForm} from "react-hook-form";
 import {Dispatch, SetStateAction, useCallback, useEffect, useRef} from "react";
-import {useTags} from "../hooks/useTags.ts";
+import {useTags} from "../../hooks/useTags.ts";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {HookFormInput} from "../UI/FormInput.tsx";
+import {HookFormInput} from "../../UI/FormInput.tsx";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {Send, Tag, Ban} from "lucide-react";
-import {Button} from "../UI/Button.tsx";
-import {useSiteContext} from "../store/site.ts";
-import { Tag as TagType } from "../@types/Tag"
-import {toastContext} from "./Toast.tsx";
+import {Button} from "../../UI/Button.tsx";
+import {useSiteContext} from "../../store/site.ts";
+import { Tag as TagType } from "../../@types/Tag"
+import {toastContext} from "../Toast.tsx";
 import {useContextSelector} from "use-context-selector";
-import {updateTagsStateActions} from "../@shared/updateTagsStateActions.ts";
+import {updateTagsStateActions} from "../../@shared/updateTagsStateActions.ts";
 
 interface Props {
     tag? : TagType;
@@ -91,7 +91,7 @@ export const FormCreateTag = ({ tag, setTagToEdit } : Props) => {
                 <footer className={"self-end flex items-center gap-2 absolute bottom-2 right-2 flex-row-reverse"}>
                     <Button
                         form={"form_create_tag"}
-                        className={"p-2 px-3 rounded-lg hover:bg-green-600 bg-green-500 flex items-center flex-row-reverse "}
+                        className={"p-2 px-3 rounded-lg flex items-center  "}
                         type={'submit'}
                         isLoading={isPending}
                         disabled={isPending}
@@ -99,7 +99,7 @@ export const FormCreateTag = ({ tag, setTagToEdit } : Props) => {
                         title={tag ? "Editar" : "Cadastrar"}
                     />
                     <Button
-                        className={` p-2 px-3 bg-blue-500 hover:bg-blue-600 ${tag ? "" : "hidden"} flex-row-reverse`}
+                        className={` p-2 px-3 bg-blue-500 hover:bg-blue-600 ${tag ? "" : "hidden"}`}
                         icon={Ban}
                         title={"Cancelar"}
                         description={"Cancelar edição"}

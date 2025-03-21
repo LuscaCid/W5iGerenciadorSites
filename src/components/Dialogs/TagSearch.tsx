@@ -1,15 +1,15 @@
 import {DialogTitle} from "@radix-ui/react-dialog";
 import {Dispatch, SetStateAction, useCallback, useEffect, useState} from "react";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {useTags} from "../hooks/useTags.ts";
-import {Button} from "../UI/Button.tsx";
+import {useTags} from "../../hooks/useTags.ts";
+import {Button} from "../../UI/Button.tsx";
 import {Search} from "lucide-react";
-import {Tag} from "../@types/Tag";
-import {getTagsActions} from "../@shared/TagsActions.ts";
-import {Tag as TagComponent} from "./Tag.tsx";
+import {Tag} from "../../@types/Tag";
+import {getTagsActions} from "../../@shared/TagsActions.ts";
+import {Tag as TagComponent} from "../Tag.tsx";
 import {FormCreateTag} from "./FormCreateTag.tsx";
-import { Input } from '../UI/Input.tsx';
-import {CustomDialogContent} from "./CustomDialogContent.tsx";
+import { Input } from '../../UI/Input.tsx';
+import {CustomDialogContent} from "../CustomDialogContent.tsx";
 
 interface Props {
     selectedTags : Array<Tag>;
@@ -59,7 +59,7 @@ export const TagSearchDialog = ({ setSelectedTags, selectedTags, setDialogOpen }
     return (
         <CustomDialogContent>
             <main className={"w-full h-2/3 lg:h-full lg:w-2/3 relative p-4  "}>
-                <DialogTitle className={"text-2xl sr-only"}>
+                <DialogTitle className={"sr-only"}>
                     Procurar Tags
                 </DialogTitle>
 
