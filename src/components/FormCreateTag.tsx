@@ -11,11 +11,12 @@ import {useSiteContext} from "../store/site.ts";
 import { Tag as TagType } from "../@types/Tag"
 import {toastContext} from "./Toast.tsx";
 import {useContextSelector} from "use-context-selector";
+import {updateTagsStateActions} from "../@shared/updateTagsStateActions.ts";
+
 interface Props {
     tag? : TagType;
     setTagToEdit? : Dispatch<SetStateAction<TagType|undefined>>
 }
-
 const formSchema = z.object({
     nm_slug : z.string().min(2, "Tag muito curta").max(30, "Tag muito grande"),
 })
@@ -24,14 +25,17 @@ export const FormCreateTag = ({ tag, setTagToEdit } : Props) => {
     const openToast = useContextSelector(toastContext, (context) => context.open);
     const queryClient = useQueryClient();
     const site = useSiteContext(state => state.site);
+    const formRef = useRef<HTMLFormElement|null>(null);
+    const { addTag } = useTags();
+    const { updateTagsState, updateTagsInNewsState } = updateTagsStateActions({ queryClient });
+
+
     const methods = useForm<FormSearchType>({
         resolver : zodResolver(formSchema),
         defaultValues : {
             nm_slug : tag ? tag.nm_slug : "",
         }
     });
-    const formRef = useRef<HTMLFormElement|null>(null);
-    const { addTag } = useTags();
 
     const { mutateAsync : addTagAsync, isPending } = useMutation({
         mutationFn : addTag,
@@ -39,15 +43,9 @@ export const FormCreateTag = ({ tag, setTagToEdit } : Props) => {
         onSuccess : async (data, variables) => {
             if (tag)
             {
-                queryClient.setQueryData(["tags"], (prev : TagType[]) => prev.map(prevTag => {
-                    if (prevTag.id_tag == tag.id_tag) {
-                        return {
-                            ...tag,
-                            nm_slug : variables.nm_slug,
-                        } as TagType;
-                    }
-                    return prevTag;
-                }));
+                updateTagsState(tag, variables);
+                updateTagsInNewsState(tag, variables);
+
                 openToast("Tag salva", "success");
                 return;
             }
