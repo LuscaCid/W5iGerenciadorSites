@@ -4,8 +4,6 @@ import { ChevronRight } from "lucide-react";
 import { MobileHeader } from "../components/MobileHeader";
 import BackToTop from "../components/BackToTop";
 import { useEffect } from "react";
-import {useQuery} from "@tanstack/react-query";
-import {useLinks} from "../hooks/useLinks.ts";
 
 export const locationDictionary : Record<string, string>= {
     '' : 'Página inicial',
@@ -23,20 +21,17 @@ export const locationDictionary : Record<string, string>= {
  */
 export function Main () 
 {
+
     const path = useLocation();
     const pathDictionary= path.pathname.split('/')[1];
-    const { getLinks } = useLinks();
-    const { data : links } = useQuery({
-        queryFn : async () => await getLinks() ,
-        queryKey : ["links"]
-    })
+
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
     }, [path])
     return (
         <section className="h-screen flex flex-col justify-between  ">
-            <Header links={links} />
-            <MobileHeader links={links}/>
+            <Header />
+            <MobileHeader />
             <main className="absolute  top-17 flex flex-col justify-between  md:top-23 bottom-48 h-screen right-0 left-0 ">
 
                 <section className="px-2 md:px-40 2xl:px-56">

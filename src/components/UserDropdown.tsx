@@ -8,14 +8,10 @@ import {UserAvatar} from "./UserAvatar.tsx";
 import {StorageKeys} from "../constants/StorageKeys.ts";
 import * as Dialog from "@radix-ui/react-dialog";
 import {LinksDialog} from "./Dialogs/LinksDialog.tsx";
-import {Link} from "../@types/Link";
-import {useQueryClient} from "@tanstack/react-query";
 
 export const UserDropdown = () => {
     const { user, setUser } = useUserContext();
     const navigate = useNavigate();
-    const queryClient = useQueryClient();
-    const links = queryClient.getQueryData(['links']) as Link[] ?? [];
 
     const handleLogout = () => {
         setUser(undefined);
@@ -52,7 +48,7 @@ export const UserDropdown = () => {
                     </Dialog.Trigger>
                     <Dialog.Portal>
                         <Dialog.Overlay className={"z-50 fixed inset-0 w-screen bg-zinc-900/30 backdrop-blur-md"}/>
-                        <LinksDialog links={links}/>
+                        <LinksDialog/>
                     </Dialog.Portal>
                 </Dialog.Root>
             </Dropdown.Content>

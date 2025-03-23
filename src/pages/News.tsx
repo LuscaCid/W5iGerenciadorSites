@@ -181,7 +181,7 @@ export const News = () => {
          tags && tags.length > 0 &&  (
             tags.map((tag) => (
               <TagComponent
-                key={tag.id_tag}
+                key={tag.id_tag + tag.nm_slug}
                 selectedTags={selectedTags}
                 tag={tag}
                 handleSelectTag={handleSelectTag}
