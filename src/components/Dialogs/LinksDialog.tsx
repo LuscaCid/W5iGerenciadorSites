@@ -23,9 +23,7 @@ import {HookFormInput} from "../../UI/FormInput.tsx";
 import {Switch} from "../Switch.tsx";
 import {Button} from "../../UI/Button.tsx";
 import {useSiteContext} from "../../store/site.ts";
-interface Props {
-    links : Link[];
-}
+
 const formSchema = z.object({
     nm_link : z.string().min(3, "É necessário informar como o link será apresentado"),
     url_link : z.string().min(5, "É necessário preencher a url"),
@@ -34,10 +32,13 @@ const formSchema = z.object({
 
 type FormSchemaType = z.infer<typeof formSchema>
 
-export const LinksDialog = ({ links } : Props) => {
+export const LinksDialog = () => {
 
     const [ linkToEdit, setLinkToEdit ] = useState<Link|undefined>(undefined);
     const queryClient = useQueryClient();
+
+    const links = queryClient.getQueryData(['links']) as Link[] ?? [];
+
     const openToast = useContextSelector(toastContext, (c) => c.open);
     const { addLink, deleteLink } = useLinks();
     const site = useSiteContext((state) => state.site);
@@ -76,12 +77,11 @@ export const LinksDialog = ({ links } : Props) => {
 
     const handleDeleteLink = useCallback(async(link : Link) => {
         await deleteLinkAsync(link.id_link)
-    }, [])
+    }, [deleteLinkAsync])
 
     const handleSubmit = useCallback(async (data : FormSchemaType) => {
-        console.log(data);
         await saveLinkAsync({...data, id_site : site!.id_site} as unknown as Link);
-    }, [])
+    }, [saveLinkAsync])
 
     useEffect(() => {
         if (linkToEdit)

@@ -42,9 +42,9 @@ export function NewsCard (
         mutationFn : deleteNews,
         mutationKey: ["delete-news"],
         onSuccess :(_, variables) => {
-            queryClient.setQueryData(["news"], (prev : { news : Noticia[] }) => ({
-                news : prev.news.filter(news => news.id_noticia != variables)
-            }))
+            queryClient.setQueryData(["news"], (prev : Noticia[]) => (
+                prev.filter(news => news.id_noticia != variables)
+            ))
             openToast("Notícia excluída")
         },
     })

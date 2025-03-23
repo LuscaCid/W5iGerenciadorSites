@@ -10,8 +10,8 @@ export const updateTagsStateActions = ({ queryClient } : Props) => {
 
     function updateTagsInNewsState (tag : Tag, variables: CreateTagDto)
     {
-        queryClient.setQueryData(["news"], (prev : { news : Noticia[]}) => (
-            prev.news.map((newsPrev) => ({
+        queryClient.setQueryData(["news"], (prev : Noticia[]) => (
+            prev.map((newsPrev) => ({
                 ...newsPrev,
                 tags : newsPrev.tags ? newsPrev.tags.map(prevTag => {
                     if (prevTag.id_tag == tag.id_tag)
