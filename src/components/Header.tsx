@@ -5,7 +5,6 @@ import { MenuDropdown } from "./MenuDropdown";
 import { HeaderLink } from "./HeaderLink";
 import { useUserContext } from "../store/user";
 import { UserDropdown } from "./UserDropdown";
-import {Link} from "../@types/Link";
 
 /**
  * @summary Header para desktop sizes
@@ -13,11 +12,9 @@ import {Link} from "../@types/Link";
  * @created 06/03/2025
  * @returns 
  */
-interface Props {
-    links : Link[]
-}
-export function Header ({ links } : Props)
+export function Header ()
 {
+
     const user = useUserContext((state) => state.user);
     const [ isSearchWindowOpen, setIsSearchWindowOpen ] = useState(false);
     const [ isMenuDropdownOpen, setIsMenuDropdownOpen ] = useState(false);

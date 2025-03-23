@@ -7,17 +7,20 @@ import { HeaderSearchDialog } from "./Dialogs/HeaderSearchDialog.tsx";
 import { HeaderLink } from "./HeaderLink";
 import { UserDropdown } from "./UserDropdown";
 import { useUserContext } from "../store/user";
-import {Link} from "../@types/Link";
-import {useQueryClient} from "@tanstack/react-query";
+import {useQuery} from "@tanstack/react-query";
+import {useLinks} from "../hooks/useLinks.ts";
 
 export function MobileHeader ()
 {
+    const { getLinks } = useLinks();
+    const { data : links } = useQuery({
+        queryFn : async () => await getLinks() ,
+        queryKey : ["links"]
+    })
     const [ isOpenSidebar, setIsOpenSidebar ] = useState(false);
     const [ isSearchWindowOpen, setIsSearchWindowOpen ] = useState(false);
     const user = useUserContext((state) => state.user);
 
-    const queryClient = useQueryClient();
-    const links = queryClient.getQueryData(['links']) as Link[] ?? [];
 
     const handleOpenSideBar = () => {
         setIsOpenSidebar(!isOpenSidebar);
