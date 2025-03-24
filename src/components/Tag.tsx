@@ -84,7 +84,7 @@ export const Tag = ({ tag, handleSelectTag, selectedTags, canOpen = true, handle
                                 </Dialog.Trigger>
                                 <Dialog.Portal >
                                     <Dialog.Overlay className={"z-50 fixed inset-0 w-screen bg-zinc-900/30 backdrop-blur-md"}/>
-                                    <CustomDialogContent className={"w-[90%] h-1/3  lg:h-1/3 lg:w-1/3"}>
+                                    <CustomDialogContent className={"w-[90%] h-1/4  lg:h-[300px] lg:w-1/3"}>
                                         <FormCreateTag tag={tag}/>
                                     </CustomDialogContent>
                                 </Dialog.Portal>

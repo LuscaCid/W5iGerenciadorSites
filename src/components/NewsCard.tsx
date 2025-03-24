@@ -171,7 +171,7 @@ export function NewsCard (
                 </NavLink>
                 {
                     user && (
-                        <section className={`${titleOutside ? "top-3" : "bottom-[50px]"} absolute right-3 flex flex-col gap-1`}>
+                        <section className={`${titleOutside ? "top-3" : "-top-[120px] lg:-top-[50px] lg:bottom-[100px]"} absolute right-3 flex flex-col gap-1`}>
                             <Tooltip
                                 enterDelay={300}
                                 title="Editar notícia"

@@ -34,7 +34,7 @@ export const News = () => {
     queryFn : async () => await getTags(query),
     queryKey : ["tags"]
   })
-  const { data, isLoading } = useQuery({
+  const { data, isPending } = useQuery({
     queryFn : async () => {
       try {
         return await getNews({
@@ -108,7 +108,7 @@ export const News = () => {
         </div>
         <section className="w-full gap-5  grid-stre grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 mb-5 ">
           {
-            !isLoading && data && data.length > 0 ? (
+            !isPending && data && data.length > 0 ? (
               data.map((news) => (
                 <NewsCard
                   key={news.id_noticia}
@@ -117,11 +117,18 @@ export const News = () => {
                   titleOutside
                 />
               ))
-            ) : isLoading && (
+            ) : isPending && (
               Array.from({length : 10}).map((_, idx) => (
                   <NewsCardSkeleton  key={idx} />
               ))
             )
+          }
+          {
+            !isPending && data && data.length == 0 && (
+                <span className={"text-zinc-400 lg:text-2xl"}>
+                  Nenhuma notícia encontrada
+                </span>
+              )
           }
           {
             user && (
@@ -145,7 +152,7 @@ export const News = () => {
         </footer>
       </main>
       {/* tags */}
-      <aside className="flex flex-wrap  p-2 rounded-lg  gap-5 w-full md:w-1/4 md:sticky top-24 z-40">
+      <aside className="flex flex-wrap  p-2 rounded-lg mb-10 lg:mb-0 gap-5 w-full md:w-1/4 lg:sticky lg:top-24 lg:z-40">
         <header className="flex w-full justify-between flex-col  lg:items-start">
           <h2
             className="border-b text-2xl font-bold border-zinc-200/80 w-fit text-nowrap pb-1"
@@ -153,6 +160,13 @@ export const News = () => {
             Tags mais relevantes 
           </h2>
           <div className={"flex gap-2 items-center h-fit w-full"}>
+            <header className={"flex items-center gap-2 w-full"}>
+              <Button
+                icon={EllipsisVertical}
+                onClick={toggleTagsVisibility}
+                iconSize={15}
+                className="md:hidden rounded-full p-0 items-center justify-center shadow-lg h-10 w-10"
+              />
             <Input
               onChange={(e) => setQuery(e.target.value)}
               value={query}
@@ -160,6 +174,7 @@ export const News = () => {
               className={"w-full"}
               placeholder={"Pesquisar por tags"}
             />
+            </header>
             <Button
               onClick={() => {
                 setSelectedTags([]);
@@ -171,15 +186,10 @@ export const News = () => {
             />
           </div>
 
-          <Button 
-            icon={EllipsisVertical}
-            onClick={toggleTagsVisibility}
-            iconSize={15}
-            className="md:hidden rounded-full p-2 items-center justify-center shadow-lg h-10 w-10"
-          />
+
         </header>
 
-        <nav className={`${tagsVisible ? "flex  md:hidden" : "hidden"} w-full  md:flex flex-wrap gap-4  max-h-[700px] pb-4 overflow-y-auto no-scrollbar hover:scrollbar-view`}>
+        <nav className={`${tagsVisible ? "flex  md:hidden" : "hidden"} w-full  md:flex flex-wrap gap-4  max-h-[400px]  lg:max-h-[700px] pb-4  overflow-y-auto no-scrollbar hover:scrollbar-view`}>
         {
          tags && tags.length > 0 &&  (
             tags.map((tag) => (
@@ -192,7 +202,6 @@ export const News = () => {
             ))
           )
         }
-
         </nav>
       </aside>
     </section>

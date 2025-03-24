@@ -57,7 +57,7 @@ export const TagSearchDialog = ({ setSelectedTags, selectedTags, setDialogOpen }
         setDialogOpen(false);
     }, [setDialogOpen]);
     return (
-        <CustomDialogContent>
+        <CustomDialogContent className={"h-[95%] w-[95%] lg:h-[45%] lg:w-[65%]"}>
             <main className={"w-full h-2/3 lg:h-full lg:w-2/3 relative p-4  "}>
                 <DialogTitle className={"sr-only"}>
                     Procurar Tags
@@ -80,9 +80,9 @@ export const TagSearchDialog = ({ setSelectedTags, selectedTags, setDialogOpen }
                     isLoading={isLoading}
                     icon={Search}
                     title={selectedTags.length > 0 ? "Enviar" : "Selecione uma tag"}
-                    className={"p-2 px-3 rounded-lg hover:bg-green-600 bg-green-500 flex items-center flex-row-reverse self-end absolute bottom-2 right-2"}
+                    className={"p-2 px-3 rounded-lg text-zinc-100 hover:bg-green-600 bg-green-500 flex items-center self-end absolute bottom-2 right-2"}
                 />
-                <footer className={"flex flex-wrap gap-2 mt-3  max-h-[350px]  "}>
+                <footer className={"flex flex-wrap gap-2 mt-3 mb-10 overflow-auto max-h-[400px] lg:max-h-[350px]  "}>
                     {
                         tags && tags.length > 0 && (
                             tags.map((tag : Tag) => (

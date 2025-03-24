@@ -36,7 +36,7 @@ export const MenuDropdown = ({ isMenuDropdownOpen, setIsMenuDropdownOpen, isMobi
             onOpenChange={setIsMenuDropdownOpen}
         >
             <Dropdown.Trigger 
-                className={`${isMobile ? "bg-zinc-100 w-full items-center justify-center" : ""} hover:bg-blue-200 transition duration-150 py-9 px-10`}
+                className={`${isMobile ? "bg-zinc-100 w-full items-center py-1 px-2 justify-center" : "py-9 px-10"} hover:bg-blue-200 transition duration-150  `}
             >
                 <Menu />
             </Dropdown.Trigger>
