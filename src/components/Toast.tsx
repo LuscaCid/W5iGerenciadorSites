@@ -47,7 +47,7 @@ export function Toast({ children } : Props)
         },
     });
 
-    const patternStyle = ` w-80 opacity-0 fixed z-[100] top-5 max-h-[200px] overflow-auto right-2 border rounded-md backdrop-blur-sm p-2 flex flex-col transition duration-500  ${contextProps.isOpen ? " translate-y-2 opacity-100 " : "-translate-y-24 opacity-0"} `;
+    const patternStyle = ` w-80 opacity-0 fixed z-[10000] top-5 max-h-[200px] overflow-auto right-5 border rounded-md backdrop-blur-sm p-2 flex flex-col transition duration-500  ${contextProps.isOpen ? " translate-y-2 opacity-100 " : "-translate-y-24 opacity-0"} `;
 
     const icons  : Record<ToastVariants, JSX.Element > = {
         warning : <OctagonAlert className="text-yellow-700" />,

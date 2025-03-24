@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const CustomDialogContent = ({ children, className } : Props) => (
-    <Dialog.Content className={twMerge(["on-open-modal fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 m-auto rounded-2xl border flex flex-col lg:flex-row gap-2 w-[95%] h-[95%] lg:w-[60%] lg:h-[50%]    z-[100] border-zinc-200 bg-zinc-100 "], [className]) }>
+    <Dialog.Content className={twMerge(["on-open-modal fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 m-auto rounded-2xl border flex flex-col lg:flex-row gap-2 w-[95%] h-[85%] lg:w-[60%] 2xl:h-[50%]  z-[100] border-zinc-200 bg-zinc-100 "], [className]) }>
         <Dialog.Close
             asChild
         >

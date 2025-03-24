@@ -29,7 +29,6 @@ export const FormCreateTag = ({ tag, setTagToEdit } : Props) => {
     const { addTag } = useTags();
     const { updateTagsState, updateTagsInNewsState } = updateTagsStateActions({ queryClient });
 
-
     const methods = useForm<FormSearchType>({
         resolver : zodResolver(formSchema),
         defaultValues : {
@@ -99,7 +98,7 @@ export const FormCreateTag = ({ tag, setTagToEdit } : Props) => {
                         title={tag ? "Editar" : "Cadastrar"}
                     />
                     <Button
-                        className={` p-2 px-3 bg-blue-500 hover:bg-blue-600 ${tag ? "" : "hidden"}`}
+                        className={`text-zinc-100 font-bold p-2 px-3 bg-blue-500 hover:bg-blue-600 ${tag ? "" : "hidden"}`}
                         icon={Ban}
                         title={"Cancelar"}
                         description={"Cancelar edição"}

@@ -45,7 +45,7 @@ export function HeaderSearchDialog ({ isSearchWindowOpen, setIsSearchWindowOpen,
         </Dialog.Trigger>
         {/* a busca será realizada com base nas noticias encontradas com aquela informação passada */}
         <Dialog.Portal >
-            <Dialog.Overlay className="z-50 fixed inset-0 w-screen bg-zinc-900/30 backdrop-blur-md"/>
+            <Dialog.Overlay className="z-50 fixed inset-0 transition duration-150 w-screen bg-zinc-900/30 backdrop-blur-md"/>
             <Dialog.Content className="z-[100] fixed w-screen left-0 top-0 right-0 overflow-hidden bg-zinc-900/60 ">
                 <header className="flex items-center bg-zinc-100">
                     <div className="items-center flex px-10 w-full border-b border-zinc-100 ">

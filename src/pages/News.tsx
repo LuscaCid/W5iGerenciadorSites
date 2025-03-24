@@ -93,14 +93,14 @@ export const News = () => {
           {
             user && (
               <Button
-                className=" shadow-lg h-10 w-10 p-2 items-center justify-center bg-green-500 hover:bg-green-600 rounded-full"
+                className=" shadow-lg h-10 w-10 p-2 text-zinc-100 items-center justify-center bg-green-600 hover:bg-green-700 rounded-full"
                 icon={Plus}
                 onClick={() => navigate("/noticia")}
               />
             )
           }
           <Button
-            className=" shadow-lg h-10 w-10 p-2 items-center justify-center bg-blue-500 hover:bg-blue-600 rounded-full"
+            className=" shadow-lg h-10 w-10 p-2 text-zinc-100 items-center justify-center bg-blue-500 hover:bg-blue-600 rounded-full"
             icon={SlidersHorizontal}
             onClick={handleClearFilters}
             description={"Limpar todos os filtros"}
@@ -152,21 +152,24 @@ export const News = () => {
           >
             Tags mais relevantes 
           </h2>
-          <fieldset className={"flex gap-2 items-center w-full"}>
+          <div className={"flex gap-2 items-center h-fit w-full"}>
             <Input
-                onChange={(e) => setQuery(e.target.value)}
-                value={query}
-                id={"search"}
-                className={"w-full"}
-                placeholder={"Pesquisar por tags"}
+              onChange={(e) => setQuery(e.target.value)}
+              value={query}
+              id={"search"}
+              className={"w-full"}
+              placeholder={"Pesquisar por tags"}
             />
             <Button
-                onClick={() => setSelectedTags([])}
-                description={"Limpar tags"}
-                icon={X}
-                className={" p-[11px] text-sm"}
+              onClick={() => {
+                setSelectedTags([]);
+                setQuery("");
+              }}
+              description={"Limpar tags"}
+              icon={X}
+              className={"text-sm p-auto  bg-red-400 p-1 hover:bg-red-500"}
             />
-          </fieldset>
+          </div>
 
           <Button 
             icon={EllipsisVertical}
