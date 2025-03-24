@@ -4,6 +4,7 @@ import { TextButton } from "../../UI/TextButton.tsx";
 import { Search, X } from "lucide-react";
 import {useNewsTagsContext} from "../../store/newsTags.ts";
 import {useQueryClient} from "@tanstack/react-query";
+import {useNavigate} from "react-router-dom";
 
 interface Props {
     setIsSearchWindowOpen : Dispatch<SetStateAction<boolean>>;
@@ -12,11 +13,13 @@ interface Props {
 }
 export function HeaderSearchDialog ({ isSearchWindowOpen, setIsSearchWindowOpen, isMobile } : Props) 
 {
-    const setTitle = useNewsTagsContext((state) => state.setTitle)
+    const setTitle = useNewsTagsContext((state) => state.setTitle);
+    const navigate = useNavigate();
     const queryClient = useQueryClient();
 
     const handleSearch = useCallback( async () => {
         await queryClient.invalidateQueries({queryKey : ['news']});
+        navigate("/noticias");
         setIsSearchWindowOpen(false)
 
     }, [queryClient, setIsSearchWindowOpen]);

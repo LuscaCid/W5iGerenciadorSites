@@ -125,8 +125,8 @@ export const News = () => {
           }
           {
             !isPending && data && data.length == 0 && (
-                <span className={"text-zinc-400 lg:text-2xl"}>
-                  Nenhuma notícia encontrada
+                <span className={"text-zinc-400 lg:text-2xl text-nowrap"}>
+                  Nenhum resultado encontrado.
                 </span>
               )
           }
