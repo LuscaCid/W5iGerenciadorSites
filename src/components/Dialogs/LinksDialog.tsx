@@ -12,7 +12,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import {IconButton, TableFooter, Tooltip} from "@mui/material";
-import {Check, Pencil, Trash} from "lucide-react";
+import {Ban, Check, Pencil, Trash} from "lucide-react";
 import {Link as LinkNav} from "react-router-dom";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useLinks} from "../../hooks/useLinks.ts";
@@ -27,7 +27,7 @@ import {useSiteContext} from "../../store/site.ts";
 const formSchema = z.object({
     nm_link : z.string().min(3, "É necessário informar como o link será apresentado"),
     url_link : z.string().min(5, "É necessário preencher a url"),
-    fl_transparencia : z.boolean()
+    fl_transparencia : z.boolean().optional(),
 });
 
 type FormSchemaType = z.infer<typeof formSchema>
@@ -43,6 +43,8 @@ export const LinksDialog = () => {
     const { addLink, deleteLink } = useLinks();
     const site = useSiteContext((state) => state.site);
     const methods = useForm<FormSchemaType>({ resolver : zodResolver(formSchema) });
+    const [ transparencyLink, setTransparencyLink ] = useState<Link|undefined>(undefined);
+    const fl_transparenciaWatched = methods.watch("fl_transparencia");
 
     const { mutateAsync : deleteLinkAsync } = useMutation({
         mutationFn : deleteLink,
@@ -63,7 +65,10 @@ export const LinksDialog = () => {
         mutationKey : ["save-link"],
         onSuccess : async () => {
             openToast("Link criado com sucesso", "success");
+            methods.reset()
+            methods.setValue("fl_transparencia", false);
             await queryClient.invalidateQueries({queryKey : ["links"]})
+
         },
         onError: (err : unknown) => {
             if (err instanceof AxiosError && err.response)
@@ -72,16 +77,29 @@ export const LinksDialog = () => {
     })
 
     const handleEditLink = useCallback((link : Link) => {
+        console.log(link);
         setLinkToEdit(link)
     }, [setLinkToEdit]);
 
     const handleDeleteLink = useCallback(async(link : Link) => {
-        await deleteLinkAsync(link.id_link)
-    }, [deleteLinkAsync])
+        if (isNotTransparencyLinkAnymore(link)) setTransparencyLink(undefined);
 
+        await deleteLinkAsync(link.id_link)
+    }, [deleteLinkAsync, setTransparencyLink])
+
+    const isNotTransparencyLinkAnymore = (data : FormSchemaType|Link) => {
+        return linkToEdit && linkToEdit.fl_transparencia && !data.fl_transparencia;
+    }
     const handleSubmit = useCallback(async (data : FormSchemaType) => {
-        await saveLinkAsync({...data, id_site : site!.id_site} as unknown as Link);
-    }, [saveLinkAsync])
+        if (isNotTransparencyLinkAnymore(data)) setTransparencyLink(undefined);
+        await saveLinkAsync({
+            ...data,
+            id_site : site!.id_site,
+            fl_transparencia : data.fl_transparencia,
+            id_link : linkToEdit ? linkToEdit.id_link : undefined
+        } as unknown as Link);
+        setLinkToEdit(undefined);
+    }, [ saveLinkAsync, linkToEdit ])
 
     useEffect(() => {
         if (linkToEdit)
@@ -95,13 +113,21 @@ export const LinksDialog = () => {
         methods.setValue("nm_link", "");
         methods.setValue("url_link", "");
         methods.setValue("fl_transparencia", false);
-    }, [linkToEdit]);
+    }, [linkToEdit, methods.setValue]);
+
+    useEffect(() => {
+        if (links)
+        {
+            const transparencyLink = links.find((link) => link.fl_transparencia)
+            transparencyLink && setTransparencyLink(transparencyLink);
+        }
+    }, [ links, setTransparencyLink, queryClient, handleDeleteLink ]);
     return (
         <CustomDialogContent>
-            <main className={"w-full p-4 .on-open-modal flex flex-col lg:flex-row gap-5 "}>
+            <main className={"overflow-y-auto w-full p-4 .on-open-modal flex flex-col lg:flex-row gap-5 "}>
                 <FormProvider {...methods}>
                     <form
-                        className={"flex flex-col gap-2 w-full lg:w-1/2 "}
+                        className={"flex flex-col gap-3 h-2/3 w-full lg:h-full min-h-[340px] lg:w-1/3 relative "}
                         onSubmit={methods.handleSubmit(handleSubmit)}
                     >
                         <DialogTitle className={"sr-only"}>
@@ -123,33 +149,53 @@ export const LinksDialog = () => {
                         <Switch<keyof FormSchemaType>
                             label={"Link para transparência?"}
                             name={"fl_transparencia"}
+                            render={linkToEdit && linkToEdit.fl_transparencia || !transparencyLink}
+                            defaultValue={fl_transparenciaWatched}
                         />
-                        <Button
-                            icon={Check}
-                            className={"self-end "}
-                            type={"submit"}
-                            title={"Salvar"}
-                        />
+
+                        <footer className={"flex items-center gap-2 absolute bottom-3 right-0"}>
+                            <Button
+                                className={`text-zinc-100 font-bold bg-blue-500 hover:bg-blue-600 ${linkToEdit ? "flex" : "hidden"}`}
+                                icon={Ban}
+                                title={"Cancelar"}
+                                description={"Cancelar edição"}
+                                onClick={() => {
+                                    if (setLinkToEdit)
+                                    {
+                                        setLinkToEdit(undefined);
+                                        methods.setValue("nm_link", "");
+                                        methods.setValue("url_link", "");
+                                        methods.setValue("fl_transparencia", false);
+                                    }
+                                }}
+                            />
+                            <Button
+                                icon={Check}
+                                type={"submit"}
+                                title={"Salvar"}
+                            />
+                        </footer>
                     </form>
                 </FormProvider>
-                <aside className={"w-full lg:w-2/3 h-[82%]"}>
+                <div className={"h-[1px] w-full lg:h-full lg:w-[1px] bg-zinc-200 "}/>
+                <aside className={"w-full lg:w-2/3 h-1/3  "}>
                     <h2 className={"text-2xl font-bold py-2 border-b border-zinc-200 mb-4 "}>
                         Links criados
                     </h2>
                     <TableContainer
                         sx={{minHeight : 200, position : "relative"}}
-                        className='rounded-lg border relative h-full  border-zinc-200   dark:text-zinc-100 shadow-lg'
+                        className='rounded-lg border relative   border-zinc-200   dark:text-zinc-100 shadow-lg'
                     >
-                        <Table className={"h-full"}>
+                        <Table >
                             <TableHead className={'text-lg font-bold'}>
                                 <TableRow  className={"w-full text-lg font-bold"}>
                                     <TableCell align={"left"} className={"text-lg font-bold"}/>
                                     <TableCell align={"left"} className={"text-lg font-bold"}/>
 
-                                    <TableCell align={"left"} className={"text-lg font-bold"}>
+                                    <TableCell align={"left"}  className={"text-lg font-bold"}>
                                         Nome
                                     </TableCell>
-                                    <TableCell align={"left"} className={"text-lg font-bold"}>
+                                    <TableCell align={"left"}  className={"text-lg font-bold"}>
                                         Url
                                     </TableCell>
                                 </TableRow>
@@ -191,7 +237,7 @@ interface LinkRowProps {
 const LinkRow = ({ link, handleEditLink, handleDeleteLink } : LinkRowProps) => {
 
     return (
-        <TableRow>
+        <TableRow hover>
             <TableCell>
                 <Tooltip title={"Editar link"} enterNextDelay={300} enterDelay={300}>
                     <IconButton
