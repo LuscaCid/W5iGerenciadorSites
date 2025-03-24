@@ -20,13 +20,13 @@ export const Home = () => {
         }
         {!isLoading && data && data.length > 0 && (
             <>
-                <NewsCarousel news={data}/>
+                <NewsCarousel news={data.slice(0, data.length >= 6 ? 6 : 3)}/>
                 <h1
                     className={"text-lg font-semibold "}
                 >
                     Mais noticias
                 </h1>
-                <NewsSection news={data} />
+                <NewsSection news={data.slice(6, data.length >= 12 ? 12 : 9)} />
             </>
         )}
 
