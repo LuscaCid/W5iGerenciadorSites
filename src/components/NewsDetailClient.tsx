@@ -49,14 +49,14 @@ export const NewsDetailClient = ({ news } : Props) => {
                         icon={Instagram}
                     />
                 </section>
-                <section className={" top-3 left-3 flex items-center absolute  gap-2  group-hover:opacity-50 transition duration-150"}>
+                <section className={" top-3 left-3 flex items-center absolute flex-wrap  gap-2  group-hover:opacity-50 transition duration-150"}>
                     {
                         news.tags && news.tags.length > 0 && (
                             news.tags.map((tag) => (
                                 <span
                                     onClick={() => handleSelectTag(tag)}
                                     key={tag.id_tag}
-                                    className={"rounded-full flex items-center bg-zinc-200/60 backdrop-blur-md  hover:bg-zinc-300 hover:opacity-100 font-semibold  py-1 px-2 cursor-pointer gap-2    transition duration-150"}
+                                    className={"rounded-full flex text-sm lg:text-md text-nowrap items-center bg-zinc-200/60 backdrop-blur-md  hover:bg-zinc-300 hover:opacity-100 font-semibold  py-1 px-2 cursor-pointer gap-2    transition duration-150"}
                                 >
                                     {tag.nm_slug}
                                 </span>
