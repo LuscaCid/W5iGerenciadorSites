@@ -6,8 +6,8 @@ import { HeaderLink } from "./HeaderLink";
 import { useUserContext } from "../store/user";
 import { UserDropdown } from "./UserDropdown";
 import {useQuery} from "@tanstack/react-query";
-import {Link} from "../@types/Link";
 import {useLinks} from "../hooks/useLinks.ts";
+import {useTransparencyLinkContext} from "../store/transparencyLink.ts";
 
 /**
  * @summary Header para desktop sizes
@@ -17,15 +17,15 @@ import {useLinks} from "../hooks/useLinks.ts";
  */
 export function Header ()
 {
-
     const user = useUserContext((state) => state.user);
     const [ isSearchWindowOpen, setIsSearchWindowOpen ] = useState(false);
     const [ isMenuDropdownOpen, setIsMenuDropdownOpen ] = useState(false);
-    const [ transparencyLink, setTransparencyLink ] = useState<Link|undefined>(undefined);
+    const transparencyLinkContext = useTransparencyLinkContext();
+
     const { getLinks } = useLinks();
 
     const { data : links } = useQuery({
-        queryFn : async () => await getLinks() ,
+        queryFn : async () => await getLinks(),
         queryKey : ["links"]
     })
 
@@ -46,13 +46,13 @@ export function Header ()
         if (links)
         {
             const transparencyLink = links.find((link) => link.fl_transparencia)
-            transparencyLink && setTransparencyLink(transparencyLink);
+            transparencyLink && transparencyLinkContext.setTransparencyLink(transparencyLink);
         }
-    }, [ links, setTransparencyLink ]);
+    }, [ links, transparencyLinkContext.setTransparencyLink ]);
     return (
         <header 
             id="header"
-            className="hidden md:flex m-auto top-0 mb-20  gap-10 items-center justify-center w-full bg-zinc-100/60 fixed z-50 backdrop-blur-lg"
+            className="hidden md:flex m-auto top-0 mb-20 gap-10 items-center justify-center w-full bg-zinc-100/60 fixed z-50 backdrop-blur-lg"
         >
             <Logo title="Prefeitura" to="/"/>
             <ul className="flex items-center">
@@ -72,12 +72,12 @@ export function Header ()
                     to="/municipio"
                 />
                 {
-                    transparencyLink && (
+                    transparencyLinkContext.transparencyLink && (
                         <HeaderLink
-                            description={"Navegar para "+transparencyLink.nm_link}
+                            description={"Navegar para "+ transparencyLinkContext.transparencyLink.nm_link}
                             onClick={handleCloseDialog}
-                            title={transparencyLink.nm_link}
-                            to={transparencyLink.url_link}
+                            title={transparencyLinkContext.transparencyLink.nm_link}
+                            to={transparencyLinkContext.transparencyLink.url_link}
                             className="bg-zinc-500 text-zinc-50 text-zinc-100 hover:bg-zinc-600"
                             target="_blank"
                             split={false}

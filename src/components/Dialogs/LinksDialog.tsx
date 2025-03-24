@@ -23,6 +23,7 @@ import {HookFormInput} from "../../UI/FormInput.tsx";
 import {Switch} from "../Switch.tsx";
 import {Button} from "../../UI/Button.tsx";
 import {useSiteContext} from "../../store/site.ts";
+import {useTransparencyLinkContext} from "../../store/transparencyLink.ts";
 
 const formSchema = z.object({
     nm_link : z.string().min(3, "É necessário informar como o link será apresentado"),
@@ -43,8 +44,10 @@ export const LinksDialog = () => {
     const { addLink, deleteLink } = useLinks();
     const site = useSiteContext((state) => state.site);
     const methods = useForm<FormSchemaType>({ resolver : zodResolver(formSchema) });
-    const [ transparencyLink, setTransparencyLink ] = useState<Link|undefined>(undefined);
+
     const fl_transparenciaWatched = methods.watch("fl_transparencia");
+    const transparencyLinkContext = useTransparencyLinkContext();
+
 
     const { mutateAsync : deleteLinkAsync } = useMutation({
         mutationFn : deleteLink,
@@ -75,23 +78,24 @@ export const LinksDialog = () => {
                 openToast((err.response.data as { message : string }).message, "error");
         }
     })
-
     const handleEditLink = useCallback((link : Link) => {
-        console.log(link);
         setLinkToEdit(link)
     }, [setLinkToEdit]);
 
     const handleDeleteLink = useCallback(async(link : Link) => {
-        if (isNotTransparencyLinkAnymore(link)) setTransparencyLink(undefined);
-
+        if(link.fl_transparencia)
+        {
+            transparencyLinkContext.setTransparencyLink(undefined);
+            console.log("limpando");
+        }
         await deleteLinkAsync(link.id_link)
-    }, [deleteLinkAsync, setTransparencyLink])
+    }, [deleteLinkAsync, transparencyLinkContext.setTransparencyLink, linkToEdit])
 
     const isNotTransparencyLinkAnymore = (data : FormSchemaType|Link) => {
         return linkToEdit && linkToEdit.fl_transparencia && !data.fl_transparencia;
     }
     const handleSubmit = useCallback(async (data : FormSchemaType) => {
-        if (isNotTransparencyLinkAnymore(data)) setTransparencyLink(undefined);
+        if (isNotTransparencyLinkAnymore(data)) transparencyLinkContext.setTransparencyLink(undefined);
         await saveLinkAsync({
             ...data,
             id_site : site!.id_site,
@@ -119,15 +123,15 @@ export const LinksDialog = () => {
         if (links)
         {
             const transparencyLink = links.find((link) => link.fl_transparencia)
-            transparencyLink && setTransparencyLink(transparencyLink);
+            transparencyLink && transparencyLinkContext.setTransparencyLink(transparencyLink);
         }
-    }, [ links, setTransparencyLink, queryClient, handleDeleteLink ]);
+    }, [ links, transparencyLinkContext.setTransparencyLink, queryClient, handleDeleteLink ]);
     return (
-        <CustomDialogContent>
-            <main className={"overflow-y-auto w-full p-4 .on-open-modal flex flex-col lg:flex-row gap-5 "}>
+        <CustomDialogContent className={"w-[95%] h-[95%]  lg:w-[70%]"}>
+            <main className={"overflow-y-auto w-full pt-4 pb-1 px-4 .on-open-modal flex flex-col lg:flex-row gap-5 "}>
                 <FormProvider {...methods}>
                     <form
-                        className={"flex flex-col gap-3 h-2/3 w-full lg:h-full min-h-[340px] lg:w-1/3 relative "}
+                        className={"flex flex-col gap-3 h-1/2 w-full lg:h-full min-h-[340px] lg:w-1/3 relative "}
                         onSubmit={methods.handleSubmit(handleSubmit)}
                     >
                         <DialogTitle className={"sr-only"}>
@@ -149,7 +153,7 @@ export const LinksDialog = () => {
                         <Switch<keyof FormSchemaType>
                             label={"Link para transparência?"}
                             name={"fl_transparencia"}
-                            render={linkToEdit && linkToEdit.fl_transparencia || !transparencyLink}
+                            render={linkToEdit && linkToEdit.fl_transparencia || !transparencyLinkContext.transparencyLink}
                             defaultValue={fl_transparenciaWatched}
                         />
 
@@ -178,13 +182,13 @@ export const LinksDialog = () => {
                     </form>
                 </FormProvider>
                 <div className={"h-[1px] w-full lg:h-full lg:w-[1px] bg-zinc-200 "}/>
-                <aside className={"w-full lg:w-2/3 h-1/3  "}>
+                <aside className={"w-full lg:w-2/3 h-1/2 lg:h-full pb-4 "}>
                     <h2 className={"text-2xl font-bold py-2 border-b border-zinc-200 mb-4 "}>
                         Links criados
                     </h2>
                     <TableContainer
                         sx={{minHeight : 200, position : "relative"}}
-                        className='rounded-lg border relative   border-zinc-200   dark:text-zinc-100 shadow-lg'
+                        className='rounded-lg border relative   border-zinc-200  dark:text-zinc-100  shadow-lg h-[90%]'
                     >
                         <Table >
                             <TableHead className={'text-lg font-bold'}>

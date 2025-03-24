@@ -9,14 +9,15 @@ import { UserDropdown } from "./UserDropdown";
 import { useUserContext } from "../store/user";
 import {useQuery} from "@tanstack/react-query";
 import {useLinks} from "../hooks/useLinks.ts";
-import {Link} from "../@types/Link";
 import {MenuDropdown} from "./MenuDropdown.tsx";
+import {useTransparencyLinkContext} from "../store/transparencyLink.ts";
 
 export function MobileHeader ()
 {
     const { getLinks } = useLinks();
-    const [ transparencyLink, setTransparencyLink ] = useState<Link|undefined>(undefined);
     const [ isMenuDropdownOpen, setIsMenuDropdownOpen ] = useState(false);
+    const transparencyLinkContext = useTransparencyLinkContext();
+
     const { data : links } = useQuery({
         queryFn : async () => await getLinks() ,
         queryKey : ["links"]
@@ -34,9 +35,9 @@ export function MobileHeader ()
         if (links)
         {
             const transparencyLink = links.find((link) => link.fl_transparencia)
-            transparencyLink && setTransparencyLink(transparencyLink);
+            transparencyLink && transparencyLinkContext.setTransparencyLink(transparencyLink);
         }
-    }, [ links, setTransparencyLink ]);
+    }, [ links, transparencyLinkContext.setTransparencyLink ]);
     return (
         <header className="md:hidden  bg-zinc-100/60  fixed z-50 backdrop-blur-lg flex justify-between items-center px-4 py-2 w-full">
             <Logo title="Prefeitura" to="/"/>
@@ -51,13 +52,22 @@ export function MobileHeader ()
                 />
             </aside>
             <nav className={`absolute ${isOpenSidebar ? "inset-0 flex flex-col z-20" : "hidden"}  bg-zinc-50 transition duration-200  items-center`}>
-                <IconButton
-                    color="error"
-                    onClick={handleOpenSideBar}
-                    className="self-end"
-                >
-                    <X />
-                </IconButton>
+                <header className={"flex items-center gap-2  w-full justify-between h-fit"}>
+                    <MenuDropdown
+                        isMobile
+                        isMenuDropdownOpen={isMenuDropdownOpen}
+                        setIsMenuDropdownOpen={setIsMenuDropdownOpen}
+                    />
+
+                    <IconButton
+                        color="error"
+                        onClick={handleOpenSideBar}
+                        className=""
+                    >
+                        <X />
+                    </IconButton>
+                </header>
+
                 <HeaderLink
                     onClick={handleOpenSideBar}
                     title="Home"
@@ -83,25 +93,17 @@ export function MobileHeader ()
                     className="w-full py-3 bg-zinc-100"
                 />
                 {
-                    transparencyLink && (
+                    transparencyLinkContext.transparencyLink && (
                         <HeaderLink
                             onClick={handleOpenSideBar}
-                            title={transparencyLink.nm_link}
-                            to={transparencyLink.url_link}
+                            title={transparencyLinkContext.transparencyLink.nm_link}
+                            to={transparencyLinkContext.transparencyLink.url_link}
                             className="bg-slate-200 py-3 w-full text-black hover:bg-slate-300"
                             target={"_blank"}
                             split={false}
                         />
                     )
                 }
-                <footer className={"bg-zinc-100 w-full flex items-center justify-center"}>
-                    <MenuDropdown
-                        isMenuDropdownOpen={isMenuDropdownOpen}
-                        setIsMenuDropdownOpen={setIsMenuDropdownOpen}
-                    />
-
-                </footer>
-
                 <HeaderSearchDialog
                     isMobile
                     isSearchWindowOpen={isSearchWindowOpen}
