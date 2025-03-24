@@ -56,16 +56,9 @@ export const NewsDetailAdmin = ({ news } : Props) => {
 
     const { mutateAsync : postNewsAsync, isPending } = useMutation({
         mutationFn : postNews,
-        onSuccess : () => {
-            openToast("Notícia salva com sucesso", "success");
-        },
-        onError(err : unknown) {
-            if (err instanceof AxiosError)
-            {
-                openToast(err.response!.data.message, "error");
-            }
-        },
-        retry :2
+        onSuccess : () => openToast("Notícia salva com sucesso", "success"),
+        onError : (err : unknown) => err instanceof AxiosError && openToast(err.response!.data.message, "error"),
+        retry : 2
     })
 
     const handleSubmit = useCallback(async(e : FormEvent) => {
