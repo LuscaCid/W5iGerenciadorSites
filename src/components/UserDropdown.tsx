@@ -35,12 +35,7 @@ export const UserDropdown = () => {
                     title={user!.nm_email}
                     onClick={() => console.log("email")}
                 />
-                <Separator />
-                <CustomDropdownItem 
-                    icon={LogOut}
-                    title={"Sair"}
-                    onClick={handleLogout}
-                />
+
                 <Separator />
                 <Dialog.Root>
                     <Dialog.Trigger className={"p-2 items-center justify-between gap-2 flex hover:bg-zinc-200  hover:outline-none transition duration-150 cursor-pointer rounded-md"}>
@@ -51,6 +46,12 @@ export const UserDropdown = () => {
                         <LinksDialog/>
                     </Dialog.Portal>
                 </Dialog.Root>
+                <Separator />
+                <CustomDropdownItem
+                    icon={LogOut}
+                    title={"Sair"}
+                    onClick={handleLogout}
+                />
             </Dropdown.Content>
         </Dropdown.Root>
     );
