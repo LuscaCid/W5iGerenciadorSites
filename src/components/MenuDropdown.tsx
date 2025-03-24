@@ -1,5 +1,13 @@
 import * as Dropdown from "@radix-ui/react-dropdown-menu";
-import { Blend, Landmark, Menu, Newspaper, ShieldUser, UtilityPole, Link as LinkIcon } from "lucide-react";
+import {
+    Landmark,
+    Menu,
+    Newspaper,
+    ShieldUser,
+    UtilityPole,
+    Link as LinkIcon,
+    SquareArrowOutUpRight
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { CustomDropdownItem } from "./CustomDropdownItem";
 import { Separator } from "./Separator";
@@ -50,12 +58,7 @@ export const MenuDropdown = ({ isMenuDropdownOpen, setIsMenuDropdownOpen, isMobi
                     title="Município" 
                     icon={UtilityPole} 
                 />
-                <Separator />
-                <CustomDropdownItem 
-                    onClick={() => navigate('/')}
-                    title="Transparência" 
-                    icon={Blend} 
-                />
+
                 {
                     links && links.length > 0 && (
                         links.map((link) => (
@@ -64,7 +67,7 @@ export const MenuDropdown = ({ isMenuDropdownOpen, setIsMenuDropdownOpen, isMobi
                                 <CustomDropdownLink
                                     to={link.url_link}
                                     title={link.nm_link}
-                                    icon={ShieldUser}
+                                    icon={SquareArrowOutUpRight}
                                 />
                             </Fragment>
                         ))
@@ -91,7 +94,7 @@ export const MenuDropdown = ({ isMenuDropdownOpen, setIsMenuDropdownOpen, isMobi
                                 </Dialog.Trigger>
                                 <Dialog.Portal>
                                     <Dialog.Overlay className={"z-50 fixed inset-0 w-screen bg-zinc-900/30 backdrop-blur-md"}/>
-                                    <LinksDialog links={links ?? []}/>
+                                    <LinksDialog/>
                                 </Dialog.Portal>
                             </Dialog.Root>
                         </>
