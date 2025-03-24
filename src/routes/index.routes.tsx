@@ -4,6 +4,7 @@ import { AppRoutes } from "./App.routes";
 import {useEffect} from "react";
 import {api} from "../services/api.ts";
 import {useSiteContext} from "../store/site.ts";
+import {StorageKeys} from "../constants/StorageKeys.ts";
 
 export function Router ()
 {
@@ -16,7 +17,7 @@ export function Router ()
     })
     useEffect(() => {
         if (user){
-            window.localStorage.setItem('@gerenciador-user', JSON.stringify(user));
+            window.localStorage.setItem(StorageKeys.user, JSON.stringify(user));
 
             api.interceptors.request.use(
                 async (config) => {
@@ -31,7 +32,7 @@ export function Router ()
         }
     }, [ user ]);
     useEffect(() => {
-        const userInLocalStorage = window.localStorage.getItem("@gerenciador-user");
+        const userInLocalStorage = window.localStorage.getItem(StorageKeys.user);
         if (userInLocalStorage)
         {
             const object = JSON.parse(userInLocalStorage);

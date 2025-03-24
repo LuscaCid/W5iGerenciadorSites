@@ -9,7 +9,7 @@ export function useLinks() {
 
     const getLinks = useCallback(async() => {
         const response = await api.get(`${PATH_NAME}/${site!.id_site}`);
-        return response.data;
+        return response.data as Link[];
     }, [ site ]);
 
     const addLink = useCallback(async(payload : Link) => {
