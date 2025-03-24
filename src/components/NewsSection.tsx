@@ -16,7 +16,7 @@ export const NewsSection = ({ news } : Props) =>
                             news={notice}
                             titleSize="lg"
                             titleOutside
-                            textColor="black"
+                            textColor="zinc-600"
                         />
                     ))
                 )

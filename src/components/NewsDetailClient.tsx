@@ -32,7 +32,7 @@ export const NewsDetailClient = ({ news } : Props) => {
                     className="w-full rounded-2xl max-h-[600px]  shadow-lg object-cover brightness-50 group-hover:brightness-90 transition duration-150"
                 />
                 <main className={'flex flex-col gap-10 absolute top-1/2 left-1/2 -translate-x-1/2 w-[80%] -translate-y-1/2'}>
-                    <h1 className="font-[600] text-4xl  text-zinc-100 group-hover:opacity-0 transition duration-150">
+                    <h1 className="font-[600] text-2xl lg:text-4xl  text-zinc-100 group-hover:opacity-0 transition duration-150">
                         {news?.nm_titulo}
                     </h1>
 
@@ -40,12 +40,12 @@ export const NewsDetailClient = ({ news } : Props) => {
                 <section className={"flex items-center gap-2  absolute bottom-4 right-4"}>
                     <Button
                         description={"Compartilhar no Facebook"}
-                        className={"rounded-full items-center justify-center h-10 w-10 p-0"}
+                        className={"rounded-full items-center justify-center h-8 w-8 lg:h-10 lg:w-10 p-0"}
                         icon={FacebookIcon}
                     />
                     <Button
                         description={"Compartilhar no Instagram"}
-                        className={"rounded-full items-center justify-center h-10 w-10 p-0"}
+                        className={"rounded-full items-center justify-center h-8 w-8 lg:h-10 lg:w-10 p-0"}
                         icon={Instagram}
                     />
                 </section>
@@ -56,7 +56,7 @@ export const NewsDetailClient = ({ news } : Props) => {
                                 <span
                                     onClick={() => handleSelectTag(tag)}
                                     key={tag.id_tag}
-                                    className={"rounded-full flex text-sm lg:text-md text-nowrap items-center bg-zinc-200/60 backdrop-blur-md  hover:bg-zinc-300 hover:opacity-100 font-semibold  py-1 px-2 cursor-pointer gap-2    transition duration-150"}
+                                    className={"rounded-full flex text-xs lg:text-md text-nowrap items-center bg-zinc-200/60 backdrop-blur-md  hover:bg-zinc-300 hover:opacity-100 font-semibold  py-0.5 px-1  lg:py-1 lg:px-2 cursor-pointer gap-2    transition duration-150"}
                                 >
                                     {tag.nm_slug}
                                 </span>
@@ -80,7 +80,7 @@ export const NewsDetailClient = ({ news } : Props) => {
                         img.url !== news.url_thumbimg && <img
                             key={img.key}
                             src={img.url}
-                            alt={"Imagem da noticia em questao"}
+                            alt={"Imagem da notícia"}
                             className={"w-full rounded-2xl shadow-lg"}
                         />
                     ))
