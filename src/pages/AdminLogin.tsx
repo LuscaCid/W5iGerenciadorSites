@@ -16,7 +16,7 @@ import {AxiosError} from "axios";
 import {StorageKeys} from "../constants/StorageKeys.ts";
 
 const formSchema = z.object({
-  nm_email : z.string(),
+  nm_email : z.string().email({message : "Precisa ser um e-mail válido"}),
   nm_senha : z.string().min(5, { message : "A senha deve ter no mínimo 8 caracteres"})
 });
 
