@@ -1,6 +1,6 @@
 import z from "zod";
 import {FormProvider, useForm} from "react-hook-form";
-import {Dispatch, SetStateAction, useCallback, useEffect, useRef} from "react";
+import {Dispatch, SetStateAction, useCallback, useEffect} from "react";
 import {useTags} from "../../hooks/useTags.ts";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {HookFormInput} from "../../UI/FormInput.tsx";
@@ -25,7 +25,6 @@ export const FormCreateTag = ({ tag, setTagToEdit } : Props) => {
     const openToast = useContextSelector(toastContext, (context) => context.open);
     const queryClient = useQueryClient();
     const site = useSiteContext(state => state.site);
-    const formRef = useRef<HTMLFormElement|null>(null);
     const { addTag } = useTags();
     const { updateTagsState, updateTagsInNewsState } = updateTagsStateActions({ queryClient });
 
@@ -53,7 +52,6 @@ export const FormCreateTag = ({ tag, setTagToEdit } : Props) => {
     });
     const handleSubmit = useCallback(async (data: FormSearchType) =>
     {
-
         await addTagAsync({
             ...data,
             id_site : site!.id_site,
@@ -72,11 +70,10 @@ export const FormCreateTag = ({ tag, setTagToEdit } : Props) => {
                 <form
                     id={"form_create_tag"}
                     name={"form_create_tag"}
-                    ref={formRef}
                     onSubmit={methods.handleSubmit(handleSubmit)}
                     className={"w-full p-4 relative h-full"}
                 >
-                    <h4 className={"text-2xl font-bold py-2 border-b border-zinc-200  "}>
+                    <h4 className={"text-2xl font-bold py-2 border-b border-zinc-200"}>
                         {tag ? "Editar tag" : "Cadastrar tag"}
                     </h4>
                     <HookFormInput<keyof FormSearchType>

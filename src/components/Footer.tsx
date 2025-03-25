@@ -36,8 +36,26 @@ export const Footer = () => {
                     Links úteis
                 </h4>
 
-            </header>/
+            </header>
             <ul className={"grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 w-full gap-3 "}>
+                <Link
+                    target={"_self"}
+                    className={"hover:bg-zinc-200 hover:underline transition rounded-lg px-2 py-1 duration-200"}
+                    to={"/governo"}>
+                    {"Governo"}
+                </Link>
+                <Link
+                    target={"_self"}
+                    className={"hover:bg-zinc-200 hover:underline transition rounded-lg px-2 py-1 duration-200"}
+                    to={"/noticias"}>
+                    {"Notícias"}
+                </Link>
+                <Link
+                    target={"_self"}
+                    className={"hover:bg-zinc-200 hover:underline transition rounded-lg px-2 py-1 duration-200"}
+                    to={"/municipio"}>
+                    {"Município"}
+                </Link>
                 {
                     links && links.length > 0 && (
                         links.map((link) => (
