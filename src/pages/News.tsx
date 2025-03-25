@@ -12,6 +12,7 @@ import {getTagsActions} from "../@shared/TagsActions.ts";
 import {useNewsTagsContext} from "../store/newsTags.ts";
 import {useTags} from "../hooks/useTags.ts";
 import {Input} from "../UI/Input.tsx";
+import {Skeleton} from "@mui/material";
 
 type PaginationDirection = "backwards" | "forwards";
 
@@ -30,7 +31,7 @@ export const News = () => {
 
   const navigate = useNavigate();
 
-  const { data : tags }=  useQuery({
+  const { data : tags, isPending : isPendingTags }=  useQuery({
     queryFn : async () => await getTags(query),
     queryKey : ["tags"]
   })
@@ -190,18 +191,32 @@ export const News = () => {
         </header>
 
         <nav className={`${tagsVisible ? "flex  md:hidden" : "hidden"} w-full  md:flex flex-wrap gap-4  max-h-[400px]  lg:max-h-[700px] pb-4  overflow-y-auto no-scrollbar hover:scrollbar-view`}>
-        {
-         tags && tags.length > 0 &&  (
-            tags.map((tag) => (
-              <TagComponent
-                key={tag.id_tag + tag.nm_slug}
-                selectedTags={selectedTags}
-                tag={tag}
-                handleSelectTag={handleSelectTag}
-              />
-            ))
-          )
-        }
+          {
+            !isPendingTags && tags && tags.length > 0 &&  (
+              tags.map((tag) => (
+                <TagComponent
+                  key={tag.id_tag + tag.nm_slug}
+                  selectedTags={selectedTags}
+                  tag={tag}
+                  handleSelectTag={handleSelectTag}
+                />
+              ))
+            )
+          }
+          {
+            isPendingTags && (
+              Array.from({length : 10}).map((_, idx) => (
+                <Skeleton
+                  key={idx}
+                  variant={"rectangular"}
+                  width={Math.round(Math.random() * 100) + 70}
+                  height={30}
+                  animation={"wave"}
+                  className={"rounded-full h-[20px] shadow-2xl"}
+                />
+              ))
+            )
+          }
         </nav>
       </aside>
     </section>
