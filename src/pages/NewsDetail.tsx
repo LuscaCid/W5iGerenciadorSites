@@ -10,6 +10,7 @@ import {useQueryClient} from "@tanstack/react-query";
 import {Noticia} from "../@types/News";
 import {useEffect, useState} from "react";
 import {UserAvatar} from "../components/UserAvatar.tsx";
+import {Tooltip} from "@mui/material";
 
 export const NewsDetail = () => {
 
@@ -53,10 +54,15 @@ export const NewsDetail = () => {
                 />
                 {/* data de publicacao da noticia no portal */}
                 <div className="self-end text-zinc-600 text-sm flex gap-2 items-center">
-
-                  <span>
-                    Atualizado { formatDistanceToNow(actualNewsSelected!.dt_publicacao!, { addSuffix : true, locale : ptBR } )}
-                  </span>
+                  <Tooltip
+                    title={actualNewsSelected!.dt_publicacao}
+                    enterDelay={200}
+                    enterNextDelay={300}
+                  >
+                    <span>
+                      Atualizado { formatDistanceToNow(actualNewsSelected!.dt_publicacao!, { addSuffix : true, locale : ptBR } )}
+                    </span>
+                  </Tooltip>
                 </div>
               </>
               )

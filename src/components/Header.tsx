@@ -78,7 +78,7 @@ export function Header ()
                             onClick={handleCloseDialog}
                             title={transparencyLinkContext.transparencyLink.nm_link}
                             to={transparencyLinkContext.transparencyLink.url_link}
-                            className="bg-zinc-500 text-zinc-50 text-zinc-100 hover:bg-zinc-600"
+                            className="bg-zinc-500 text-zinc-100 hover:bg-zinc-600"
                             target="_blank"
                             split={false}
                         />

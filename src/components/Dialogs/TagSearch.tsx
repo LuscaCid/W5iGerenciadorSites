@@ -52,7 +52,16 @@ export const TagSearchDialog = ({ setSelectedTags, selectedTags, setDialogOpen }
             queryClient.invalidateQueries({queryKey : ["tags"]});
         }
     }, [ debounce, queryClient ]);
-
+    useEffect(() => {
+        function cb (e : KeyboardEvent)
+        {
+            if (e.key == "enter")
+            {
+                console.log(e);
+            }
+        }
+        window.addEventListener("keypress", cb)
+    }, []);
     const handleSend = useCallback( async() => {
         setDialogOpen(false);
     }, [setDialogOpen]);

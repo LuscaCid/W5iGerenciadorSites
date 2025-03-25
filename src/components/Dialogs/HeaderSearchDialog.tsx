@@ -16,8 +16,10 @@ export function HeaderSearchDialog ({ isSearchWindowOpen, setIsSearchWindowOpen,
     const setTitle = useNewsTagsContext((state) => state.setTitle);
     const navigate = useNavigate();
     const queryClient = useQueryClient();
+    // const [ searchParams, setSearchParams ] = useSearchParams();
 
     const handleSearch = useCallback( async () => {
+        // setSearchParams({ nm_titulo : qury});
         await queryClient.invalidateQueries({queryKey : ['news']});
         navigate("/noticias");
         setIsSearchWindowOpen(false)

@@ -60,6 +60,7 @@ export const Footer = () => {
                     links && links.length > 0 && (
                         links.map((link) => (
                             <Link
+                                key={link.id_link}
                                 target={"_blank"}
                                 className={"hover:bg-zinc-200 hover:underline transition rounded-lg px-2 py-1 duration-200"}
                                 to={link.url_link}>
