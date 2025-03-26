@@ -82,7 +82,7 @@ export const TagSearchDialog = ({ setSelectedTags, selectedTags, setDialogOpen }
                     title={selectedTags.length > 0 ? "Enviar" : "Selecione uma tag"}
                     className={"p-2 px-3 rounded-lg text-zinc-100 hover:bg-green-600 bg-green-500 flex items-center self-end absolute bottom-2 right-2"}
                 />
-                <footer className={"absolute flex flex-wrap  gap-1 mt-3 mb-10 top-32 h-full max-h-[240px] overflow-auto "}>
+                <footer className={" flex flex-wrap pb-10  gap-2 mt-3 mb-10 max-h-[400px] lg:max-h-[240px] overflow-y-auto "}>
                     {
                         tags && tags.length > 0 && (
                             tags.map((tag : Tag) => (
