@@ -111,7 +111,7 @@ export function NewsCard (
                 src={news.url_thumbimg}
                 className={` ${titleOutside ? "group-hover:scale-105 rounded-t-2xl rounded-b-none cursor-pointer" : "rounded-2xl"}  shadow-lg brightness-50 hover:brightness-80 transition duration-200 w-full aspect-video object-cover  `}
             />
-            <header className="flex gap-1 items-center absolute flex-wrap z-20 top-3 left-3">
+            <header className={`flex gap-1 items-center absolute flex-wrap z-20 top-3 left-3 ${user ? "right-7" : "right-3"}`}>
                 { 
                     news.tags && news.tags.length > 0 && news.tags.map((tag) => (
                         <Tooltip
