@@ -1,5 +1,5 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import {Dispatch, SetStateAction, useCallback, useEffect} from "react";
+import {Dispatch, SetStateAction, useCallback, useEffect, useState} from "react";
 import { TextButton } from "../../UI/TextButton.tsx";
 import { Search, X } from "lucide-react";
 import {useNewsTagsContext} from "../../store/newsTags.ts";
@@ -14,17 +14,19 @@ interface Props {
 export function HeaderSearchDialog ({ isSearchWindowOpen, setIsSearchWindowOpen, isMobile } : Props) 
 {
     const setTitle = useNewsTagsContext((state) => state.setTitle);
+    const [ query, setQuery ] = useState("");
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     // const [ searchParams, setSearchParams ] = useSearchParams();
 
     const handleSearch = useCallback( async () => {
-        // setSearchParams({ nm_titulo : qury});
+        // setSearchParams({ nm_titulo : query});
+        setTitle(query);
         await queryClient.invalidateQueries({queryKey : ['news']});
         navigate("/noticias");
         setIsSearchWindowOpen(false)
 
-    }, [queryClient, setIsSearchWindowOpen]);
+    }, [queryClient, setIsSearchWindowOpen, query]);
 
     useEffect(() => {
         async function dispatcher (e : KeyboardEvent)
@@ -33,7 +35,7 @@ export function HeaderSearchDialog ({ isSearchWindowOpen, setIsSearchWindowOpen,
         }
         window.addEventListener("keypress", dispatcher );
         return () => window.removeEventListener("keypress", dispatcher );
-    }, [ handleSearch ]);
+    }, [ handleSearch, isSearchWindowOpen ]);
 
     return (
     <Dialog.Root onOpenChange={setIsSearchWindowOpen} open={isSearchWindowOpen}>
@@ -53,7 +55,7 @@ export function HeaderSearchDialog ({ isSearchWindowOpen, setIsSearchWindowOpen,
                     <div className="items-center flex px-10 w-full border-b border-zinc-100 ">
                         <Search />
                         <input
-                            onChange={(e) => setTitle(e.target.value)}
+                            onChange={(e) => setQuery(e.target.value)}
                             type="text"
                             placeholder="Pesquisar"
                             className=" px-10 py-4 text-lg  w-full focus:outline-none "
