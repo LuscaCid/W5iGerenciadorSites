@@ -15,7 +15,7 @@ export const ImageSlotFc = ({ slot, handleRemoveSlot,handleChangeSlotImage, idx 
     return (
         <div
             key={idx.toString()}
-            className={"group overflow-hidden relative shadow-lg rounded-lg"}
+            className={"group overflow-hidden relative  rounded-lg"}
         >
             <img
                 className={"w-full rounded-lg max-w-[500px] aspect-video"}

@@ -57,12 +57,12 @@ export const AdminLogin = () => {
 
   }, []);
   return (
-    <div className="border border-zinc-200 bg-zinc-50 m-auto p-4 w-full lg:w-fit rounded-lg">
+    <div className="border border-zinc-200 bg-zinc-50 m-auto p-4 w-full lg:w-fit rounded-lg mb-3">
       <FormProvider {...methods}>
         <form
           name="form_admin"
           id="form_admin"
-          className='w-full lg:w-fit flex flex-col gap-6  lg:min-w-[400px] rounded-lg'
+          className='w-full lg:w-fit flex flex-col gap-6   lg:min-w-[400px] rounded-lg'
           onSubmit={methods.handleSubmit(handleSubmitForm)}
         >
           <h1

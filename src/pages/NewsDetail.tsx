@@ -37,9 +37,9 @@ export const NewsDetail = () => {
       <main className="flex flex-col gap-3 w-full h-full mb-10">
         {
           user ? (
-             <NewsDetailAdmin news={actualNewsSelected} />
+             <NewsDetailAdmin setNews={setActualNewsSelected} news={actualNewsSelected} />
           ) : (
-            <NewsDetailClient news={actualNewsSelected!}/>
+            <NewsDetailClient setNews={setActualNewsSelected} news={actualNewsSelected!}/>
           )
         }
         <footer className="flex flex-col gap-3">
