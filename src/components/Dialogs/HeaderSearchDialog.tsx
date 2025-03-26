@@ -29,10 +29,7 @@ export function HeaderSearchDialog ({ isSearchWindowOpen, setIsSearchWindowOpen,
     useEffect(() => {
         async function dispatcher (e : KeyboardEvent)
         {
-            if (e.key == "Enter"){
-                await handleSearch();
-                return;
-            }
+            if (e.key == "Enter" && isSearchWindowOpen) await handleSearch();
         }
         window.addEventListener("keypress", dispatcher );
         return () => window.removeEventListener("keypress", dispatcher );

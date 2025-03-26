@@ -29,16 +29,6 @@ export function Header ()
         queryKey : ["links"]
     })
 
-    useEffect(() => {
-        function listenerCB (e : KeyboardEvent) {
-            if (e.key === 'Escape' && isSearchWindowOpen) {
-                setIsSearchWindowOpen(false);
-            }
-        }
-        window.addEventListener('keydown',listenerCB);
-
-        return () => window.removeEventListener("keydown", listenerCB);
-    }, [isSearchWindowOpen])
     const handleCloseDialog = () => {
         setIsSearchWindowOpen(false);
     }

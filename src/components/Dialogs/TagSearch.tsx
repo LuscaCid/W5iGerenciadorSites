@@ -52,22 +52,13 @@ export const TagSearchDialog = ({ setSelectedTags, selectedTags, setDialogOpen }
             queryClient.invalidateQueries({queryKey : ["tags"]});
         }
     }, [ debounce, queryClient ]);
-    useEffect(() => {
-        function cb (e : KeyboardEvent)
-        {
-            if (e.key == "enter")
-            {
-                console.log(e);
-            }
-        }
-        window.addEventListener("keypress", cb)
-    }, []);
+
     const handleSend = useCallback( async() => {
         setDialogOpen(false);
     }, [setDialogOpen]);
     return (
         <CustomDialogContent className={"h-[95%] w-[95%] lg:h-[45%] lg:w-[65%]"}>
-            <main className={"w-full h-2/3 lg:h-full lg:w-2/3 relative p-4  "}>
+            <main className={"w-full  lg:h-full lg:w-2/3 relative p-4 h-full "}>
                 <DialogTitle className={"sr-only"}>
                     Procurar Tags
                 </DialogTitle>
@@ -91,7 +82,7 @@ export const TagSearchDialog = ({ setSelectedTags, selectedTags, setDialogOpen }
                     title={selectedTags.length > 0 ? "Enviar" : "Selecione uma tag"}
                     className={"p-2 px-3 rounded-lg text-zinc-100 hover:bg-green-600 bg-green-500 flex items-center self-end absolute bottom-2 right-2"}
                 />
-                <footer className={"flex flex-wrap gap-2 mt-3 mb-10 overflow-auto max-h-[400px] lg:max-h-[350px]  "}>
+                <footer className={"absolute flex flex-wrap  gap-1 mt-3 mb-10 top-32 h-full max-h-[240px] overflow-auto "}>
                     {
                         tags && tags.length > 0 && (
                             tags.map((tag : Tag) => (
