@@ -188,7 +188,7 @@ export const LinksDialog = () => {
                     </h2>
                     <TableContainer
                         sx={{minHeight : 200, position : "relative"}}
-                        className='rounded-lg border relative   border-zinc-200  dark:text-zinc-100  shadow-lg h-[90%]'
+                        className='rounded-lg border relative   border-zinc-200  dark:text-zinc-100  shadow-lg h-full lg:h-[90%] 2xl:h-[92.4%]'
                     >
                         <Table >
                             <TableHead className={'text-lg font-bold'}>

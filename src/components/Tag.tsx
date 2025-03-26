@@ -57,7 +57,7 @@ export const Tag = ({ tag, handleSelectTag, selectedTags, canOpen = true, handle
             title="Marcar para filtrar resultados"
         >
             <section
-                className={`w-fit select-none flex items-center justify-center gap-2 transition shadow-lg duration-200 rounded-full py-1 px-3  text-nowrap overflow-ellipsis overflow-hidden  cursor-pointer ${selectedTags.find((selectedTag) => selectedTag.id_tag === tag.id_tag) ? "bg-blue-200  hover:bg-blue-300 text-black" : "bg-zinc-100 hover:bg-zinc-300"} transition duration-150`}
+                className={`w-fit h-fit select-none flex items-center justify-center gap-2 transition shadow-lg duration-200 rounded-full py-1 px-3  text-nowrap overflow-ellipsis overflow-hidden  cursor-pointer ${selectedTags.find((selectedTag) => selectedTag.id_tag === tag.id_tag) ? "bg-blue-200  hover:bg-blue-300 text-black" : "bg-zinc-100 hover:bg-zinc-300"} transition duration-150`}
             >
                 <div 
                     onPointerDown={() => handleSelectTag(tag)}
