@@ -26,7 +26,7 @@ export const NewsDetailInput = (
     }
     return (
         <textarea 
-            rows={1}
+            rows={variant == "paragraph" ? 5 : 1}
             onChange={onChangeFn}
             value={value}
             maxLength={maxLength}

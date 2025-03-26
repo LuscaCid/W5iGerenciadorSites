@@ -1,10 +1,10 @@
 import {Tag} from "./Tag";
 import {Image} from "./Image";
 import {User} from "./User";
+import {Paragraph} from "./Paragraph";
 
 export interface Noticia
 {
-
     id_noticia : number;
     ds_conteudo : string;
     nm_titulo : string;  
@@ -17,4 +17,5 @@ export interface Noticia
     url_thumbimg? : string;
     tags? : Array<Tag>
     usuario? : User;
+    paragraphs : Paragraph[]
 }

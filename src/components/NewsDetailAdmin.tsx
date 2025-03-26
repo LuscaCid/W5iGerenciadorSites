@@ -18,6 +18,7 @@ import {toastContext} from "./Toast.tsx";
 import DefaultImage from "/default-featured-image.jpg";
 import {AxiosError} from "axios";
 import {useParams} from "react-router-dom";
+import {Paragraph} from "../@types/Paragraph";
 
 export type ImageSlot = {
     fileName : string;
@@ -40,9 +41,12 @@ export const NewsDetailAdmin = ({ news, setNews } : Props) => {
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [ selectedTags, setSelectedTags ] = useState<Tag[]>(news ? news.tags ?? [] : []);
     const [ imageSlots, setImageSlots ] = useState<ImageSlot[]>([]);
+
+    const [ paragraphSlots, setParagraphsSlots ] = useState<Paragraph[]>([]);
     const [ thumbnailSlot, setThumbnailSlot ] = useState<ImageSlot>({
         url : news ? news?.url_thumbimg : DefaultImage,
     } as ImageSlot);
+
     const params = useParams();
     const [ newsData, setNewsData ] = useState<Noticia>({
         url_thumbimg : news ? news.url_thumbimg : DefaultImage,
@@ -52,6 +56,7 @@ export const NewsDetailAdmin = ({ news, setNews } : Props) => {
         ds_conteudo : news ? news.ds_conteudo : "",
         id_noticia : 1,
         tags : [],
+        paragraphs : news ? news?.paragraphs : []
     });
     const { handleSelectTag } = getTagsActions({ selectedTags, setSelectedTags });
 
@@ -87,6 +92,12 @@ export const NewsDetailAdmin = ({ news, setNews } : Props) => {
         await postNewsAsync(formData);
 
     }, [ newsData, imageSlots, postNewsAsync, news, site, user, thumbnailSlot, selectedTags ]);
+
+    const handleDeleteParagraphSlot = useCallback((idSlot : string|number) => {
+        setParagraphsSlots(
+            paragraphSlots.filter(slot => slot.id_paragrafo != idSlot)
+        )
+    }, [paragraphSlots, setParagraphsSlots]);
 
     const handleChangeSlotImage = useCallback((e : ChangeEvent<HTMLInputElement>, id : number|string) => {
         if (e.target.files)
@@ -191,9 +202,46 @@ export const NewsDetailAdmin = ({ news, setNews } : Props) => {
                 <NewsDetailInput
                     onChangeFn={(e) => setNewsData({ ...newsData, ds_conteudo : e.target.value })}
                     value={newsData.ds_conteudo ?? ""}
-                    placeholder={`${news ? "Editar o paragrafo" : "Adicione um paragrafo"}`}
+                    placeholder={`${news ? "Editar o paragrafo" : "Adicione um paragrafo de introdução"}`}
                     variant="paragraph"
                     maxLength={2000}
+                />
+                {
+                    paragraphSlots.length > 0 && (
+                        paragraphSlots.map((paragraphSlot) => (
+                            <section
+                                key={paragraphSlot.id_paragrafo}
+                                className={"flex gap-1 flex-col px-4 py-5 rounded-2xl border border-zinc-100 bg-zinc-100 relative"}
+                            >
+                                <Button
+                                    className={"bg-red-400 hover:bg-red-500 w-fit p-2 text-zinc-50  absolute -right-10 top-0 rounded-lg  "}
+                                    icon={X}
+                                    description={"Remover paragrafo"}
+                                    onClick={() => handleDeleteParagraphSlot(paragraphSlot.id_paragrafo!)}
+                                />
+                                <NewsDetailInput
+                                    value={paragraphSlot.ds_subtitulo}
+                                    onChangeFn={() => console.log("a")}
+                                    variant={"subtitle"}
+                                    placeholder={"Adicione um subtitulo opcional ao paragrafo"}
+                                />
+                                <NewsDetailInput
+                                    value={paragraphSlot.ds_paragrafo}
+                                    onChangeFn={() => console.log("a")}
+                                    variant={"paragraph"}
+                                    placeholder={"Texto do paragrafo aparecerá aqui"}
+                                />
+                            </section>
+
+                        ))
+                    )
+                }
+                <Button
+                    icon={Plus}
+                    onClick={() => setParagraphsSlots(prev => ([...prev, { id_paragrafo : crypto.randomUUID() } as Paragraph]))}
+                    description={"Adicionar paragrafo"}
+                    className={"w-fit self-end"}
+                    title={"Adicione um paragrafo"}
                 />
                 <section className="relative">
                     <img
@@ -224,9 +272,10 @@ export const NewsDetailAdmin = ({ news, setNews } : Props) => {
                 <footer className={"flex flex-col  gap-2"}>
                     <Button
                         description={"Adicionar novo slot para imagem"}
-                        className={"w-fit self-start mt-2"}
+                        className={"w-fit self-end mt-2"}
                         icon={Plus}
                         onClick={handleAddNewSlot}
+                        title={"Adicione uma imagem"}
                     />
                     <section className={" w-full grid md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-2 overscroll-x-auto"}>
                         {
