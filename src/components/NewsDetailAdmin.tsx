@@ -1,7 +1,7 @@
 import {NewsDetailInput} from "./NewsDetailInputs.tsx";
 import {Tooltip} from "@mui/material";
 import {Camera, Check, Plus, Search, X} from "lucide-react";
-import {ChangeEvent, FormEvent, useCallback, useEffect, useState} from "react";
+import {ChangeEvent, Dispatch, FormEvent, SetStateAction, useCallback, useEffect, useState} from "react";
 import {Button} from "../UI/Button.tsx";
 import {Noticia} from "../@types/News";
 import {useUserContext} from "../store/user.ts";
@@ -17,6 +17,7 @@ import {useContextSelector} from "use-context-selector";
 import {toastContext} from "./Toast.tsx";
 import DefaultImage from "/default-featured-image.jpg";
 import {AxiosError} from "axios";
+import {useParams} from "react-router-dom";
 
 export type ImageSlot = {
     fileName : string;
@@ -27,10 +28,12 @@ export type ImageSlot = {
 
 interface Props {
     news? : Noticia
+    setNews : Dispatch<SetStateAction<Noticia|undefined>>
 }
 
-export const NewsDetailAdmin = ({ news } : Props) => {
+export const NewsDetailAdmin = ({ news, setNews } : Props) => {
 
+    const { getNewsById } = useNews();
     const user = useUserContext(state => state.user);
     const site = useSiteContext(state => state.site);
     const openToast = useContextSelector(toastContext, (context) => context.open);
@@ -40,7 +43,7 @@ export const NewsDetailAdmin = ({ news } : Props) => {
     const [ thumbnailSlot, setThumbnailSlot ] = useState<ImageSlot>({
         url : news ? news?.url_thumbimg : DefaultImage,
     } as ImageSlot);
-
+    const params = useParams();
     const [ newsData, setNewsData ] = useState<Noticia>({
         url_thumbimg : news ? news.url_thumbimg : DefaultImage,
         images : news ? news.images : [],
@@ -132,7 +135,7 @@ export const NewsDetailAdmin = ({ news } : Props) => {
 
     useEffect(() => {
         async function mapImageSlotsFromNewsImages () {
-            const slotsFromNewsImages =  await Promise.all(
+            const slotsFromNewsImages = await Promise.all(
                 news!.images
                     .filter((img) => img.url != thumbnailSlot.url)
                     .map(async(img, idx) => {
@@ -153,33 +156,102 @@ export const NewsDetailAdmin = ({ news } : Props) => {
             mapImageSlotsFromNewsImages();
         }
     }, [ news, thumbnailSlot ]);
+
+    useEffect(() => {
+        if (!news && params.id)
+        {
+            getNewsById(Number(params.id)!)
+                .then((data) => {
+                    setNews(data)
+                })
+        }
+    }, [news]);
     return (
-        <form className="flex flex-col gap-3">
-            <NewsDetailInput
-                onChangeFn={(e) => setNewsData({ ...newsData, nm_titulo : e.target.value})}
-                value={newsData.nm_titulo ?? ""}
-                placeholder={`${news ? "Editar o título" : "Adicione um título"}`}
-                variant="title"
-                maxLength={200}
-            />
-            <NewsDetailInput
-                onChangeFn={(e) => setNewsData({ ...newsData, ds_subtitulo : e.target.value})}
-                value={newsData.ds_subtitulo ?? ""}
-                placeholder={`${news ? "Editar o subtítulo" : "Adicione um subtítulo"}`}
-                variant="subtitle"
-                maxLength={500}
-            />
-            <NewsDetailInput
-                onChangeFn={(e) => setNewsData({ ...newsData, ds_conteudo : e.target.value })}
-                value={newsData.ds_conteudo ?? ""}
-                placeholder={`${news ? "Editar o paragrafo" : "Adicione um paragrafo"}`}
-                variant="paragraph"
-                maxLength={2000}
-            />
+        <>
+            <form
+                name={"news_detail"}
+                id={"news_detail"}
+                onSubmit={handleSubmit}
+                className="flex flex-col gap-3"
+            >
+                <NewsDetailInput
+                    onChangeFn={(e) => setNewsData({ ...newsData, nm_titulo : e.target.value})}
+                    value={newsData.nm_titulo ?? ""}
+                    placeholder={`${news ? "Editar o título" : "Adicione um título"}`}
+                    variant="title"
+                    maxLength={200}
+                />
+                <NewsDetailInput
+                    onChangeFn={(e) => setNewsData({ ...newsData, ds_subtitulo : e.target.value})}
+                    value={newsData.ds_subtitulo ?? ""}
+                    placeholder={`${news ? "Editar o subtítulo" : "Adicione um subtítulo"}`}
+                    variant="subtitle"
+                    maxLength={500}
+                />
+                <NewsDetailInput
+                    onChangeFn={(e) => setNewsData({ ...newsData, ds_conteudo : e.target.value })}
+                    value={newsData.ds_conteudo ?? ""}
+                    placeholder={`${news ? "Editar o paragrafo" : "Adicione um paragrafo"}`}
+                    variant="paragraph"
+                    maxLength={2000}
+                />
+                <section className="relative">
+                    <img
+                        alt={"Imagem de thumbnail da noticia"}
+                        src={thumbnailSlot.url}
+                        className="w-full h-fit rounded-2xl shadow-lg "
+                    />
+
+                    <Tooltip
+                        enterDelay={500}
+                        enterNextDelay={400}
+                        title="Alterar imagem de thumbnail da notícia"
+                    >
+                        <label
+                            className="rounded-lg p-3 hover:bg-zinc-300 backdrop:blur-3xl cursor-pointer transition duration-150 bg-zinc-200 absolute -bottom-4 -right-4"
+                            htmlFor="noticia_img"
+                        >
+                            <Camera size={20}/>
+                        </label>
+                    </Tooltip>
+                    <input
+                        onChange={handleChangeImage}
+                        className="sr-only"
+                        id="noticia_img"
+                        type="file"
+                    />
+                </section>
+                <footer className={"flex flex-col  gap-2"}>
+                    <Button
+                        description={"Adicionar novo slot para imagem"}
+                        className={"w-fit self-start mt-2"}
+                        icon={Plus}
+                        onClick={handleAddNewSlot}
+                    />
+                    <section className={" w-full grid md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-2 overscroll-x-auto"}>
+                        {
+                            imageSlots.length > 0 && (
+                                imageSlots.map((slot, idx) => (
+                                    <ImageSlotFc
+                                        key={slot.id}
+                                        handleChangeSlotImage={handleChangeSlotImage}
+                                        idx={idx}
+                                        handleRemoveSlot={handleRemoveSlot}
+                                        slot={slot}
+                                    />
+
+                                ))
+                            )
+                        }
+                    </section>
+                </footer>
+
+            </form>
             <h5 className={"text-lg"}>
                 Tags
             </h5>
             <section className={"rounded-2xl bg-zinc-50 border border-zinc-200 p-4 flex flex-wrap gap-2"}>
+
                 <Dialog.Root
                     open={isDialogOpen}
                     onOpenChange={setDialogOpen}
@@ -188,7 +260,6 @@ export const NewsDetailAdmin = ({ news } : Props) => {
                         <Button
                             description={"Buscar tags"}
                             icon={Search}
-                            className={"p-3"}
                         />
                     </Dialog.Trigger>
                     <Dialog.Portal >
@@ -202,92 +273,34 @@ export const NewsDetailAdmin = ({ news } : Props) => {
                 </Dialog.Root>
                 {
                     selectedTags.length >0 && (
-                         selectedTags.map((tag)=> (
-                              <span
-                                  key={tag.id_tag}
-                                  className={"rounded-lg flex items-center bg-zinc-100 p-2 gap-2 border border-zinc-200 hover:bg-zinc-200 transition duration-150"}
-                              >
+                        selectedTags.map((tag)=> (
+                            <span
+                                key={tag.id_tag}
+                                className={"rounded-lg flex items-center bg-zinc-100 p-2 gap-2 border border-zinc-200 hover:bg-zinc-200 transition duration-150"}
+                            >
                               {tag.nm_slug}
-                                  <Button
-                                     description={"Remover tag"}
-                                     icon={X}
-                                     className={"p-1"}
-                                     onClick={() => handleSelectTag(tag)}
-                              />
+                                    <Button
+                                        description={"Remover tag"}
+                                        icon={X}
+                                        className={"p-1"}
+                                        onClick={() => handleSelectTag(tag)}
+                                    />
                               </span>
                             )
                         )
                     )
                 }
             </section>
-            <section className="relative">
-                <img
-                    alt={"Imagem de thumbnail da noticia"}
-                    src={thumbnailSlot.url}
-                    className="w-full h-fit rounded-2xl shadow-lg "
-                />
-
-                <Tooltip
-                    enterDelay={500}
-                    enterNextDelay={400}
-                    title="Alterar imagem de thumbnail da notícia"
-                >
-                    <label
-                        className="rounded-lg p-3 hover:bg-zinc-300 backdrop:blur-3xl cursor-pointer transition duration-150 bg-zinc-200 absolute -bottom-4 -right-4"
-                        htmlFor="noticia_img"
-                    >
-                        <Camera size={20}/>
-                    </label>
-                </Tooltip>
-                <input
-                    onChange={handleChangeImage}
-                    className="sr-only"
-                    id="noticia_img"
-                    type="file"
-                />
-            </section>
-            <footer className={"flex flex-col  gap-2"}>
-                <Button
-                    description={"Adicionar novo slot para imagem"}
-                    className={"w-fit self-start mt-2"}
-                    icon={Plus}
-                    onClick={handleAddNewSlot}
-                />
-                <section className={" w-full grid md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-2 overscroll-x-auto"}>
-                    {
-                        imageSlots.length > 0 && (
-                            imageSlots.map((slot, idx) => (
-                                <ImageSlotFc
-                                    key={slot.id}
-                                    handleChangeSlotImage={handleChangeSlotImage}
-                                    idx={idx}
-                                    handleRemoveSlot={handleRemoveSlot}
-                                    slot={slot}
-                                />
-
-                            ))
-                        )
-                    }
-                </section>
-            </footer>
             <Button
+                form={"news_detail"}
                 disabled={isPending}
                 isLoading={isPending}
                 type="submit"
-                onClick={handleSubmit}
                 title="Salvar"
                 className="self-end"
                 icon={Check}
             />
-        </form>
+        </>
+
     );
 }
-/*
-*
-* {
-	"id_site" : 1,
-	"page" : 1,
-	"id_usuario" : 1,
-	"nm_titulo" : ""
-}
-* */

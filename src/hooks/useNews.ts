@@ -34,6 +34,10 @@ export function useNews ()
         return response.data as  Noticia[] ;
     }
 
+    async function getNewsById (id : number) {
+        const response = await api.get(`${PATH_NAME}/${id}`);
+        return response.data as Noticia;
+    }
     async function deleteNews (id : number)
     {
         await api.delete(`${PATH_NAME}/${id}`);
@@ -47,10 +51,11 @@ export function useNews ()
         await api.post(`${PATH_NAME}/dislike`, payload);
     }
     return {
-        getNews, 
+        getNews,
         postNews,
-        deleteNews,
         likeNews,
+        deleteNews,
+        getNewsById,
         dislikeNews
     }
 }
