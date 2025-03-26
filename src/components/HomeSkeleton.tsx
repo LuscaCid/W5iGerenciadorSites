@@ -19,7 +19,8 @@ export const HomeSkeleton = () => {
                                 key={i}
                                 variant={"rectangular"}
                                 animation={"wave"}
-                                className={"w-[70%]"}
+                                className={"rounded-full h-[30px] shadow-2xl"}
+                                width={Math.round(Math.random() * 100) + 100}
                             />
                         ))
                     }
