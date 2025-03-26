@@ -42,7 +42,7 @@ export const NewsDetailAdmin = ({ news, setNews } : Props) => {
     const [ selectedTags, setSelectedTags ] = useState<Tag[]>(news ? news.tags ?? [] : []);
     const [ imageSlots, setImageSlots ] = useState<ImageSlot[]>([]);
 
-    const [ paragraphSlots, setParagraphsSlots ] = useState<Paragraph[]>([]);
+    const [ paragraphSlots, setParagraphsSlots ] = useState<Paragraph[]>(news ? news.paragraphs ?? [] : []);
     const [ thumbnailSlot, setThumbnailSlot ] = useState<ImageSlot>({
         url : news ? news?.url_thumbimg : DefaultImage,
     } as ImageSlot);
@@ -89,9 +89,17 @@ export const NewsDetailAdmin = ({ news, setNews } : Props) => {
         selectedTags.forEach((tag) => formData.append("tags", tag.id_tag.toString()));
         imageSlots.forEach((slot) => formData.append('images', slot.file))
 
-        await postNewsAsync(formData);
+        const slotsJson = JSON.stringify(paragraphSlots);
+        console.log(slotsJson);
+
+        formData.append('paragraphs', slotsJson);
+        //await postNewsAsync(formData);
 
     }, [ newsData, imageSlots, postNewsAsync, news, site, user, thumbnailSlot, selectedTags ]);
+
+    const handleChangeParagraphSlotData = useCallback((value : string) => {
+
+    }, [paragraphSlots]);
 
     const handleDeleteParagraphSlot = useCallback((idSlot : string|number) => {
         setParagraphsSlots(
