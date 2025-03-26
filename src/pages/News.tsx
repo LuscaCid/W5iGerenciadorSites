@@ -1,7 +1,7 @@
 import { NewsCard } from "../components/NewsCard";
 import {useCallback, useEffect, useState} from "react";
 import {Button} from "../UI/Button";
-import {ArrowLeft, ArrowRight, EllipsisVertical, Plus, X, SlidersHorizontal} from "lucide-react";
+import {ArrowLeft, ArrowRight, EllipsisVertical, Plus, X, FilterX} from "lucide-react";
 import { useUserContext } from "../store/user";
 import { Tag as TagComponent } from "../components/Tag";
 import {useNavigate} from "react-router-dom";
@@ -101,8 +101,8 @@ export const News = () => {
             )
           }
           <Button
-            className=" shadow-lg h-10 w-10 p-2 text-zinc-100 items-center justify-center bg-blue-500 hover:bg-blue-600 rounded-full"
-            icon={SlidersHorizontal}
+            className=" shadow-lg h-10 w-10 p-2 text-zinc-100 items-center justify-center bg-red-400 hover:bg-red-500 rounded-full"
+            icon={FilterX}
             onClick={handleClearFilters}
             description={"Limpar todos os filtros"}
           />
@@ -183,7 +183,7 @@ export const News = () => {
               }}
               description={"Limpar tags"}
               icon={X}
-              className={"text-sm p-auto  bg-red-400 p-1 hover:bg-red-500"}
+              className={"text-sm p-auto  bg-red-400 p-1 text-zinc-100  hover:bg-red-500"}
             />
           </div>
 
