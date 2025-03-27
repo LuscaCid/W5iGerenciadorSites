@@ -95,7 +95,8 @@ export const NewsDetailAdmin = ({ news, setNews } : Props) => {
         selectedTags.forEach((tag) => formData.append("tags", tag.id_tag.toString()));
         imageSlots.forEach((slot) => formData.append('images', slot.file))
 
-        const slotsJson = JSON.stringify(paragraphSlots);
+        const paragraphOkToSend = paragraphSlots.filter(pS => pS.ds_paragrafo != undefined || pS.ds_paragrafo != "");
+        const slotsJson = JSON.stringify(paragraphOkToSend);
         formData.append('paragraphsJSON', slotsJson);
         await postNewsAsync(formData);
 
