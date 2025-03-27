@@ -3,4 +3,5 @@ export interface Paragraph {
     ds_subtitulo : string;
     ds_paragrafo : string;
     id_noticia? : number;
+    nu_order : number;
 }
