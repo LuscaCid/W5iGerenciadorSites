@@ -104,9 +104,6 @@ export const AdminLogin = () => {
           />
         </form>
       </FormProvider>
-      
-
-
     </div>
   )
 }
