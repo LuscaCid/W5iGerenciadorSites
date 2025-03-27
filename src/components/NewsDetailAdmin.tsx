@@ -87,6 +87,7 @@ export const NewsDetailAdmin = ({ news, setNews } : Props) => {
         formData.append("url_thumbimg", newsData.url_thumbimg!);
         formData.append("id_site", site!.id_site.toString());
         formData.append("id_usuario", user!.id_usuario.toString());
+        formData.append("dt_atualizacao", new Date().toString());
 
         if (news) formData.append("id_noticia", news.id_noticia.toString());
 
