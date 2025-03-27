@@ -20,8 +20,8 @@ export const NewsDetailClient = ({ news, setNews } : Props) => {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
     const { getNewsById } = useNews();
-    const handleSelectTag = useCallback(async(tag : Tag) => {
 
+    const handleSelectTag = useCallback(async(tag : Tag) => {
         setSelectedTags([tag]);
         await queryClient.invalidateQueries({queryKey : ["news"]});
 
@@ -73,7 +73,7 @@ export const NewsDetailClient = ({ news, setNews } : Props) => {
                                             <span
                                                 onClick={() => handleSelectTag(tag)}
                                                 key={tag.id_tag}
-                                                className={"rounded-full flex text-xs lg:text-md text-nowrap items-center bg-zinc-200/60 backdrop-blur-md  hover:bg-zinc-300 hover:opacity-100 font-semibold  py-0.5 px-1  lg:py-1 lg:px-2 cursor-pointer gap-2    transition duration-150"}
+                                                className={"rounded-full flex text-xs lg:text-md text-nowrap items-center bg-zinc-200/60 backdrop-blur-md hover:bg-zinc-300 hover:opacity-100 font-semibold  py-0.5 px-1  lg:py-1 lg:px-2 cursor-pointer gap-2    transition duration-150"}
                                             >
                                     {tag.nm_slug}
                                 </span>
@@ -91,6 +91,22 @@ export const NewsDetailClient = ({ news, setNews } : Props) => {
                                 news?.ds_conteudo
                             }
                         </p>
+                        <article className={"flex flex-col gap-4"}>
+                            {
+                                news.paragraphs && news.paragraphs.length > 0 && (
+                                    news.paragraphs.map((paragraph) => (
+                                        <section className={"flex flex-col gap-1"}>
+                                            { paragraph.ds_subtitulo && <h3 className={"text-lg font-semibold text-zinc-700"}>
+                                                { paragraph.ds_subtitulo }
+                                            </h3>}
+                                            <p className={"text-md text-zinc-500"}>
+                                                { paragraph.ds_paragrafo }
+                                            </p>
+                                        </section>
+                                    ))
+                                )
+                            }
+                        </article>
                         {
                             news.images && news.images.length > 0 && (
                                 news.images.map((img) => (
