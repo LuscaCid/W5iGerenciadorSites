@@ -118,7 +118,7 @@ export function NewsCard (
                             title={`Pressione para encontrar notícias sobre "${tag.nm_slug}"`}
                             enterDelay={300}
                             enterNextDelay={300}
-                            key={tag.nm_slug}
+                            key={tag.nm_slug + tag.id_tag}
                         >
                             <span
                                 onClick={() => handleSelectTag(tag)}

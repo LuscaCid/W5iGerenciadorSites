@@ -19,7 +19,8 @@ import DefaultImage from "/default-featured-image.jpg";
 import {AxiosError} from "axios";
 import {useParams} from "react-router-dom";
 import {Paragraph} from "../@types/Paragraph";
-
+import { Reorder } from "framer-motion";
+import {ParagraphSlot} from "./ParagraphSlot.tsx";
 export type ImageSlot = {
     fileName : string;
     id : number|string;
@@ -31,18 +32,23 @@ interface Props {
     news? : Noticia
     setNews : Dispatch<SetStateAction<Noticia|undefined>>
 }
-
+export type ChangeInputValueType = keyof Pick<Paragraph, "ds_subtitulo" | "ds_paragrafo">;
 export const NewsDetailAdmin = ({ news, setNews } : Props) => {
 
     const { getNewsById } = useNews();
     const user = useUserContext(state => state.user);
     const site = useSiteContext(state => state.site);
     const openToast = useContextSelector(toastContext, (context) => context.open);
-    const [isDialogOpen, setDialogOpen] = useState(false);
+    const [ isDialogOpen, setDialogOpen ] = useState(false);
     const [ selectedTags, setSelectedTags ] = useState<Tag[]>(news ? news.tags ?? [] : []);
     const [ imageSlots, setImageSlots ] = useState<ImageSlot[]>([]);
 
     const [ paragraphSlots, setParagraphsSlots ] = useState<Paragraph[]>(news ? news.paragraphs ?? [] : []);
+
+    const [ paragraphSlotsIds, setParagraphSlotsIds ] = useState<(number|string)[]>(
+        news && news.paragraphs && news.paragraphs.length > 0 ? news.paragraphs.map((p) => p.id_paragrafo!) : []
+    );
+
     const [ thumbnailSlot, setThumbnailSlot ] = useState<ImageSlot>({
         url : news ? news?.url_thumbimg : DefaultImage,
     } as ImageSlot);
@@ -90,22 +96,65 @@ export const NewsDetailAdmin = ({ news, setNews } : Props) => {
         imageSlots.forEach((slot) => formData.append('images', slot.file))
 
         const slotsJson = JSON.stringify(paragraphSlots);
-        console.log(slotsJson);
+        formData.append('paragraphsJSON', slotsJson);
+        await postNewsAsync(formData);
 
-        formData.append('paragraphs', slotsJson);
-        //await postNewsAsync(formData);
+    }, [ newsData, imageSlots, postNewsAsync, news, site, user, thumbnailSlot, selectedTags, paragraphSlots ]);
 
-    }, [ newsData, imageSlots, postNewsAsync, news, site, user, thumbnailSlot, selectedTags ]);
-
-    const handleChangeParagraphSlotData = useCallback((value : string) => {
-
-    }, [paragraphSlots]);
+    const handleAddNewParagraphSlot = useCallback(() => {
+        const newParagraphId = crypto.randomUUID()
+        setParagraphsSlots(
+            (prev) => (
+                [
+                    ...prev,
+                    {
+                        id_paragrafo : newParagraphId,
+                        id_noticia : news ? news.id_noticia : undefined,
+                        nu_order : paragraphSlots.length
+                    } as Paragraph
+                ]
+            )
+        );
+        setParagraphSlotsIds((prev) => (
+            [
+                ...prev,
+                newParagraphId
+            ]
+        ))
+    }, [ paragraphSlots, setParagraphsSlots, paragraphSlotsIds ]);
+    const handleChangeParagraphSlotData = useCallback((type : ChangeInputValueType, value : string, id : string|number) => {
+        setParagraphsSlots(
+            paragraphSlots.map((slot) => {
+                if (slot.id_paragrafo == id)
+                {
+                    return {
+                        ...slot,
+                        ds_paragrafo : type == "ds_paragrafo" ? value : slot.ds_paragrafo,
+                        ds_subtitulo : type == "ds_subtitulo" ? value : slot.ds_subtitulo
+                    }
+                }
+                return slot;
+            })
+        )
+    }, [paragraphSlots, setParagraphsSlots, paragraphSlots, handleAddNewParagraphSlot]);
 
     const handleDeleteParagraphSlot = useCallback((idSlot : string|number) => {
         setParagraphsSlots(
             paragraphSlots.filter(slot => slot.id_paragrafo != idSlot)
         )
     }, [paragraphSlots, setParagraphsSlots]);
+
+    /**
+     * @param newOrder Basicamente vai ser a nova ordem de ids retornada pela reordenação
+     */
+    const onParagraphReorder = useCallback((newOrder : (number|string)[]) => {
+        const newOrderForParagraphs = newOrder
+            .map(
+                (order) => paragraphSlots
+                .find(p => p.id_paragrafo == order)!);
+
+        setParagraphsSlots(newOrderForParagraphs.map((_, i) => ({..._, nu_order : i}) ) );
+    }, [paragraphSlots]);
 
     const handleChangeSlotImage = useCallback((e : ChangeEvent<HTMLInputElement>, id : number|string) => {
         if (e.target.files)
@@ -182,9 +231,21 @@ export const NewsDetailAdmin = ({ news, setNews } : Props) => {
             getNewsById(Number(params.id)!)
                 .then((data) => {
                     setNews(data)
+                    setNewsData({
+                        ...data,
+                    })
+                    setThumbnailSlot({
+                        url : data ? data.url_thumbimg : DefaultImage,
+                    }  as ImageSlot);
+
+                    setParagraphSlotsIds(
+                        data && data.paragraphs && data.paragraphs.length > 0 ? data.paragraphs.map((p) => p.id_paragrafo!) : []
+                    );
+
+                    setParagraphsSlots(data ? data.paragraphs ?? [] : []);
                 })
         }
-    }, [news]);
+    }, [news, setParagraphsSlots, setParagraphSlotsIds, setThumbnailSlot]);
     return (
         <>
             <form
@@ -216,37 +277,27 @@ export const NewsDetailAdmin = ({ news, setNews } : Props) => {
                 />
                 {
                     paragraphSlots.length > 0 && (
-                        paragraphSlots.map((paragraphSlot) => (
-                            <section
-                                key={paragraphSlot.id_paragrafo}
-                                className={"flex gap-1 flex-col px-4 py-5 rounded-2xl border border-zinc-100 bg-zinc-100 relative"}
-                            >
-                                <Button
-                                    className={"bg-red-400 hover:bg-red-500 w-fit p-2 text-zinc-50  absolute -right-10 top-0 rounded-lg  "}
-                                    icon={X}
-                                    description={"Remover paragrafo"}
-                                    onClick={() => handleDeleteParagraphSlot(paragraphSlot.id_paragrafo!)}
-                                />
-                                <NewsDetailInput
-                                    value={paragraphSlot.ds_subtitulo}
-                                    onChangeFn={() => console.log("a")}
-                                    variant={"subtitle"}
-                                    placeholder={"Adicione um subtitulo opcional ao paragrafo"}
-                                />
-                                <NewsDetailInput
-                                    value={paragraphSlot.ds_paragrafo}
-                                    onChangeFn={() => console.log("a")}
-                                    variant={"paragraph"}
-                                    placeholder={"Texto do paragrafo aparecerá aqui"}
-                                />
-                            </section>
+                        <Reorder.Group
+                            onReorder={onParagraphReorder}
+                            values={paragraphSlotsIds}
+                        >
+                            {
+                                paragraphSlots.map((paragraphSlot) => (
+                                    <ParagraphSlot
+                                        key={paragraphSlot.id_paragrafo}
+                                        paragraph={paragraphSlot}
+                                        handleDeleteParagraphSlot={handleDeleteParagraphSlot}
+                                        handleChangeParagraphSlotData={handleChangeParagraphSlotData}
+                                    />
+                                ))
+                            }
+                        </Reorder.Group>
 
-                        ))
                     )
                 }
                 <Button
                     icon={Plus}
-                    onClick={() => setParagraphsSlots(prev => ([...prev, { id_paragrafo : crypto.randomUUID() } as Paragraph]))}
+                    onClick={handleAddNewParagraphSlot}
                     description={"Adicionar paragrafo"}
                     className={"w-fit self-end"}
                     title={"Adicione um paragrafo"}
