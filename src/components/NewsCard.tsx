@@ -188,7 +188,7 @@ export function NewsCard (
                                     <Button
                                         description={"Excluir notícia"}
                                         icon={Trash}
-                                        className="bg-red-400 p-2 text-zinc-50 transition duration-300 self-end flex items-center justify-center w-fit hover:bg-red-500 shadow-lg"
+                                        className="bg-red-400 dark:bg-red-500 dark:hover:bg-red-600 p-2 text-zinc-50 transition duration-300 self-end flex items-center justify-center w-fit hover:bg-red-500 shadow-lg"
                                     />
                                 </AlertDialog.Trigger>
                                 <AlertDialog.Portal >
