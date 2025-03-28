@@ -89,7 +89,7 @@ export const MenuDropdown = ({ isMenuDropdownOpen, setIsMenuDropdownOpen, isMobi
                         <>
                             <Separator />
                             <Dialog.Root>
-                                <Dialog.Trigger className={"p-2 items-center justify-between gap-2 flex dark:bg-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-900 hover:outline-none transition duration-150 cursor-pointer rounded-md"}>
+                                <Dialog.Trigger className={"p-2 items-center justify-between gap-2 flex dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-900 hover:outline-none transition duration-150 cursor-pointer rounded-md"}>
                                     <span> Links</span> <LinkIcon size={18}/>
                                 </Dialog.Trigger>
                                 <Dialog.Portal>
