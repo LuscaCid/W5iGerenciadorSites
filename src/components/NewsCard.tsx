@@ -104,7 +104,7 @@ export function NewsCard (
     }, [ news, unDislikeFromStorageAndDatabase, dislikeInStorageAndDatabase ]);
 
     return (
-        <div className={`${titleOutside ? "bg-zinc-100 min-h-[340px]" : "bg-transparent"} relative overflow-hidden h-full   rounded-b-2xl rounded-t-2xl group`}>
+        <div className={`${titleOutside ? "bg-zinc-100 dark:bg-zinc-800 min-h-[340px] " : "bg-transparent"} relative overflow-hidden h-full   rounded-b-2xl rounded-t-2xl group`}>
             <img
                 alt={"Imagem de apresentação da notícia"}
                 onClick={() => navigate(`/noticia/${news.id_noticia}`)}
@@ -122,7 +122,7 @@ export function NewsCard (
                         >
                             <span
                                 onClick={() => handleSelectTag(tag)}
-                                className="rounded-full px-2 text-white py-1 text-nowrap text-xs bg-slate-400/40 hover:bg-slate-800/40 transition duration-150 backdrop-blur-lg cursor-pointer"
+                                className="rounded-full px-2 text-white py-1 text-nowrap text-xs bg-slate-400/40 dark:bg-slate-600/40 hover:bg-slate-800/40 dark:hover:bg-slate-900/60 transition duration-150 backdrop-blur-lg cursor-pointer"
                             >
                                 { tag.nm_slug }
                             </span>
@@ -131,10 +131,10 @@ export function NewsCard (
                 }
             </header>
 
-            <footer className={`${titleOutside ? "bg-zinc-100 rounded-b-2xl px-3 py-4 pb-10 h-full max-h-max    " : "absolute bottom-3 left-2 "}  w-full flex flex-col gap-2`}>
+            <footer className={`${titleOutside ? "bg-zinc-100 dark:bg-zinc-800  rounded-b-2xl px-3 py-4 pb-10 h-full max-h-max    " : "absolute bottom-3 left-2 "}  w-full flex flex-col gap-2`}>
                 <h2 
                     onClick={() => navigate(`/noticia/${news.id_noticia}`)}
-                    className={`font-bold cursor-pointer overflow-ellipsis text-${titleSize} ${titleOutside ? "w-[80%]" : "w-[75%] p-4"}  text-${textColor} hover:underline`}
+                    className={`font-bold cursor-pointer overflow-ellipsis  text-${titleSize} ${titleOutside ? "w-[80%]" : "w-[75%] p-4"}  text-${textColor} dark:text-zinc-100 hover:underline`}
                 >
                     {news.nm_titulo}
                 </h2>

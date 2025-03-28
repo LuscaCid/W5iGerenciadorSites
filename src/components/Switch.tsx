@@ -42,7 +42,7 @@ export function Switch <T extends string, >(
                 className={twMerge([`flex ${flexCol ? "flex-col" : "flex-row items-center"}  gap-2 `, className])}
             >
                 <label
-                    className="text-md font-semibold  text-zinc-900"
+                    className="text-md font-semibold dark:text-zinc-100 text-zinc-900"
                     htmlFor={name}>
                     {label}
                 </label>

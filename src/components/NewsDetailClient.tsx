@@ -73,7 +73,7 @@ export const NewsDetailClient = ({ news, setNews } : Props) => {
                                             <span
                                                 onClick={() => handleSelectTag(tag)}
                                                 key={tag.id_tag}
-                                                className={"rounded-full flex text-xs lg:text-md text-nowrap items-center bg-zinc-200/60 backdrop-blur-md hover:bg-zinc-300 hover:opacity-100 font-semibold  py-0.5 px-1  lg:py-1 lg:px-2 cursor-pointer gap-2    transition duration-150"}
+                                                className={"rounded-full flex text-xs lg:text-md text-nowrap items-center bg-zinc-200/60 dark:bg-zinc-600 backdrop-blur-md dark:hover:bg-zinc-700 hover:bg-zinc-300 hover:opacity-100 font-semibold  py-0.5 px-1  lg:py-1 lg:px-2 cursor-pointer gap-2    transition duration-150"}
                                             >
                                     {tag.nm_slug}
                                 </span>
@@ -83,23 +83,23 @@ export const NewsDetailClient = ({ news, setNews } : Props) => {
                             </section>
                         </header>
 
-                        <h3 className="text-2xl font-[600] text-zinc-600">
+                        <h3 className="text-2xl font-[600] text-zinc-600 dark:text-zinc-50">
                             {news?.ds_subtitulo}
                         </h3>
-                        <p className="text-md text-zinc-500">
+                        <p className="text-md text-zinc-500 dark:text-zinc-300 mb-5 ">
                             {
                                 news?.ds_conteudo
                             }
                         </p>
-                        <article className={"flex flex-col gap-4"}>
+                        <article className={"flex flex-col gap-7"}>
                             {
                                 news.paragraphs && news.paragraphs.length > 0 && (
                                     news.paragraphs.map((paragraph) => (
                                         <section className={"flex flex-col gap-1"}>
-                                            { paragraph.ds_subtitulo && <h3 className={"text-lg font-semibold text-zinc-700"}>
+                                            { paragraph.ds_subtitulo && <h3 className={"text-lg font-semibold dark:text-zinc-100 text-zinc-700"}>
                                                 { paragraph.ds_subtitulo }
                                             </h3>}
-                                            <p className={"text-md text-zinc-500"}>
+                                            <p className={"text-md text-zinc-500 dark:text-zinc-300"}>
                                                 { paragraph.ds_paragrafo }
                                             </p>
                                         </section>

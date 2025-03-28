@@ -27,7 +27,7 @@ export function HeaderLink ({ title, to, className, onClick, target = "_self" , 
             <Link
                 target={target}
                 onClick={onClick}
-                className={twMerge([`${pathDictionary == route ? "border-b-[4px] border-blue-500" : "border-b-[4px] border-transparent" } px-10 py-8 text-lg hover:bg-blue-500 hover:text-zinc-100 flex items-center justify-center transition duration-150 `], [className]) }
+                className={twMerge([`${pathDictionary == route ? "border-b-[4px] border-blue-500" : "border-b-[4px] border-transparent" } px-10 py-8 text-lg hover:bg-blue-500 hover:text-zinc-100 dark:bg-zinc-8   00 flex items-center justify-center transition duration-150 `], [className]) }
                 to={to}
             >
                 {title}

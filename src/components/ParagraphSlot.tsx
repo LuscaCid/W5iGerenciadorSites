@@ -23,11 +23,11 @@ export const ParagraphSlot = ({ paragraph, handleDeleteParagraphSlot, handleChan
             animate={{opacity : 1}}
             exit={{opacity : 0}}
             style={{y}}
-            className={"flex gap-1 flex-col mb-4 px-4 py-5 rounded-2xl border border-zinc-100 bg-zinc-100 relative"}
+            className={"flex gap-1 flex-col mb-4 px-4 py-5 rounded-2xl border border-zinc-100 bg-zinc-100 dark:bg-zinc-800 dark:border-zinc-700 relative"}
         >
             <button
                 type={"button"}
-                className={"absolute -left-10 top-0 p-2 w-fit reorder-handle cursor-grab bg-zinc-100 rounded-lg"}
+                className={"absolute -left-10 top-0 p-2 w-fit reorder-handle cursor-grab bg-zinc-100 dark:bg-zinc-800 rounded-lg"}
                 onPointerDown={(event) => dragControls.start(event)}
             >
                 <Grip size={15}/>

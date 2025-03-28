@@ -148,7 +148,7 @@ export const NewsDetailAdmin = ({ news, setNews } : Props) => {
 
     /**
      * @param newOrder Basicamente vai ser a nova ordem de ids retornada pela reordenação
-     */
+      */
     const onParagraphReorder = useCallback((newOrder : (number|string)[]) => {
         const newOrderForParagraphs = newOrder
             .map(
@@ -317,7 +317,7 @@ export const NewsDetailAdmin = ({ news, setNews } : Props) => {
                         title="Alterar imagem de thumbnail da notícia"
                     >
                         <label
-                            className="rounded-lg p-3 hover:bg-zinc-300 backdrop:blur-3xl cursor-pointer transition duration-150 bg-zinc-200 absolute -bottom-4 -right-4"
+                            className="rounded-lg p-3 hover:bg-zinc-300 backdrop:blur-3xl cursor-pointer transition duration-150 bg-zinc-200 dark:bg-zinc-800  absolute -bottom-4 -right-4"
                             htmlFor="noticia_img"
                         >
                             <Camera size={20}/>
@@ -338,7 +338,7 @@ export const NewsDetailAdmin = ({ news, setNews } : Props) => {
                         onClick={handleAddNewSlot}
                         title={"Adicione uma imagem"}
                     />
-                    <section className={" w-full grid md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-2 overscroll-x-auto"}>
+                    <section className={" w-full grid md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-2 overscroll-x-auto "}>
                         {
                             imageSlots.length > 0 && (
                                 imageSlots.map((slot, idx) => (
@@ -360,7 +360,7 @@ export const NewsDetailAdmin = ({ news, setNews } : Props) => {
             <h5 className={"text-lg"}>
                 Tags
             </h5>
-            <section className={"rounded-2xl bg-zinc-50 border border-zinc-200 p-4 flex flex-wrap gap-2"}>
+            <section className={"rounded-2xl bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 p-4 flex flex-wrap gap-2"}>
 
                 <Dialog.Root
                     open={isDialogOpen}
@@ -386,16 +386,16 @@ export const NewsDetailAdmin = ({ news, setNews } : Props) => {
                         selectedTags.map((tag)=> (
                             <span
                                 key={tag.id_tag}
-                                className={"rounded-lg flex items-center bg-zinc-100 p-2 gap-2 border border-zinc-200 hover:bg-zinc-200 transition duration-150"}
+                                className={"rounded-lg flex items-center bg-zinc-100 p-2 gap-2 border border-zinc-200 dark:border-zinc-700 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-900 transition duration-150"}
                             >
-                              {tag.nm_slug}
-                                    <Button
-                                        description={"Remover tag"}
-                                        icon={X}
-                                        className={"p-1"}
-                                        onClick={() => handleSelectTag(tag)}
-                                    />
-                              </span>
+                                {tag.nm_slug}
+                                <Button
+                                    description={"Remover tag"}
+                                    icon={X}
+                                    className={"p-1"}
+                                    onClick={() => handleSelectTag(tag)}
+                                />
+                                </span>
                             )
                         )
                     )

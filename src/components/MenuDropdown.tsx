@@ -36,11 +36,11 @@ export const MenuDropdown = ({ isMenuDropdownOpen, setIsMenuDropdownOpen, isMobi
             onOpenChange={setIsMenuDropdownOpen}
         >
             <Dropdown.Trigger 
-                className={`${isMobile ? "bg-zinc-100 w-full items-center py-1 px-2 justify-center" : "py-9 px-10"} hover:bg-blue-200 transition duration-150  `}
+                className={`${isMobile ? "bg-zinc-100  items-center py-1 px-2 justify-center" : "py-9 px-10"} hover:bg-blue-200 dark:hover:bg-blue-500 dark:bg-zinc-900 transition duration-150  `}
             >
                 <Menu />
             </Dropdown.Trigger>
-            <Dropdown.Content className="flex flex-col gap-2 -top-10 border bg-zinc-100 -mt-5 border-zinc-200 shadow-lg rounded-lg p-2">
+            <Dropdown.Content className="flex flex-col gap-2 -top-10 border bg-zinc-100 dark:bg-zinc-800 -mt-5 border-zinc-200 dark:border-zinc-800 shadow-lg rounded-lg p-2">
                 <CustomDropdownItem 
                     onClick={() => navigate('/noticias')} 
                     title="Notícias" 
@@ -89,7 +89,7 @@ export const MenuDropdown = ({ isMenuDropdownOpen, setIsMenuDropdownOpen, isMobi
                         <>
                             <Separator />
                             <Dialog.Root>
-                                <Dialog.Trigger className={"p-2 items-center justify-between gap-2 flex hover:bg-zinc-200  hover:outline-none transition duration-150 cursor-pointer rounded-md"}>
+                                <Dialog.Trigger className={"p-2 items-center justify-between gap-2 flex dark:bg-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-900 hover:outline-none transition duration-150 cursor-pointer rounded-md"}>
                                     <span> Links</span> <LinkIcon size={18}/>
                                 </Dialog.Trigger>
                                 <Dialog.Portal>

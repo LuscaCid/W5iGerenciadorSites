@@ -86,9 +86,9 @@ export const News = () => {
   }, [ debounce, queryClient ]);
   return (
     <section className="flex  flex-col-reverse md:flex-row  gap-5 items-start relative mb-10 ">
-      <main className="md:border-r w-full md:w-3/4 flex flex-col border-zinc-200/80  md:pr-6 relative">
+      <main className="md:border-r w-full md:w-3/4 flex flex-col border-zinc-200/80 dark:border-zinc-700 md:pr-6 relative">
         <div className="flex items-center gap-2 justify-center absolute -top-12 right-4 z-[30]">
-          <span className="rounded-full flex items-center justify-center   h-10 text-nowrap px-3 bg-zinc-100  shadow-lg  text-sm select-none">
+          <span className="rounded-full flex items-center justify-center   h-10 text-nowrap px-3 bg-zinc-100 dark:bg-zinc-600  shadow-lg  text-sm select-none">
             Pág {page}
           </span>
           {
@@ -228,7 +228,7 @@ const NewNoticeCard = () => {
   return (
     <div
       onClick={() => navigate("/noticia")}
-      className="w-full bg-zinc-200 h-[380px] max-h-[380px]  hover:border-[3px] border-dashed border-zinc-400 rounded-2xl cursor-pointer hover:bg-zinc-300 transition duration-150 flex items-center justify-center"
+      className="w-full bg-zinc-200 dark:bg-zinc-800 h-[380px] max-h-[380px]  hover:border-[3px] border-dashed border-zinc-400 dark:border-zinc-700  rounded-2xl cursor-pointer hover:bg-zinc-300 dark:hover:bg-zinc-900 transition duration-150 flex items-center justify-center"
     >
       <main className="flex flex-col gap-2 items-center">
         <Plus size={55} className="text-zinc-400 "/>

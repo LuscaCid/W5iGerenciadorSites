@@ -30,12 +30,13 @@ export function Main ()
         window.scrollTo({ top: 0, behavior: "smooth" });
     }, [path])
     return (
-        <section className="h-screen flex flex-col justify-between  ">
-            <Header />
+        <section className="h-screen flex flex-col justify-between relative dark:text-zinc-200 dark:bg-zinc-900">
+
+            <Header isHomePage={pathDictionary == ""}/>
             <MobileHeader />
-            <main className="absolute  top-17 flex flex-col justify-between  md:top-23 bottom-48 h-screen right-0 left-0 ">
-                <section className="px-2 md:px-40 2xl:px-56">
-                    <span className="text-lg font-semibold w-fit border-b py-2 my-3 select-none hover border-zinc-200 flex items-center gap-2">
+            <main className={`absolute  top-17 ${pathDictionary == "" ? "md:top-40" : "md:top-28"}  flex flex-col justify-between  transition duration-150 bottom-48 h-screen right-0 left-0 `}>
+                <section className="px-2 md:px-40 2xl:px-56 dark:bg-zinc-900">
+                    <span className="text-lg font-semibold w-fit border-b py-2 my-3 mb-5 select-none hover border-zinc-200 dark:border-b-zinc-700 flex items-center gap-2">
                         <ChevronRight size={20}/>
                         {locationDictionary[pathDictionary]}
                     </span>
