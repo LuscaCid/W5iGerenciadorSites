@@ -5,8 +5,9 @@ import { AdminLogin } from "../pages/AdminLogin";
 import { News } from "../pages/News";
 import { NewsDetail } from "../pages/NewsDetail";
 import { Government } from "../pages/Governo";
-import { Municipio } from "../pages/Municipio";
+import { City } from "../pages/City.tsx";
 import {NotFound} from "../pages/404.tsx";
+import {Department} from "../pages/Department.tsx";
 
 export function AppRoutes () 
 {
@@ -16,7 +17,9 @@ export function AppRoutes ()
                 <Route element={<Home />} path="/" />
                 <Route element={<News />} path="/noticias" />
                 <Route element={<Government />} path="/governo" />
-                <Route element={<Municipio />} path="/municipio" />
+                <Route element={<City />} path="/municipio" />
+                <Route element={<Department />} path="/secretaria/:id" />
+                <Route element={<Department />} path="/secretaria" />
                 <Route element={<NewsDetail />} path="/noticia/:id" />
                 <Route element={<NewsDetail />} path="/noticia/" />
                 <Route element={<AdminLogin />} path="/login" />

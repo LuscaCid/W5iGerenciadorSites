@@ -1,4 +1,4 @@
-export const Municipio = () => {
+export const City = () => {
     return (
       <div>Municipio</div>
     )
