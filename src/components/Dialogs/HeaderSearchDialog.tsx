@@ -1,5 +1,5 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import {Dispatch, SetStateAction, useCallback, useEffect, useState} from "react";
+import {Dispatch, ReactNode, SetStateAction, useCallback, useEffect, useState} from "react";
 import { TextButton } from "../../UI/TextButton.tsx";
 import { Search, X } from "lucide-react";
 import {useNewsTagsContext} from "../../store/newsTags.ts";
@@ -9,9 +9,10 @@ import {useNavigate} from "react-router-dom";
 interface Props {
     setIsSearchWindowOpen : Dispatch<SetStateAction<boolean>>;
     isSearchWindowOpen: boolean;
-    isMobile? : boolean; 
+    isMobile? : boolean;
+    customTrigger? : ReactNode;
 }
-export function HeaderSearchDialog ({ isSearchWindowOpen, setIsSearchWindowOpen, isMobile } : Props) 
+export function HeaderSearchDialog ({ isSearchWindowOpen, setIsSearchWindowOpen, isMobile, customTrigger } : Props)
 {
     const setTitle = useNewsTagsContext((state) => state.setTitle);
     const [ query, setQuery ] = useState("");
@@ -40,12 +41,21 @@ export function HeaderSearchDialog ({ isSearchWindowOpen, setIsSearchWindowOpen,
     return (
     <Dialog.Root onOpenChange={setIsSearchWindowOpen} open={isSearchWindowOpen}>
         <Dialog.Trigger asChild>
-            <TextButton 
-                className={`${isMobile ? "bg-zinc-100 w-full items-center justify-center " : ""} hover:bg-blue-200 transition duration-150 py-9.5 px-10`}
-                onClick={ () => setIsSearchWindowOpen(!isSearchWindowOpen) }
-                icon={Search}
-                iconSize={20}
-            />
+            {
+                customTrigger ? (
+                    <>
+                        {customTrigger}
+                    </>
+                    ) : (
+
+                    <TextButton
+                        className={`${isMobile ? "bg-zinc-100 dark:bg-zinc-700 w-full items-center justify-center " : ""} hover:bg-blue-200 dark:hover:bg-blue-500 transition duration-150 py-9.5 px-10`}
+                        onClick={ () => setIsSearchWindowOpen(!isSearchWindowOpen) }
+                        icon={Search}
+                        iconSize={20}
+                    />
+                )
+            }
         </Dialog.Trigger>
         {/* a busca será realizada com base nas noticias encontradas com aquela informação passada */}
         <Dialog.Portal >

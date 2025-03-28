@@ -26,7 +26,7 @@ export const NewsCarousel = ({ news } : Props) =>
         navigate("/noticias")
     } ,[ navigate, setSelectedTags ])
     return(
-    <section className="flex-col md:flex-row flex gap-10 items-start">
+    <section className="flex-col md:flex-row flex gap-10 items-start mb-6">
         <Swiper
             modules={[Autoplay, Navigation, Controller]}
             slidesPerView={1}
@@ -67,7 +67,7 @@ export const NewsCarousel = ({ news } : Props) =>
                                         <p>
                                             {n.tags[0].nm_slug}
                                         </p>
-                                        <div className="h-0.5 bg-zinc-950 w-6 max-w-1/4 group-hover:w-72 transition-all  duration-200 "/>
+                                        <div className="h-0.5 bg-zinc-950 dark:bg-zinc-700 w-6 max-w-1/4 group-hover:w-72 transition-all  duration-200 "/>
                                     </div>
                                 </Tooltip>
                             )}
