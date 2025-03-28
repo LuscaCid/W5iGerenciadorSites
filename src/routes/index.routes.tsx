@@ -39,6 +39,7 @@ export function Router ()
             setUser(object);
         }
     }, [ setUser ]);
+
     return (
         <BrowserRouter basename={"/w5i-tecnologia-acesso-2025"}>
             <AppRoutes />

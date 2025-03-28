@@ -49,14 +49,15 @@ export function Header ({ isHomePage } : Props)
     }, [ links, transparencyLinkContext.setTransparencyLink ]);
     const handleChangeTheme = useCallback(() => {
         const theme = localStorage.getItem(StorageKeys.theme);
+        const html = document.querySelector("html")!;
 
         if (theme && theme == "dark")
         {
             localStorage.removeItem(StorageKeys.theme);
-            document.documentElement.classList.toggle("dark")
+            html.classList.remove("dark");
             return;
         }
-            document.documentElement.classList.toggle("dark")
+            html.classList.add("dark")
             localStorage.setItem(StorageKeys.theme, "dark");
 
     }, [])
