@@ -99,6 +99,7 @@ export const AdminLogin = () => {
             title='Entrar'
             disabled={isPending}
             isLoading={isPending}
+            pendingMessage={"Entrando"}
             form='form_admin'
             type='submit'
           />
