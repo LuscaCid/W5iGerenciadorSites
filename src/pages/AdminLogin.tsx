@@ -57,16 +57,16 @@ export const AdminLogin = () => {
 
   }, []);
   return (
-    <div className="border border-zinc-200 bg-zinc-50 m-auto p-4 w-full lg:w-fit rounded-lg mb-3">
+    <div className="border border-zinc-200 bg-zinc-50 dark:bg-zinc-800 dark:border-zinc-700 m-auto p-4 w-full lg:w-fit rounded-lg mb-3">
       <FormProvider {...methods}>
         <form
           name="form_admin"
           id="form_admin"
-          className='w-full lg:w-fit flex flex-col gap-6   lg:min-w-[400px] rounded-lg'
+          className='w-full lg:w-fit flex flex-col gap-6   lg:min-w-[400px] rounded-lg dark:bg-zinc-800'
           onSubmit={methods.handleSubmit(handleSubmitForm)}
         >
           <h1
-              className={"text-2xl font-semibold pb-2 border-b border-zinc-200"}
+              className={"text-2xl font-semibold pb-2 border-b border-zinc-200 dark:border-zinc-700"}
           >
             Login
           </h1>
@@ -99,6 +99,7 @@ export const AdminLogin = () => {
             title='Entrar'
             disabled={isPending}
             isLoading={isPending}
+            pendingMessage={"Entrando"}
             form='form_admin'
             type='submit'
           />

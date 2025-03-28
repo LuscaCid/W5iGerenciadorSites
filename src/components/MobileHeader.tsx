@@ -39,7 +39,7 @@ export function MobileHeader ()
         }
     }, [ links, transparencyLinkContext.setTransparencyLink ]);
     return (
-        <header className="md:hidden  bg-zinc-100/60  fixed z-50 backdrop-blur-lg flex justify-between items-center px-4 py-2 w-full">
+        <header className="md:hidden  bg-zinc-100/80 dark:bg-zinc-900/70  fixed z-50 backdrop-blur-lg flex justify-between items-center px-4 py-2 w-full">
             <Logo title="Prefeitura" to="/"/>
             <aside className="flex items-center gap-3">
                 {
@@ -51,7 +51,7 @@ export function MobileHeader ()
                     onClick={handleOpenSideBar}
                 />
             </aside>
-            <nav className={`absolute ${isOpenSidebar ? "inset-0 flex flex-col z-20" : "hidden"}  bg-zinc-50 transition duration-200  items-center`}>
+            <nav className={`absolute ${isOpenSidebar ? "inset-0 flex flex-col z-20" : "hidden"}  bg-zinc-50 dark:bg-zinc-900 transition duration-200  items-center`}>
                 <header className={"flex items-center gap-2  w-full justify-between h-fit"}>
                     <MenuDropdown
                         isMobile
@@ -72,25 +72,25 @@ export function MobileHeader ()
                     onClick={handleOpenSideBar}
                     title="Home"
                     to="/"
-                    className="w-full py-3 bg-zinc-100"
+                    className="w-full py-3 bg-zinc-100 dark:bg-zinc-800"
                 />
                 <HeaderLink 
                     onClick={handleOpenSideBar} 
                     title="Município"  
                     to="/municipio"
-                    className="w-full py-3 bg-zinc-100"
+                    className="w-full py-3 bg-zinc-100 dark:bg-zinc-800"
                 />
                 <HeaderLink 
                     onClick={handleOpenSideBar} 
                     title="Governo" 
                     to="/governo"   
-                    className="w-full py-3 bg-zinc-100"
+                    className="w-full py-3 bg-zinc-100 dark:bg-zinc-800"
                 />
                 <HeaderLink 
                     onClick={handleOpenSideBar} 
                     title="Notícias" 
                     to="/noticias" 
-                    className="w-full py-3 bg-zinc-100"
+                    className="w-full py-3 bg-zinc-100 dark:bg-zinc-800"
                 />
                 {
                     transparencyLinkContext.transparencyLink && (
@@ -98,7 +98,7 @@ export function MobileHeader ()
                             onClick={handleOpenSideBar}
                             title={transparencyLinkContext.transparencyLink.nm_link}
                             to={transparencyLinkContext.transparencyLink.url_link}
-                            className="bg-slate-200 py-3 w-full text-black hover:bg-slate-300"
+                            className="bg-slate-200 py-3 w-full dark:bg-slate-800 dark:text-zinc-100 text-black hover:bg-slate-300"
                             target={"_blank"}
                             split={false}
                         />

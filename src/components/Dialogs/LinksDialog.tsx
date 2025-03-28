@@ -128,7 +128,7 @@ export const LinksDialog = () => {
     }, [ links, transparencyLinkContext.setTransparencyLink, queryClient, handleDeleteLink ]);
     return (
         <CustomDialogContent className={"w-[95%] h-[95%]  lg:w-[70%]"}>
-            <main className={"overflow-y-auto w-full pt-4 pb-1 px-4 .on-open-modal flex flex-col lg:flex-row gap-5 "}>
+            <main className={"overflow-y-auto w-full pt-4 pb-1 px-4 .on-open-modal flex  flex-col lg:flex-row gap-5 "}>
                 <FormProvider {...methods}>
                     <form
                         className={"flex flex-col gap-3 h-1/2 w-full lg:h-full min-h-[340px] lg:w-1/3 relative "}
@@ -137,7 +137,7 @@ export const LinksDialog = () => {
                         <DialogTitle className={"sr-only"}>
                             Criar/visualizar links.
                         </DialogTitle>
-                        <h4 className={"text-2xl font-bold py-2 border-b border-zinc-200 mb-4  "}>
+                        <h4 className={"text-2xl font-bold py-2 border-b border-zinc-200 dark:text-zinc-100 dark:border-b-zinc-700 mb-4  "}>
                             Criar links
                         </h4>
                         <HookFormInput<keyof FormSchemaType>
@@ -154,6 +154,12 @@ export const LinksDialog = () => {
                             label={"Link para transparência?"}
                             name={"fl_transparencia"}
                             render={linkToEdit && linkToEdit.fl_transparencia || !transparencyLinkContext.transparencyLink}
+                            defaultValue={fl_transparenciaWatched}
+                        />
+                        <Switch<keyof FormSchemaType>
+                            label={"Servico para o cidadão?"}
+                            name={"fl_transparencia"}
+                            description={"Caso não, pode deixar desmarcado e serviço será redirecionado para empresas"}
                             defaultValue={fl_transparenciaWatched}
                         />
 
@@ -181,26 +187,33 @@ export const LinksDialog = () => {
                         </footer>
                     </form>
                 </FormProvider>
-                <div className={"h-[1px] w-full lg:h-full lg:w-[1px] bg-zinc-200 "}/>
+                <div className={"h-[1px] w-full lg:h-full lg:w-[1px] bg-zinc-200 dark:bg-zinc-700 "}/>
                 <aside className={"w-full lg:w-2/3 h-1/2 lg:h-full pb-4 "}>
-                    <h2 className={"text-2xl font-bold py-2 border-b border-zinc-200 mb-4 "}>
+                    <h2 className={"text-2xl font-bold py-2 border-b border-zinc-200 mb-4 dark:text-zinc-100 dark:border-b-zinc-700 "}>
                         Links criados
                     </h2>
                     <TableContainer
                         sx={{minHeight : 200, position : "relative"}}
-                        className='rounded-lg border relative   border-zinc-200  dark:text-zinc-100  shadow-lg h-full lg:h-[90%] 2xl:h-[92.4%]'
+                        className='rounded-lg border relative   border-zinc-200 dark:border-zinc-700  dark:text-zinc-100  shadow-lg h-full lg:h-[90%] 2xl:h-[92.4%]'
                     >
                         <Table >
                             <TableHead className={'text-lg font-bold'}>
                                 <TableRow  className={"w-full text-lg font-bold"}>
-                                    <TableCell align={"left"} className={"text-lg font-bold"}/>
-                                    <TableCell align={"left"} className={"text-lg font-bold"}/>
-
-                                    <TableCell align={"left"}  className={"text-lg font-bold"}>
-                                        Nome
+                                    <TableCell align={"left"} className={"dark:text-zinc-100 text-lg font-bold"}/>
+                                    <TableCell align={"left"} className={"dark:text-zinc-100 text-lg font-bold"}/>
+                                    <TableCell align={"left"}  className={"dark:text-zinc-100 text-lg font-bold"}>
+                                           <span
+                                               className={"dark:text-zinc-100"}
+                                           >
+                                               Nome
+                                           </span>
                                     </TableCell>
-                                    <TableCell align={"left"}  className={"text-lg font-bold"}>
-                                        Url
+                                    <TableCell align={"left"}  className={"dark:text-zinc-100 text-lg font-bold"}>
+                                        <span
+                                            className={"dark:text-zinc-100"}
+                                        >
+                                            Url
+                                        </span>
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
@@ -263,13 +276,17 @@ const LinkRow = ({ link, handleEditLink, handleDeleteLink } : LinkRowProps) => {
                     </IconButton>
                 </Tooltip>
             </TableCell>
-            <TableCell>
-                {link.nm_link}
+            <TableCell >
+                <span
+                    className={"dark:text-zinc-100"}
+                >
+                    {link.nm_link}
+                </span>
             </TableCell>
             <TableCell>
                 <LinkNav
                     target={"_blank"}
-                    className={"hover:underline hover:text-blue-500"}
+                    className={"hover:underline hover:text-blue-500 dark:text-zinc-100"}
                     to={link.url_link.trim()}
                 >
                     {link.url_link.trim()}

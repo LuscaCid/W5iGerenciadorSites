@@ -29,7 +29,7 @@ export const UserDropdown = () => {
                     title={`Olá, ${user?.nm_usuario}`}
                 />
             </Dropdown.Trigger>
-            <Dropdown.Content className='rounded-lg shadow-lg bg-zinc-100 p-2 flex flex-col gap-2' >
+            <Dropdown.Content className='rounded-lg shadow-lg bg-zinc-100 dark:bg-zinc-800 p-2 flex flex-col gap-2' >
                 <CustomDropdownItem 
                     icon={Mail}
                     title={user!.nm_email}
@@ -38,7 +38,7 @@ export const UserDropdown = () => {
 
                 <Separator />
                 <Dialog.Root>
-                    <Dialog.Trigger className={"p-2 items-center justify-between gap-2 flex hover:bg-zinc-200  hover:outline-none transition duration-150 cursor-pointer rounded-md"}>
+                    <Dialog.Trigger className={"p-2 items-center justify-between gap-2 flex hover:bg-zinc-200 dark:hover:bg-zinc-900  hover:outline-none transition duration-150 cursor-pointer rounded-md"}>
                         <span> Links</span> <LinkIcon size={18}/>
                     </Dialog.Trigger>
                     <Dialog.Portal>

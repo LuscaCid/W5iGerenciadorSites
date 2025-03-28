@@ -6,7 +6,7 @@ export const HomeSkeleton = () => {
         <section className={"flex flex-col gap-5 pb-5 w-full"}>
             <header className={"flex-col md:flex-row flex gap-10 items-start"}>
                 <Skeleton
-                    className="w-full min-h-[300px] lg:min-h-[450px] 2xl:min-h-[530px] md:w-2/3 rounded-2xl"
+                    className="w-full min-h-[300px] dark:bg-zinc-800 lg:min-h-[450px] 2xl:min-h-[530px] md:w-2/3 rounded-2xl"
                     variant={"rectangular"}
                     animation={"wave"}
                 >

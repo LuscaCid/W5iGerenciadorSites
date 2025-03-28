@@ -20,9 +20,9 @@ export const NewsDetailInput = (
 } : Props) => 
 {
     const styleAccordinVariant : Record<Variant, string> = {
-        title : "font-[700] text-4xl text-zinc-800 max-h-[230px] min-h-[50px]",
-        subtitle : "text-2xl font-[600] text-zinc-600 max-h-[300px] min-h-[40px]",
-        paragraph : "text-md text-zinc-500 max-h-[1000px] min-h-[35px]",
+        title : "font-[700] text-4xl text-zinc-800 max-h-[230px] min-h-[50px] dark:text-zinc-400",
+        subtitle : "text-2xl font-[600] text-zinc-600 max-h-[300px] min-h-[40px] dark:text-zinc-500",
+        paragraph : "text-md text-zinc-500 max-h-[1000px] min-h-[35px] dark:text-zinc-500",
     }
     return (
         <textarea 

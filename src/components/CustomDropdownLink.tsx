@@ -14,7 +14,7 @@ export const CustomDropdownLink = ({ title, icon : Icon, to } : CustomDropdownLi
             asChild
         >
             <Link
-                className="p-2 items-center justify-between gap-2 flex hover:bg-zinc-200  hover:outline-none transition duration-150 cursor-pointer rounded-md"
+                className="p-2 items-center justify-between gap-2 flex hover:bg-zinc-200  dark:hover:bg-zinc-900 hover:outline-none transition duration-150 cursor-pointer rounded-md"
                 target={"_blank"} to={to}>
                 { title }
                 <Icon size={18} />

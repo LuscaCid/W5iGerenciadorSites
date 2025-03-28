@@ -1,10 +1,12 @@
 @import "tailwindcss";
-/* 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  
+
 } */
 :root {
   -webkit-font-smoothing: antialiased;
@@ -16,7 +18,7 @@
 
   }
   textarea::before {
-    content: "↘"; 
+    content: "↘";
     position: absolute;
     bottom: 5px;
     right: 5px;
@@ -52,7 +54,7 @@
 ::-webkit-scrollbar {
   width: 5px;
 }
-  
+
 ::-webkit-scrollbar-thumb {
   background-color: rgba(156, 156, 156, 0.479) ;
   border-radius: 99px;
@@ -67,12 +69,12 @@
     }
   }
   .no-drag {
-    -webkit-app-region: no-drag; 
+    -webkit-app-region: no-drag;
   }
   .title-bar-drag-region {
-    -webkit-app-region: drag; 
+    -webkit-app-region: drag;
   }
-  
+
   .no-scrollbar::-webkit-scrollbar-thumb {
     background: transparent;
   }
