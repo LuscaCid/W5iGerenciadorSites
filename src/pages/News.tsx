@@ -228,7 +228,7 @@ const NewNoticeCard = () => {
   return (
     <div
       onClick={() => navigate("/noticia")}
-      className="w-full bg-zinc-200 dark:bg-zinc-800 h-[380px] max-h-[380px]  hover:border-[3px] border-dashed border-zinc-400 dark:border-zinc-700  rounded-2xl cursor-pointer hover:bg-zinc-300 dark:hover:bg-zinc-900 transition duration-150 flex items-center justify-center"
+      className="w-full bg-zinc-200 dark:bg-zinc-800 min-h-[380px] h-full  hover:border-[3px] border-dashed border-zinc-400 dark:border-zinc-700  rounded-2xl cursor-pointer hover:bg-zinc-300 dark:hover:bg-zinc-900 transition duration-150 flex items-center justify-center"
     >
       <main className="flex flex-col gap-2 items-center">
         <Plus size={55} className="text-zinc-400 "/>

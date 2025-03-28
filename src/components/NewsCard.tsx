@@ -149,7 +149,7 @@ export function NewsCard (
                                     description={'Marcar como "Gostei"'}
                                     icon={ThumbsUp}
                                     onClick={handleLikeButton}
-                                    className={`${(JSON.parse(localStorage.getItem(StorageKeys.like) ?? "[]") as Like[]).find(like => like.id_news == news.id_noticia) ? "border-blue-500" : "border-transparent"} p-1 text-xs min-w-[45px] border-b-2 backdrop-blur-lg rounded-none transition-all duration-200 `}
+                                    className={`${(JSON.parse(localStorage.getItem(StorageKeys.like) ?? "[]") as Like[]).find(like => like.id_news == news.id_noticia) ? "border-blue-500" : "border-transparent"} p-1 px-2 text-xs min-w-[45px] border-b-2 backdrop-blur-lg rounded-none transition-all duration-200 `}
                                     title={news.nu_like?.toString()}
                                 />
                                 <Button
@@ -157,7 +157,7 @@ export function NewsCard (
                                     icon={ThumbsDown}
                                     onClick={handleDisLikeButton}
                                     title={news.nu_dislike?.toString()}
-                                    className={`${(JSON.parse(localStorage.getItem(StorageKeys.dislike) ?? "[]") as Like[]).find(dislike => dislike.id_news == news.id_noticia)? "border-red-500" : "border-transparent"} p-1 text-xs min-w-[45px] border-b-2 bg-zinc-200/90 backdrop-blur-lg rounded-none transition-all duration-200 hover:bg-zinc-300`}
+                                    className={`${(JSON.parse(localStorage.getItem(StorageKeys.dislike) ?? "[]") as Like[]).find(dislike => dislike.id_news == news.id_noticia)? "border-red-500" : "border-transparent"} p-1 px-2 text-xs min-w-[45px] border-b-2 bg-zinc-200/90 backdrop-blur-lg rounded-none transition-all duration-200 hover:bg-zinc-300`}
                                 />
                             </div>
                         </>
