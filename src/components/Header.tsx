@@ -85,6 +85,7 @@ export function Header ({ isHomePage } : Props)
                     <aside className={"flex items-center gap-4"}>
                         <ul className={"flex items-center gap-0"}>
                             <ItemSetSection type={"left"} id={SectionsScroll.banner} title={"Destaque"}/>
+                            <ItemSetSection type={"middle"} id={SectionsScroll.services} title={"Serviços"}/>
                             <ItemSetSection type={"middle"} id={SectionsScroll.news} title={"Conteúdo"}/>
                             <ItemSetSection type={"right"} id={SectionsScroll.footer} title={"Rodapé"}/>
                         </ul>
@@ -162,7 +163,11 @@ const ItemSetSection  = ({id, title, type} : SectionProps) => {
         "middle" : "rounded-none border-l border-r border-blue-300",
     }
     return (
-        <Link smooth to={id} className={` bg-blue-500 rounded-md hover:shadow-2xl shadow-blue-600 cursor-pointer hover:bg-blue-600 font-semibold text-white px-3 py-1.5 transition-all duration-600 ${stylesAccordingType[type]}`}>
+        <Link
+            duration={500}
+            offset={-200}
+            smooth to={id}
+            className={` bg-blue-500 rounded-md hover:shadow-2xl shadow-blue-600 cursor-pointer hover:bg-blue-600 font-semibold text-white px-3 py-1.5 transition-all duration-600 ${stylesAccordingType[type]}`}>
             {title}
         </Link>
     )

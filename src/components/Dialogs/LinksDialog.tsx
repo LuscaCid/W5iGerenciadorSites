@@ -29,6 +29,7 @@ const formSchema = z.object({
     nm_link : z.string().min(3, "É necessário informar como o link será apresentado"),
     url_link : z.string().min(5, "É necessário preencher a url"),
     fl_transparencia : z.boolean().optional(),
+    fl_cidadao : z.boolean().optional()
 });
 
 type FormSchemaType = z.infer<typeof formSchema>
@@ -46,6 +47,7 @@ export const LinksDialog = () => {
     const methods = useForm<FormSchemaType>({ resolver : zodResolver(formSchema) });
 
     const fl_transparenciaWatched = methods.watch("fl_transparencia");
+    const fl_cidadaoWatched = methods.watch("fl_cidadao");
     const transparencyLinkContext = useTransparencyLinkContext();
 
 
@@ -70,6 +72,7 @@ export const LinksDialog = () => {
             openToast("Link criado com sucesso", "success");
             methods.reset()
             methods.setValue("fl_transparencia", false);
+            methods.setValue("fl_cidadao", false);
             await queryClient.invalidateQueries({queryKey : ["links"]})
 
         },
@@ -100,6 +103,7 @@ export const LinksDialog = () => {
             ...data,
             id_site : site!.id_site,
             fl_transparencia : data.fl_transparencia,
+            fl_cidadao : data.fl_cidadao,
             id_link : linkToEdit ? linkToEdit.id_link : undefined
         } as unknown as Link);
         setLinkToEdit(undefined);
@@ -111,12 +115,13 @@ export const LinksDialog = () => {
             methods.setValue("nm_link", linkToEdit.nm_link);
             methods.setValue("url_link", linkToEdit.url_link);
             methods.setValue("fl_transparencia", linkToEdit.fl_transparencia);
-
+            methods.setValue("fl_cidadao", linkToEdit.fl_cidadao);
             return;
         }
         methods.setValue("nm_link", "");
         methods.setValue("url_link", "");
         methods.setValue("fl_transparencia", false);
+        methods.setValue("fl_cidadao", false);
     }, [linkToEdit, methods.setValue]);
 
     useEffect(() => {
@@ -138,7 +143,7 @@ export const LinksDialog = () => {
                             Criar/visualizar links.
                         </DialogTitle>
                         <h4 className={"text-2xl font-bold py-2 border-b border-zinc-200 dark:text-zinc-100 dark:border-b-zinc-700 mb-4  "}>
-                            Criar links
+                            Cadastrar links
                         </h4>
                         <HookFormInput<keyof FormSchemaType>
                             id={"nm_link"}
@@ -158,9 +163,9 @@ export const LinksDialog = () => {
                         />
                         <Switch<keyof FormSchemaType>
                             label={"Servico para o cidadão?"}
-                            name={"fl_transparencia"}
+                            name={"fl_cidadao"}
                             description={"Caso não, pode deixar desmarcado e serviço será redirecionado para empresas"}
-                            defaultValue={fl_transparenciaWatched}
+                            defaultValue={fl_cidadaoWatched}
                         />
 
                         <footer className={"flex items-center gap-2 absolute bottom-3 right-0"}>
