@@ -6,7 +6,7 @@ import {
     ShieldUser,
     UtilityPole,
     Link as LinkIcon,
-    SquareArrowOutUpRight
+    SquareArrowOutUpRight, RectangleHorizontal
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { CustomDropdownItem } from "./CustomDropdownItem";
@@ -18,6 +18,8 @@ import {CustomDropdownLink} from "./CustomDropdownLink.tsx";
 import * as Dialog from "@radix-ui/react-dialog";
 import {LinksDialog} from "./Dialogs/LinksDialog.tsx";
 import {useQueryClient} from "@tanstack/react-query";
+import {CustomOverlay} from "./Dialogs/CustomOverlay.tsx";
+import {BannerDialog} from "./Dialogs/BannerDialog.tsx";
 interface Props 
 {
     setIsMenuDropdownOpen : Dispatch<SetStateAction<boolean>>;
@@ -95,6 +97,18 @@ export const MenuDropdown = ({ isMenuDropdownOpen, setIsMenuDropdownOpen, isMobi
                                 <Dialog.Portal>
                                     <Dialog.Overlay className={"z-50 fixed inset-0 w-screen bg-zinc-900/30 backdrop-blur-md"}/>
                                     <LinksDialog/>
+                                </Dialog.Portal>
+                            </Dialog.Root>
+                            <Separator />
+                            <Dialog.Root>
+                                <Dialog.Trigger
+                                    className={"p-2 items-center justify-between gap-2 flex hover:bg-zinc-200 dark:hover:bg-zinc-900 hover:outline-none transition duration-150 cursor-pointer rounded-md"}
+                                >
+                                    <span>Banners</span> <RectangleHorizontal  size={18}/>
+                                </Dialog.Trigger>
+                                <Dialog.Portal>
+                                    <CustomOverlay />
+                                    <BannerDialog/>
                                 </Dialog.Portal>
                             </Dialog.Root>
                         </>
