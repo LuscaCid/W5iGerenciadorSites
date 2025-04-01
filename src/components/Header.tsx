@@ -90,7 +90,7 @@ export function Header ({ isHomePage } : Props)
                             <ItemSetSection type={"right"} id={SectionsScroll.footer} title={"Rodapé"}/>
                         </ul>
                         <ul className={"flex items-center gap-4 border-l border-zinc-400 px-4 border-r "}>
-                            <SubMenuLink to={"/"} title={"FAQ"}/>
+                            <SubMenuLink to={"/faq"} title={"FAQ"}/>
                             <SubMenuLink to={"/ouvidoria"} title={"Ouvidoria"}/>
                         </ul>
                         <Button

@@ -1,5 +1,5 @@
 import { NewsCard } from "../components/NewsCard";
-import {useCallback, useEffect, useState} from "react";
+import {memo, useCallback, useEffect, useState} from "react";
 import {Button} from "../UI/Button";
 import {ArrowLeft, ArrowRight, EllipsisVertical, Plus, X, FilterX} from "lucide-react";
 import { useUserContext } from "../store/user";
@@ -16,7 +16,7 @@ import {Skeleton} from "@mui/material";
 
 type PaginationDirection = "backwards" | "forwards";
 
-export const News = () => {
+export const News = memo(() => {
   const { setSelectedTags, selectedTags, title, setTitle } = useNewsTagsContext();
   const user = useUserContext((state) => state.user);
   const [ page, setPage ] = useState<number>(1);
@@ -221,9 +221,9 @@ export const News = () => {
       </aside>
     </section>
   )
-}
+})
 
-const NewNoticeCard = () => {
+const NewNoticeCard =  memo(() => {
   const navigate = useNavigate();
   return (
     <div
@@ -238,4 +238,4 @@ const NewNoticeCard = () => {
       </main>
     </div>
   );
-}
+})

@@ -9,8 +9,9 @@ import {SectionsScroll} from "../constants/SectionsScroll.ts";
 import {ServicesTabsSection} from "../components/ServicesTabsSection.tsx";
 import {useLinks} from "../hooks/useLinks.ts";
 import {useBanners} from "../hooks/useBanners.ts";
+import {memo} from "react";
 
-export const Home = () => {
+export const Home = memo(() => {
     const { getNews } = useNews();
     const { getLinks } = useLinks();
     const { getBanners } = useBanners();
@@ -57,4 +58,4 @@ export const Home = () => {
         }
     </div>
     )
-}
+})

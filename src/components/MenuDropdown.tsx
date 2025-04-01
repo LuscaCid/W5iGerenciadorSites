@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { CustomDropdownItem } from "./CustomDropdownItem";
 import { Separator } from "./Separator";
 import {useUserContext} from "../store/user.ts";
-import {Dispatch, Fragment, SetStateAction} from "react";
+import {Dispatch, SetStateAction} from "react";
 import {Link} from "../@types/Link";
 import {CustomDropdownLink} from "./CustomDropdownLink.tsx";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -64,14 +64,14 @@ export const MenuDropdown = ({ isMenuDropdownOpen, setIsMenuDropdownOpen, isMobi
                 {
                     links && links.length > 0 && (
                         links.map((link) => (
-                            <Fragment key={link.id_link}>
+                            <div key={link.id_link}>
                                 <Separator />
                                 <CustomDropdownLink
                                     to={link.url_link}
                                     title={link.nm_link}
                                     icon={SquareArrowOutUpRight}
                                 />
-                            </Fragment>
+                            </div>
                         ))
                     )
                 }

@@ -3,7 +3,8 @@ import {Banner} from "../@types/Banner";
 import {api} from "../services/api.ts";
 import {useSiteContext} from "../store/site.ts";
 
-export const useBanners = () => {
+export function useBanners ()
+{
     const PATH_NAME = "banner"
     const site = useSiteContext(state => state.site);
 
