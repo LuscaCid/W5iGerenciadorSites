@@ -21,9 +21,10 @@ import TableBody from "@mui/material/TableBody";
 import {IconButton, TableFooter, Tooltip} from "@mui/material";
 import {Link as LinkNav} from "react-router-dom";
 import {useSiteContext} from "../../store/site.ts";
+import {PreviewImageDialog} from "./PreviewImageDialog.tsx";
+
 export type FormBannerSchemaType = {
     url_link : string;
-    file : string
 }
 
 export const BannerDialog = () => {
@@ -33,13 +34,15 @@ export const BannerDialog = () => {
     const queryClient = useQueryClient();
     const methods = useForm<FormBannerSchemaType>();
     const [ file, setFile ] = useState<File|undefined>();
-    const imageFileWatched = methods.watch("file");
+    const [imagePreview, setImagePreview] = useState<string|undefined>();
+
     const site = useSiteContext(state => state.site);
+
     const onDrop = useCallback((files : File[]) => {
         const object = URL.createObjectURL(files[0]);
-        setFile(files[0]);
-        methods.setValue("file", object)
-    }, [file, methods]);
+        setImagePreview(object);
+        setFile(file);
+    }, [file, imagePreview]);
 
     const { data : banners } = useQuery({
         queryFn : async ()=> await getBanners(),
@@ -52,44 +55,53 @@ export const BannerDialog = () => {
         mutationKey : ["save-banner"],
         onSuccess : async () => {
             openToast("Banner criado com sucesso", "success");
-            methods.reset()
+            methods.reset();
+            setImagePreview(undefined);
+            setFile(undefined);
             await queryClient.invalidateQueries({queryKey : ["banners"]})
-
         },
         onError: (err : unknown) => {
             if (err instanceof AxiosError && err.response)
                 openToast((err.response.data as { message : string }).message, "error");
         }
     });
-    const handleDeleteBanner = useCallback(() => {}, []);
+    const { mutateAsync : deleteBannerAsync } = useMutation({
+        mutationFn : remove,
+        mutationKey : ["delete-banner"],
+        onSuccess : () => {
+            openToast("Banner excluído", "success");
+        },
+        onError : (err: unknown) => {
+            if (err instanceof AxiosError && err.response)
+                openToast(err.response.data.message, "error");
+        }
+    });
+    const handleDeleteBanner = useCallback((banner : Banner) => {
+        deleteBannerAsync(banner.id_banner);
+    }, []);
 
     const handleEditBanner = useCallback((banner : Banner) => {
         setBannerToEdit(banner);
     }, [bannerToEdit]);
 
     const handleSubmit = useCallback(async (payload : FormBannerSchemaType) => {
-        console.log(payload);
         const formData = new FormData();
-        if (!imageFileWatched)
+        if (!file)
             return openToast("É necessário enviar a imagem do banner", "error");
 
-        formData.append("image", file!);
+        formData.append("image", file);
         formData.append("url_link", payload.url_link);
         formData.append("id_site", site!.id_site!.toString())
         bannerToEdit && formData.append("id_banner", bannerToEdit.id_banner.toString())
         await saveBannerAsync(formData)
 
-    }, [imageFileWatched, file, site, bannerToEdit]);
+    }, [file, site, bannerToEdit, methods.setValue]);
 
     useEffect(() => {
-        if (bannerToEdit)
-        {
-            methods.setValue("url_link", bannerToEdit.url_link);
-            methods.setValue("file", bannerToEdit.url_thumbnail!);
-            return;
-        }
-            methods.reset();
-    }, [bannerToEdit, methods, imageFileWatched]);
+        if (bannerToEdit) return methods.setValue("url_link", bannerToEdit.url_link);
+
+        methods.reset();
+    }, [bannerToEdit, methods]);
     return (
         <CustomDialogContent className={"w-[95%] h-[95%]  lg:w-[70%]"}>
             <main className={"overflow-y-auto w-full pt-4 pb-1 px-4 .on-open-modal flex  flex-col lg:flex-row gap-5 "}>
@@ -118,8 +130,8 @@ export const BannerDialog = () => {
                         >
                         <input {...getInputProps()} />
                             {
-                                imageFileWatched ? (
-                                        <img src={imageFileWatched} alt=""  className={"object-cover max-w-max max-h-max w-full"} />
+                                imagePreview ? (
+                                        <img src={imagePreview} alt=""  className={"object-cover max-w-max max-h-max w-full"} />
                                     ) : (
                                     isDragActive ?
                                         <p>Solte o arquivo aqui</p> :
@@ -152,7 +164,7 @@ export const BannerDialog = () => {
                                 <TableRow  className={"w-full text-lg font-bold"}>
                                     <TableCell align={"left"} className={"dark:text-zinc-100 text-lg font-bold"}/>
                                     <TableCell align={"left"} className={"dark:text-zinc-100 text-lg font-bold"}/>
-                                    <TableCell align={"left"}  className={"dark:text-zinc-100 text-lg font-bold"}>
+                                    <TableCell align={"left"} className={"dark:text-zinc-100 text-lg font-bold"}>
                                     <span
                                         className={"dark:text-zinc-100"}
                                     >
@@ -227,8 +239,21 @@ const BannerRow = ({ banner, handleEditBanner, handleDeleteBanner } : BannerRowP
                     </IconButton>
                 </Tooltip>
             </TableCell>
-            <TableCell >
-                <img src={banner.url_thumbnail} className={"w-40 h-full object-cover"} alt={"imagem do banner"}/>
+            <TableCell className={"overflow-hidden"}>
+                <Dialog.Root>
+                    <Dialog.Trigger>
+                        <Tooltip title={"Visualizar imagem"}>
+                            <img
+                                src={banner.url_thumbnail}
+                                className={"w-40 h-full object-cover hover:scale-105 cursor-pointer transition duration-150"}
+                                alt={"imagem do banner"}
+                            />
+                        </Tooltip>
+                    </Dialog.Trigger>
+                    <Dialog.Portal>
+                        <PreviewImageDialog src={banner.url_thumbnail!} alt={"Imagem do banner"} />
+                    </Dialog.Portal>
+                </Dialog.Root>
             </TableCell>
             <TableCell>
                 <LinkNav
