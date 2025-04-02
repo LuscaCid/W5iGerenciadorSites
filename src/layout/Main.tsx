@@ -12,7 +12,8 @@ export const locationDictionary : Record<string, string>= {
     'governo' : 'Governo',
     'municipio' : 'Município',
     'noticia' : 'Home → Notícia',
-    'login' : 'Acesso administrativo'
+    'login' : 'Acesso administrativo',
+    'faq' : "Perguntas Frequentes"
 }
 
 /**

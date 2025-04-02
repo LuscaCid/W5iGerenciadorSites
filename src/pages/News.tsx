@@ -14,7 +14,7 @@ import {useTags} from "../hooks/useTags.ts";
 import {Input} from "../UI/Input.tsx";
 import {Skeleton} from "@mui/material";
 
-type PaginationDirection = "backwards" | "forwards";
+export type PaginationDirection = "backwards" | "forwards";
 
 export const News = memo(() => {
   const { setSelectedTags, selectedTags, title, setTitle } = useNewsTagsContext();
@@ -126,7 +126,7 @@ export const News = memo(() => {
           }
           {
             !isPending && data && data.length == 0 && (
-                <span className={"text-zinc-400 lg:text-2xl text-nowrap"}>
+                <span className={"text-zinc-400 lg:text-2xl "}>
                   Nenhum resultado encontrado.
                 </span>
               )
@@ -149,6 +149,7 @@ export const News = memo(() => {
             icon={ArrowRight}
             title="Próxima"
             className="flex-row-reverse"
+            disabled={data &&  data.length == 0}
           />
         </footer>
       </main>
@@ -186,10 +187,7 @@ export const News = memo(() => {
               className={"text-sm p-auto  bg-red-400 p-1 text-zinc-100  hover:bg-red-500"}
             />
           </div>
-
-
         </header>
-
         <nav className={`${tagsVisible ? "flex  md:hidden" : "hidden"} w-full  md:flex flex-wrap gap-4  max-h-[400px]  lg:max-h-[700px] pb-4  overflow-y-auto no-scrollbar hover:scrollbar-view`}>
           {
             !isPendingTags && tags && tags.length > 0 &&  (
