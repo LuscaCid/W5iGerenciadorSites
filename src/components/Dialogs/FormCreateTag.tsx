@@ -73,7 +73,7 @@ export const FormCreateTag = ({ tag, setTagToEdit } : Props) => {
                     onSubmit={methods.handleSubmit(handleSubmit)}
                     className={"w-full p-4 relative h-full"}
                 >
-                    <h4 className={"text-2xl font-bold py-2 border-b border-zinc-200"}>
+                    <h4 className={"text-2xl font-bold py-2 border-b border-zinc-200 dark:text-zinc-200 "}>
                         {tag ? "Editar tag" : "Cadastrar tag"}
                     </h4>
                     <HookFormInput<keyof FormSearchType>
