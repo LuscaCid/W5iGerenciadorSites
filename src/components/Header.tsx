@@ -116,6 +116,15 @@ export function Header ({ isHomePage } : Props)
                         to={""}
                         title={"Sobre"}
                         onClick={handleCloseDialog}
+                        children={
+                            (
+                                <div className={"flex flex-col  "}>
+                                    <HeaderLink to={'/'} title={"História"} onClick={handleCloseDialog}/>
+                                    <HeaderLink to={'/governo'} title={"Governo"} onClick={handleCloseDialog}/>
+                                    <HeaderLink to={'/'} title={"Informações gerais"} onClick={handleCloseDialog}/>
+                                </div>
+                            )
+                        }
                     />
                     {
                         transparencyLinkContext.transparencyLink && (
