@@ -10,12 +10,12 @@ export function useFaqs ()
     const site = useSiteContext(state => state.site);
     const [ searchParams ] = useSearchParams();
 
-    const getFaqs = useCallback(async() => {
+    const getFaqs = useCallback(async() =>  {
         const query = searchParams.get("query") ?? "";
         const page = searchParams.get("page") ?? 1;
 
-        const response = await api.get(`${PATH_NAME}?query=${query}&page=${page}`);
-        return response.data as Faq[] ?? [] ;
+        const response = await api.get(`${PATH_NAME}?query=${query}&page=${page}&id_site=${site!.id_site}`);
+        return response.data ?? [] ;
     }, [ site, searchParams ]);
 
     const addFaq = useCallback(async(payload : Faq) => {

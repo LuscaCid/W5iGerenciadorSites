@@ -19,6 +19,16 @@ export const HomeSkeleton = () => {
                 animation={"wave"}
                 className={"w-[150px] h-10"}
             />
+            <Skeleton
+                className="w-full min-h-[250px] dark:bg-zinc-800  rounded-2xl"
+                variant={"rectangular"}
+                animation={"wave"}
+            />
+            <Skeleton
+                variant={"text"}
+                animation={"wave"}
+                className={"w-[150px] h-10"}
+            />
             <header className={"flex-col md:flex-row flex gap-10 items-start"}>
                 <Skeleton
                     className="w-full min-h-[300px] dark:bg-zinc-800 lg:min-h-[450px] 2xl:min-h-[530px] md:w-2/3 rounded-2xl"

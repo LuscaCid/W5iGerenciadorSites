@@ -43,9 +43,9 @@ export function HeaderSearchDialog ({ isSearchWindowOpen, setIsSearchWindowOpen,
         <Dialog.Trigger asChild>
             {
                 customTrigger ? (
-                    <>
+                    <div>
                         {customTrigger}
-                    </>
+                    </div>
                     ) : (
 
                     <TextButton
