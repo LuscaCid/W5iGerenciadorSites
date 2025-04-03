@@ -11,7 +11,7 @@ interface Props
     type? : string;
     maxLength? : number;
     className? : string;
-    rest : any[]
+    rest? : any[]
 }
 export const NewsDetailInput = (
 { 

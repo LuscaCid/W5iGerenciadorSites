@@ -150,7 +150,6 @@ export const Faq = memo(() => {
                                     />
                                 </AccordionDetails>
                             </Accordion>
-
                         ))
                     )
                 }
@@ -160,7 +159,6 @@ export const Faq = memo(() => {
                     )
                 }
             </main>
-
             <footer className="w-full flex justify-between items-center self-end">
                 <Button
                     onClick={() => paginateBackwardsForwards('backwards')}

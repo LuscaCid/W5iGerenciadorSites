@@ -48,7 +48,7 @@ export const BannerDialog = () => {
         queryFn : async ()=> await getBanners(),
         queryKey : ["banners"]
     });
-    const { isDragActive, getRootProps, getInputProps } = useDropzone({onDrop});
+    const { isDragActive, getRootProps, getInputProps } = useDropzone({onDrop,  });
 
     const { mutateAsync : saveBannerAsync, isPending } = useMutation({
         mutationFn : save,
@@ -128,7 +128,7 @@ export const BannerDialog = () => {
                             className={`rounded-lg border-[4px] h-[200px] flex items-center justify-center font-bold text-lg text-zinc-800 dark:text-zinc-500 border-dashed overflow-hidden border-zinc-200 dark:border-zinc-500 bg-zinc-100 dark:bg-zinc-700 transition duration-150 ${isDragActive ? "animate-pulse" : ""}`}
                             {...getRootProps()}
                         >
-                        <input {...getInputProps()} />
+                            <input {...getInputProps()} />
                             {
                                 imagePreview ? (
                                         <img src={imagePreview} alt=""  className={"object-cover max-w-max max-h-max w-full"} />

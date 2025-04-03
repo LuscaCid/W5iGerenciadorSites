@@ -10,6 +10,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import {LinksDialog} from "./Dialogs/LinksDialog.tsx";
 import {CustomOverlay} from "./Dialogs/CustomOverlay.tsx";
 import {BannerDialog} from "./Dialogs/BannerDialog.tsx";
+import axios from "axios";
 
 export const UserDropdown = () => {
     const { user, setUser } = useUserContext();
@@ -18,6 +19,7 @@ export const UserDropdown = () => {
     const handleLogout = () => {
         setUser(undefined);
         localStorage.removeItem(StorageKeys.user)
+        delete axios.defaults.headers.authorization;
         navigate('/');
     }
     return (

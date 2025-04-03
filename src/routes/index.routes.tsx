@@ -23,7 +23,6 @@ export function Router ()
                 async (config) => {
                     const token = user.access_token;
                     config.headers["authorization"] = "Bearer " + token;
-                    console.log("revalidated");
                     return config;
                 },
                 error => {

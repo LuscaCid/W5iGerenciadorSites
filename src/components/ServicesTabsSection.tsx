@@ -58,7 +58,7 @@ const ServicesSection = ({services} : {services : Link[]}) => {
             {
                 services.length > 0 ? (
                     services.map((s) => (
-                        <ServiceCard service={s}/>
+                        <ServiceCard key={s.id_link} service={s}/>
                     ))
                 ) : (
                     <span className={"text-zinc-400 font-bold text-2xl"}>
