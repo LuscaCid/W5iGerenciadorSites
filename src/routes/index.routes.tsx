@@ -17,7 +17,7 @@ export function Router ()
     })
     useEffect(() => {
         if (user){
-            window.localStorage.setItem(StorageKeys.user, JSON.stringify(user));
+            localStorage.setItem(StorageKeys.user, JSON.stringify(user));
 
             api.interceptors.request.use(
                 async (config) => {
@@ -30,7 +30,7 @@ export function Router ()
                 }
             )
         }
-    }, [ user ]);
+    }, [ user, api ]);
     useEffect(() => {
         const userInLocalStorage = window.localStorage.getItem(StorageKeys.user);
         if (userInLocalStorage)

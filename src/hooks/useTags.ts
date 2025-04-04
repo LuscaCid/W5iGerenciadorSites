@@ -7,7 +7,8 @@ export interface CreateTagDto {
     id_site : number;
     id_tag? : number;
 }
-export const useTags = () => {
+export function useTags ()
+{
     const PATH_NAME = "tag";
     const site = useSiteContext((state) => state.site)
 

@@ -63,8 +63,8 @@ export const TagSearchDialog = ({ setSelectedTags, selectedTags, setDialogOpen }
                     Procurar Tags
                 </DialogTitle>
 
-                <h4 className={"text-2xl font-bold py-2 border-b border-zinc-200  "}>
-                    Selecione tags
+                <h4 className={"text-2xl font-bold py-2 border-b border-zinc-200 dark:text-zinc-200  "}>
+                    Selecione as tags
                 </h4>
                 <Input
                     onChange={(e) => setQuery(e.target.value)}

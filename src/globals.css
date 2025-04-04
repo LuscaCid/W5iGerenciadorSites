@@ -1,4 +1,5 @@
-@import "tailwindcss";
+@import "tailwindcss" important;
+
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -82,7 +83,9 @@
   .scrollbar-view::-webkit-scrollbar-thumb  {
     background-color: rgba(156, 156, 156, 0.479) ;
   }
-
+  .bg-zinc-800 {
+    background: #000;
+  }
 }
 @layer base {
   input[type="number"]::-webkit-inner-spin-button,

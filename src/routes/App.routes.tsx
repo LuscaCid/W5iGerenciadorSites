@@ -8,6 +8,7 @@ import { Government } from "../pages/Governo";
 import { City } from "../pages/City.tsx";
 import {NotFound} from "../pages/404.tsx";
 import {Department} from "../pages/Department.tsx";
+import {Faq} from "../pages/Faq.tsx";
 
 export function AppRoutes () 
 {
@@ -23,6 +24,7 @@ export function AppRoutes ()
                 <Route element={<NewsDetail />} path="/noticia/:id" />
                 <Route element={<NewsDetail />} path="/noticia/" />
                 <Route element={<AdminLogin />} path="/login" />
+                <Route element={<Faq />} path="/faq" />
                 <Route element={<NotFound/> } path="*"/>
             </Route>
         </Routes>
