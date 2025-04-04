@@ -231,21 +231,21 @@ export const NewsDetailAdmin = ({ news, setNews } : Props) => {
         if (!news && params.id)
         {
             getNewsById(Number(params.id)!)
-                .then((data) => {
-                    setNews(data)
-                    setNewsData({
-                        ...data,
-                    })
-                    setThumbnailSlot({
-                        url : data ? data.url_thumbimg : DefaultImage,
-                    }  as ImageSlot);
-
-                    setParagraphSlotsIds(
-                        data && data.paragraphs && data.paragraphs.length > 0 ? data.paragraphs.map((p) => p.id_paragrafo!) : []
-                    );
-
-                    setParagraphsSlots(data ? data.paragraphs ?? [] : []);
+            .then((data) => {
+                setNews(data)
+                setNewsData({
+                    ...data,
                 })
+                setThumbnailSlot({
+                    url : data ? data.url_thumbimg : DefaultImage,
+                }  as ImageSlot);
+
+                setParagraphSlotsIds(
+                    data && data.paragraphs && data.paragraphs.length > 0 ? data.paragraphs.map((p) => p.id_paragrafo!) : []
+                );
+
+                setParagraphsSlots(data ? data.paragraphs ?? [] : []);
+            })
         }
     }, [news, setParagraphsSlots, setParagraphSlotsIds, setThumbnailSlot]);
     return (

@@ -119,9 +119,9 @@ export function Header ({ isHomePage } : Props)
                         children={
                             (
                                 <div className={"flex flex-col  "}>
-                                    <HeaderLink to={'/'} title={"História"} onClick={handleCloseDialog}/>
-                                    <HeaderLink to={'/governo'} title={"Governo"} onClick={handleCloseDialog}/>
-                                    <HeaderLink to={'/'} title={"Informações gerais"} onClick={handleCloseDialog}/>
+                                    <HeaderLink className={"group-hover:text-zinc-950 dark:group-hover:text-zinc-200"} to={'/'} title={"História"} onClick={handleCloseDialog}/>
+                                    <HeaderLink className={"group-hover:text-zinc-950 dark:group-hover:text-zinc-200"} to={'/governo'} title={"Governo"} onClick={handleCloseDialog}/>
+                                    <HeaderLink className={"group-hover:text-zinc-950 dark:group-hover:text-zinc-200"} to={'/'} title={"Informações gerais"} onClick={handleCloseDialog}/>
                                 </div>
                             )
                         }
