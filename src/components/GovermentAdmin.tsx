@@ -128,8 +128,8 @@ export const GovernmentAdmin = ({ governmentData : govData } : Props) =>
         if (formImages.organizationalChart) formData.append("organizationalChart", formImages.organizationalChart);
         if (formImages.mayorImage) formData.append("mayor", formImages.mayorImage);
 
-        if (governmentData) return await updateSiteGovernmentAsync(formData);
-        return await createGovernmentAsync(formData);
+        if (governmentData) await updateSiteGovernmentAsync(formData);
+        else await createGovernmentAsync(formData);
     }, [site, formImages]);
 
     useEffect(() => {
@@ -280,8 +280,7 @@ export const GovernmentAdmin = ({ governmentData : govData } : Props) =>
                         description={"clique ou arraste a imagem do organograma aqui"}
                     />
                     <footer className={"self-end flex items-center gap-2"}>
-                        <Button
-                        />
+
                         <Button
                             disabled={isPending}
                             isLoading={isPending}
@@ -290,7 +289,6 @@ export const GovernmentAdmin = ({ governmentData : govData } : Props) =>
                             title={"Salvar"}
                             icon={Check}
                         />
-
                     </footer>
                 </form>
             </FormProvider>
