@@ -2,9 +2,9 @@ import {FormProvider, useForm} from "react-hook-form";
 import z, {undefined} from "zod";
 import {HookFormInput} from "../UI/FormInput.tsx";
 import {Button} from "../UI/Button.tsx";
-import {useMutation} from "@tanstack/react-query";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {useCallback, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {useGovernment} from "../hooks/useGovernment.ts";
 import {AxiosError} from "axios";
 import {getAxiosErrorMessage} from "../utils/treatAxiosError.ts";
@@ -15,7 +15,7 @@ import {Title} from "./Title.tsx";
 import {Check, Mail, MapPinHouse, Phone, Trash} from "lucide-react";
 import {useSiteContext} from "../store/site.ts";
 import {HookFormTextarea} from "../UI/HookFormTextarea.tsx";
-import { DropzoneInputProps, DropzoneRootProps, useDropzone} from "react-dropzone";
+import {DropzoneInputProps, DropzoneRootProps, useDropzone} from "react-dropzone";
 import {twMerge} from "tailwind-merge";
 
 const GovernmentFormSchema = z.object({
@@ -35,11 +35,12 @@ type FormSchemaType = z.infer<typeof GovernmentFormSchema>;
 interface Props {
     governmentData? : Government
 }
-export const GovernmentAdmin = ({ governmentData } : Props) =>
+export const GovernmentAdmin = ({ governmentData : govData } : Props) =>
 {
     const site = useSiteContext(state => state.site);
     const openToast = useContextSelector(toastContext, (s) => s.open);
-    console.log(governmentData);
+    const queryClient = useQueryClient();
+    const [ governmentData, setGovernmentData ] = useState(govData);
     const methods = useForm<FormSchemaType>({
         resolver : zodResolver(GovernmentFormSchema),
         defaultValues : {
@@ -64,19 +65,20 @@ export const GovernmentAdmin = ({ governmentData } : Props) =>
     const [ formPreviewImages, setFormPreviewImages ] = useState({
         deputyMayorImage : governmentData && governmentData.deputyMayorImage ?  governmentData.deputyMayorImage.url : "",
         mayorImage :  governmentData && governmentData.mayorImage ? governmentData.mayorImage.url : "",
-        organizationalChart : ""
+        organizationalChart : governmentData && governmentData.organizationalChart ? governmentData.organizationalChart.url : "",
     });
     const {
         createSiteGovernment,
         updateSiteGovernment,
-        deleteSiteGovernment
+        getSiteGovernmentData
     } = useGovernment();
 
     const { mutateAsync : createGovernmentAsync, isPending } = useMutation({
         mutationFn : createSiteGovernment,
         mutationKey : ['createSiteGovernment'],
-        onSuccess : () => {
-            openToast("Dados estruturais cadastrados")
+        onSuccess : (data) => {
+            openToast("Dados estruturais cadastrados");
+            queryClient.setQueryData(["government"], () => data);
         },
         onError : err => {
             if (err instanceof AxiosError)
@@ -86,7 +88,7 @@ export const GovernmentAdmin = ({ governmentData } : Props) =>
     const handleDeleteImage = useCallback((id : string) => {
         setFormImages({ ...formImages, [id as keyof typeof formImages ] : undefined });
         setFormPreviewImages({...formPreviewImages, [id as keyof typeof formImages] : ""});
-    }, [formImages, formPreviewImages])
+    }, [formImages, formPreviewImages]);
     const setFormImageByKeyFile = useCallback((file : File, key : keyof typeof formImages) => {
         const object = URL.createObjectURL(file);
 
@@ -112,8 +114,7 @@ export const GovernmentAdmin = ({ governmentData } : Props) =>
             if (err instanceof AxiosError)
                 openToast(getAxiosErrorMessage(err), "error");
         }
-    })
-
+    });
     const handleSubmit = useCallback(async(data : FormSchemaType) => {
         const formData = new FormData();
 
@@ -131,9 +132,31 @@ export const GovernmentAdmin = ({ governmentData } : Props) =>
         return await createGovernmentAsync(formData);
     }, [site, formImages]);
 
-    // const handleDeleteAllData = useCallback(() => {
-    //
-    // }, [governmentData])
+    useEffect(() => {
+        if (!governmentData && site) {
+            getSiteGovernmentData()
+            .then(data => {
+                if (data) {
+                    setGovernmentData(data)
+                    methods.setValue("nm_emailviceprefeito", data.nm_emailviceprefeito);
+                    methods.setValue("nm_emailprefeito", data.nm_emailprefeito);
+                    methods.setValue("nm_prefeito", data.nm_prefeito);
+                    methods.setValue("nm_viceprefeito", data.nm_viceprefeito);
+                    methods.setValue("nu_telefoneviceprefeito", data.nu_telefoneviceprefeito);
+                    methods.setValue("nu_telefoneprefeito", data.nu_telefoneprefeito);
+                    methods.setValue("ds_enderecoviceprefeito", data.ds_enderecoviceprefeito);
+                    methods.setValue("ds_enderecoprefeito", data.ds_enderecoprefeito);
+                    methods.setValue("ds_sobreviceprefeito", data.ds_sobreviceprefeito);
+                    methods.setValue("ds_sobreprefeito", data.ds_sobreprefeito);
+                    setFormPreviewImages({
+                        organizationalChart: data.organizationalChart.url ??"",
+                        mayorImage:  data.mayorImage.url ?? "",
+                        deputyMayorImage:  data.deputyMayorImage.url ?? "",
+                    });
+                }
+            });
+        }
+    }, [governmentData, site, govData,methods, formImages, formPreviewImages]);
     return (
         <section className={"flex flex-col lg:flex-row gap-5 mb-10"}>
             <FormProvider {...methods} >
@@ -256,7 +279,9 @@ export const GovernmentAdmin = ({ governmentData } : Props) =>
                         className={"m-auto rounded-lg w-full lg:w-[800px] lg:h-[500px]"}
                         description={"clique ou arraste a imagem do organograma aqui"}
                     />
-                    <footer className={"self-end"}>
+                    <footer className={"self-end flex items-center gap-2"}>
+                        <Button
+                        />
                         <Button
                             disabled={isPending}
                             isLoading={isPending}
@@ -265,6 +290,7 @@ export const GovernmentAdmin = ({ governmentData } : Props) =>
                             title={"Salvar"}
                             icon={Check}
                         />
+
                     </footer>
                 </form>
             </FormProvider>
