@@ -38,7 +38,7 @@ export const NewsDetailClient = ({ news, setNews } : Props) => {
         }
     }, [news]);
     return (
-        <div className={"flex flex-col-5"}>
+        < >
             {
                 news && (
                     <>
@@ -123,6 +123,6 @@ export const NewsDetailClient = ({ news, setNews } : Props) => {
                 )
             }
             {/*    todo: adicionar mais noticias para que o usuario continue navegando */}
-        </div>
+        </>
     )
 }
