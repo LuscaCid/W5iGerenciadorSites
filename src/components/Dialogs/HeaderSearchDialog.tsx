@@ -87,7 +87,7 @@ export function HeaderSearchDialog ({ isSearchWindowOpen, setIsSearchWindowOpen,
                     <span className="text-lg text-zinc-50  h-fit w-full m-auto opacity-70 select-none">
                         pressione 'esc' para fechar ou 'enter' para realizar uma busca
                     </span>
-                    <section className={"rounded-lg bg-zinc-300 p-4 dark:bg-zinc-800 dark:text-zinc-100 font-bold"}>
+                    <section className={"rounded-lg bg-zinc-300 p-2 py-3 lg:py-5 lg:p-4 dark:bg-zinc-800 dark:text-zinc-100 font-bold"}>
                         <h3 className={"mb-4  text-2xl"}>Resultados</h3>
 
                         <footer className={"flex flex-col gap-5"}>
@@ -171,14 +171,14 @@ const ListSearchItem = ({ title, subtitle, imagePreview, to, closeDialog, redire
             <Link target={"_blank"}
                 to={to ?? "/"}
                 onClick={closeDialog}
-                className={"rounded-lg group relative bg-zinc-100 justify-between dark:border border-zinc-700 flex items-center gap-4 p-4 pr-7 hover:bg-zinc-200 hover:dark:bg-zinc-950 cursor-pointer dark:bg-zinc-900 transition duration-150"}
+                className={"rounded-lg group relative bg-zinc-100 justify-between dark:border border-zinc-700 flex items-center gap-4 p-4 pr-7 hover:bg-zinc-200 hover:dark:bg-zinc-950 cursor-pointer dark:bg-zinc-900 transition duration-75"}
             >
                 <LinkBody
                     title={title}
                     subtitle={subtitle}
                     imagePreview={imagePreview}
                 />
-                <ArrowUpRight className={"group-hover:translate-x-2 group-hover:-translate-y-1 transition duration-150"}/>
+                <ArrowUpRight size={20} className={"group-hover:translate-x-2 group-hover:-translate-y-1 transition duration-150"}/>
             </Link>
         )
     }
@@ -186,14 +186,14 @@ const ListSearchItem = ({ title, subtitle, imagePreview, to, closeDialog, redire
         <NavLink
             to={to ?? "/"}
             onClick={closeDialog}
-            className={"rounded-lg group relative bg-zinc-100 justify-between dark:border border-zinc-700 flex items-center gap-4 p-4 pr-7 hover:bg-zinc-200 hover:dark:bg-zinc-950 cursor-pointer dark:bg-zinc-900 transition duration-150"}
+            className={"rounded-lg group relative bg-zinc-100 justify-between dark:border border-zinc-700 flex items-center gap-4 p-2 lg:p-4 pr-3 lg:pr-7 hover:bg-zinc-200 hover:dark:bg-zinc-950 cursor-pointer dark:bg-zinc-900 transition duration-75"}
         >
             <LinkBody
                 title={title}
                 subtitle={subtitle}
                 imagePreview={imagePreview}
             />
-            <ArrowUpRight className={"group-hover:translate-x-2 group-hover:-translate-y-1 transition duration-150"}/>
+            <ArrowUpRight size={20} className={"min-w-[20px] w-[20px] group-hover:translate-x-2 group-hover:-translate-y-1 transition duration-150"}/>
         </NavLink>
     )
 }
@@ -204,12 +204,12 @@ interface LinkBodyProps {
 }
 const LinkBody = ({imagePreview, title, subtitle} : LinkBodyProps) => {
     return (
-        <aside className={"flex gap-4 "}>
+        <aside className={"flex gap-4 items-center overflow-hidden  "}>
             {imagePreview && (
-                <img src={imagePreview} alt={"Imagem para pré visualizar"} className={"w-[100px] h-[50px] rounded-md"}/>
+                <img src={imagePreview} alt={"Imagem para pré visualizar"} className={"w-[70px] h-[30px] lg:w-[100px] lg:h-[50px] rounded-md"}/>
             )}
-            <main className={"flex flex-col "}>
-                <h3 className={"text-lg font-semibold   text-zinc-900 dark:text-zinc-300 overflow-ellipsis overflow-hidden text-nowrap w-full max-w-[90%] md:max-w-[300px] lg:max-w-[500px] 2xl:max-w-[650px]"}>
+            <main className={"flex flex-col w-1/2  "}>
+                <h3 className={"text-lg font-semibold   text-zinc-900 dark:text-zinc-300 overflow-ellipsis overflow-hidden text-nowrap w-full max-w-full md:max-w-[300px] lg:max-w-[500px] 2xl:max-w-[650px]"}>
                     {title}
                 </h3>
                 {subtitle && (

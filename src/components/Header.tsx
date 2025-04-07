@@ -65,7 +65,7 @@ export function Header ({ isHomePage } : Props)
     return (
         <section className={`flex  flex-col fixed  z-50  w-full`}>
             {
-                <header className={` p-2 px-2 md:px-40 w-full 2xl:px-56 justify-between bg-zinc-300/80 dark:bg-zinc-950/80  backdrop-blur-lg gap-4 ${isHomePage ? "translate-y-0" : "-translate-y-14 "}  transition duration-200 flex items-center `}>
+                <header className={`invisible lg:visible p-2 px-2 md:px-40 w-full 2xl:px-56 justify-between bg-zinc-300/80 dark:bg-zinc-950/80  backdrop-blur-lg gap-4 ${isHomePage ? "translate-y-0" : "-translate-y-14 "}  transition duration-200 flex items-center `}>
                     <button
                         onClick={() => setIsSearchWindowOpen(!isSearchWindowOpen) }
                         className={"w-[300px] rounded-full bg-zinc-200 dark:bg-zinc-700 flex items-center justify-between px-3 py-2 hover:bg-zinc-300 dark:hover:bg-zinc-800 transition duration-150 cursor-text"}

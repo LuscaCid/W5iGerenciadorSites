@@ -92,6 +92,12 @@ export function MobileHeader ()
                     to="/noticias" 
                     className="w-full py-3 bg-zinc-100 dark:bg-zinc-800"
                 />
+                <HeaderLink
+                    onClick={handleOpenSideBar}
+                    title="FAQ"
+                    to="/faq"
+                    className="w-full py-3 bg-zinc-100 dark:bg-zinc-800"
+                />
                 {
                     transparencyLinkContext.transparencyLink && (
                         <HeaderLink
