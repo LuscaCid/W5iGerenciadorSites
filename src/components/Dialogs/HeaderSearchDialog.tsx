@@ -171,7 +171,7 @@ const ListSearchItem = ({ title, subtitle, imagePreview, to, closeDialog, redire
             <Link target={"_blank"}
                 to={to ?? "/"}
                 onClick={closeDialog}
-                className={"rounded-lg group relative bg-zinc-100 justify-between dark:border border-zinc-700 flex items-center gap-4 p-4 pr-7 hover:bg-zinc-300 hover:dark:bg-zinc-950 cursor-pointer dark:bg-zinc-900 transition duration-150"}
+                className={"rounded-lg group relative bg-zinc-100 justify-between dark:border border-zinc-700 flex items-center gap-4 p-4 pr-7 hover:bg-zinc-200 hover:dark:bg-zinc-950 cursor-pointer dark:bg-zinc-900 transition duration-150"}
             >
                 <LinkBody
                     title={title}
@@ -186,7 +186,7 @@ const ListSearchItem = ({ title, subtitle, imagePreview, to, closeDialog, redire
         <NavLink
             to={to ?? "/"}
             onClick={closeDialog}
-            className={"rounded-lg group relative bg-zinc-100 justify-between dark:border border-zinc-700 flex items-center gap-4 p-4 pr-7 hover:bg-zinc-300 hover:dark:bg-zinc-950 cursor-pointer dark:bg-zinc-900 transition duration-150"}
+            className={"rounded-lg group relative bg-zinc-100 justify-between dark:border border-zinc-700 flex items-center gap-4 p-4 pr-7 hover:bg-zinc-200 hover:dark:bg-zinc-950 cursor-pointer dark:bg-zinc-900 transition duration-150"}
         >
             <LinkBody
                 title={title}
@@ -209,11 +209,11 @@ const LinkBody = ({imagePreview, title, subtitle} : LinkBodyProps) => {
                 <img src={imagePreview} alt={"Imagem para pré visualizar"} className={"w-[100px] h-[50px] rounded-md"}/>
             )}
             <main className={"flex flex-col "}>
-                <h3 className={"text-lg font-semibold text-zinc-50 dark:text-zinc-300 overflow-ellipsis overflow-hidden text-nowrap w-full max-w-[90%] md:max-w-[300px] lg:max-w-[500px] 2xl:max-w-[650px]"}>
+                <h3 className={"text-lg font-semibold   text-zinc-900 dark:text-zinc-300 overflow-ellipsis overflow-hidden text-nowrap w-full max-w-[90%] md:max-w-[300px] lg:max-w-[500px] 2xl:max-w-[650px]"}>
                     {title}
                 </h3>
                 {subtitle && (
-                    <span className={"text-sm text-zinc-200 dark:text-zinc-400"}>
+                    <span className={"text-sm text-zinc-800 dark:text-zinc-400"}>
                         {subtitle}
                     </span>
                 )}
