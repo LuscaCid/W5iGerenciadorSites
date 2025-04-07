@@ -39,16 +39,18 @@ export const BannerDialog = () => {
     const site = useSiteContext(state => state.site);
 
     const onDrop = useCallback((files : File[]) => {
-        const object = URL.createObjectURL(files[0]);
+        const fileDropped = files[0]
+        const object = URL.createObjectURL(fileDropped);
         setImagePreview(object);
-        setFile(file);
-    }, [file, imagePreview]);
+
+        setFile(fileDropped);
+    }, [file, setFile, imagePreview]);
 
     const { data : banners } = useQuery({
         queryFn : async ()=> await getBanners(),
         queryKey : ["banners"]
     });
-    const { isDragActive, getRootProps, getInputProps } = useDropzone({onDrop,  });
+    const { isDragActive, getRootProps, getInputProps } = useDropzone({onDrop});
 
     const { mutateAsync : saveBannerAsync, isPending } = useMutation({
         mutationFn : save,
@@ -78,7 +80,7 @@ export const BannerDialog = () => {
     });
     const handleDeleteBanner = useCallback((banner : Banner) => {
         deleteBannerAsync(banner.id_banner);
-    }, []);
+    }, [deleteBannerAsync]);
 
     const handleEditBanner = useCallback((banner : Banner) => {
         setBannerToEdit(banner);
@@ -86,8 +88,7 @@ export const BannerDialog = () => {
 
     const handleSubmit = useCallback(async (payload : FormBannerSchemaType) => {
         const formData = new FormData();
-        if (!file)
-            return openToast("É necessário enviar a imagem do banner", "error");
+        if (!file)  return openToast("É necessário enviar a imagem do banner", "error");
 
         formData.append("image", file);
         formData.append("url_link", payload.url_link);

@@ -89,7 +89,6 @@ export const LinksDialog = () => {
         if(link.fl_transparencia)
         {
             transparencyLinkContext.setTransparencyLink(undefined);
-            console.log("limpando");
         }
         await deleteLinkAsync(link.id_link)
     }, [deleteLinkAsync, transparencyLinkContext.setTransparencyLink, linkToEdit])

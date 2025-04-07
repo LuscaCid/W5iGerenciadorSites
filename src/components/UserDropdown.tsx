@@ -37,7 +37,6 @@ export const UserDropdown = () => {
                 <CustomDropdownItem 
                     icon={Mail}
                     title={user!.nm_email}
-                    onClick={() => console.log("email")}
                 />
 
                 <Separator />
