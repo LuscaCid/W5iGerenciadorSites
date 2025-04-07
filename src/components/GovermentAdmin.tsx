@@ -89,6 +89,7 @@ export const GovernmentAdmin = ({ governmentData : govData } : Props) =>
         setFormImages({ ...formImages, [id as keyof typeof formImages ] : undefined });
         setFormPreviewImages({...formPreviewImages, [id as keyof typeof formImages] : ""});
     }, [formImages, formPreviewImages]);
+
     const setFormImageByKeyFile = useCallback((file : File, key : keyof typeof formImages) => {
         const object = URL.createObjectURL(file);
 
@@ -99,10 +100,13 @@ export const GovernmentAdmin = ({ governmentData : govData } : Props) =>
     const onDrop = useCallback((files : File[], _ : any, event : { target : { id : string } }) => {
         const file = files[0] ?? null;
 
+        console.log(file, event.target);
         if (file) setFormImageByKeyFile(file, event.target.id as keyof typeof formImages);
     }, [ formImages, formPreviewImages, setFormImageByKeyFile ]);
 
-    const dropzoneProps = useDropzone({ onDrop : onDrop as any });
+    const dropzoneMayorProps = useDropzone({ onDrop : onDrop as any });
+    const dropzoneDeputyMayorProps = useDropzone({ onDrop : onDrop as any });
+    const dropzoneOrganizationalProps = useDropzone({ onDrop : onDrop as any });
 
     const { mutateAsync : updateSiteGovernmentAsync } = useMutation({
         mutationFn : updateSiteGovernment,
@@ -175,9 +179,9 @@ export const GovernmentAdmin = ({ governmentData : govData } : Props) =>
                             </h2>
                             <section className={"flex flex-col lg:flex-row gap-5 "}>
                                 <GovernmentImageSlot<keyof typeof formImages>
-                                    isDragActive={dropzoneProps.isDragActive}
-                                    getInputProps={dropzoneProps.getInputProps}
-                                    getRootProps={dropzoneProps.getRootProps}
+                                    isDragActive={dropzoneMayorProps.isDragActive}
+                                    getInputProps={dropzoneMayorProps.getInputProps}
+                                    getRootProps={dropzoneMayorProps.getRootProps}
                                     name={"mayorImage"}
                                     handleDeleteImage={handleDeleteImage}
                                     imagePreview={formPreviewImages.mayorImage}
@@ -224,9 +228,9 @@ export const GovernmentAdmin = ({ governmentData : govData } : Props) =>
                             </h2>
                             <section className={"flex flex-col lg:flex-row gap-5 w-full"}>
                                 <GovernmentImageSlot<keyof typeof formImages>
-                                    isDragActive={dropzoneProps.isDragActive}
-                                    getInputProps={dropzoneProps.getInputProps}
-                                    getRootProps={dropzoneProps.getRootProps}
+                                    isDragActive={dropzoneDeputyMayorProps.isDragActive}
+                                    getInputProps={dropzoneDeputyMayorProps.getInputProps}
+                                    getRootProps={dropzoneDeputyMayorProps.getRootProps}
                                     name={"deputyMayorImage"}
                                     imagePreview={formPreviewImages.deputyMayorImage}
                                     handleDeleteImage={handleDeleteImage}
@@ -270,9 +274,9 @@ export const GovernmentAdmin = ({ governmentData : govData } : Props) =>
 
                     </main>
                     <GovernmentImageSlot<keyof typeof formImages>
-                        isDragActive={dropzoneProps.isDragActive}
-                        getInputProps={dropzoneProps.getInputProps}
-                        getRootProps={dropzoneProps.getRootProps}
+                        isDragActive={dropzoneOrganizationalProps.isDragActive}
+                        getInputProps={dropzoneOrganizationalProps.getInputProps}
+                        getRootProps={dropzoneOrganizationalProps.getRootProps}
                         name={"organizationalChart"}
                         imagePreview={formPreviewImages.organizationalChart}
                         handleDeleteImage={handleDeleteImage}
@@ -329,7 +333,7 @@ function GovernmentImageSlot <U extends string>(
                 className={twMerge([patternStyle], [className])}
                 {...getRootProps()}
             >
-                <input {...getInputProps()} />
+                <input {...getInputProps()} id={name} name={name} />
                 {
                     imagePreview ? (
                         <img src={imagePreview} alt={""} className={"w-full"} />
