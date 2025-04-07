@@ -126,8 +126,7 @@ export const Faq = memo(() => {
         <h3 className={"text-2xl font-bold text-zinc-700 dark:text-zinc-400"}>
             Perguntas frequentes
         </h3>
-            {/*a iteracao deve ter como filho o accordion summary para que o titulo do dropdown seja a pergunta*/}
-            <main className={"flex flex-col gap-2"}>
+            <main className={"flex flex-col gap-2 mb-10"}>
                 {
                     !isLoading && data.length > 0 && (
                         data.map((faq : FaqType) =>(
