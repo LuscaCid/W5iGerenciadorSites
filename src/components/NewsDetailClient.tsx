@@ -38,7 +38,7 @@ export const NewsDetailClient = ({ news, setNews } : Props) => {
         }
     }, [news]);
     return (
-        < >
+        <>
             {
                 news && (
                     <>
@@ -82,7 +82,6 @@ export const NewsDetailClient = ({ news, setNews } : Props) => {
                                 }
                             </section>
                         </header>
-
                         <h3 className="text-2xl font-[600] text-zinc-600 dark:text-zinc-50">
                             {news?.ds_subtitulo}
                         </h3>
@@ -122,7 +121,7 @@ export const NewsDetailClient = ({ news, setNews } : Props) => {
                     </>
                 )
             }
-            {/*    todo: adicionar mais noticias para que o usuario continue navegando */}
+            {/* todo: adicionar mais noticias para que o usuario continue navegando */}
         </>
     )
 }

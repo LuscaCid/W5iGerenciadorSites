@@ -47,7 +47,7 @@ export function Toast({ children } : Props)
         },
     });
 
-    const patternStyle = ` w-80 opacity-0 fixed z-[10000] bg-zinc-200/70 dark:bg-zinc-800/70 top-5 dark:text-zinc-100 max-h-[200px] overflow-auto right-5  rounded-none backdrop-blur-sm p-2 flex flex-col transition duration-500  ${contextProps.isOpen ? " translate-y-2 opacity-100 " : "-translate-y-24 opacity-0"} `;
+    const patternStyle = ` w-80 opacity-0 fixed z-[10000] bg-zinc-200/70 dark:bg-zinc-900/70 top-5 dark:text-zinc-100 max-h-[200px] overflow-auto right-5  rounded-none backdrop-blur-sm p-2 flex flex-col transition duration-500  ${contextProps.isOpen ? " translate-y-2 opacity-100 " : "-translate-y-24 opacity-0"} `;
 
     const icons  : Record<ToastVariants, JSX.Element > = {
         warning : <OctagonAlert className="text-yellow-700" />,
@@ -101,7 +101,7 @@ export function Toast({ children } : Props)
                             contextProps.message ? contextProps.message : descriptions[contextProps.variant]
                         }
                     </h4>
-                    <div className={` absolute bottom-0 left-0 right-0 ${contextProps.isOpen ? "w-0" : "w-full "}  h-[3px] ease-linear bg-zinc-100 transition-all duration-[6s] ${applyStyle[contextProps.variant]}`}/>
+                    <div className={` absolute bottom-0 left-0 right-0 ${contextProps.isOpen ? "w-0" : "w-full "}  h-[3px] ease-linear bg-zinc-300 dark:bg-zinc-700 transition-all duration-[6s] ${applyStyle[contextProps.variant]}`}/>
                 </footer>
             </section>
             {children}
