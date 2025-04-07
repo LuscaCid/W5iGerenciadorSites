@@ -5,5 +5,5 @@ const routes = {
     prod : "https://gerenciador.w5i.com.br/api",
 }
 export const api = axios.create({
-    baseURL : routes.dev,
+    baseURL : import.meta.env["VITE_IS_DEV"] == "true" ?  routes.dev : routes.prod,
 });
