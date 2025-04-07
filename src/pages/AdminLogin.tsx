@@ -18,7 +18,7 @@ import {api} from "../services/api.ts";
 
 const formSchema = z.object({
   nm_email : z.string().email({message : "Precisa ser um e-mail válido"}),
-  nm_senha : z.string().min(5, { message : "A senha deve ter no mínimo 8 caracteres"})
+  nm_senha : z.string().min(5, { message : "A senha deve ter no mínimo 5 caracteres"})
 });
 
 export type FormSchemaType = z.infer<typeof formSchema>;
