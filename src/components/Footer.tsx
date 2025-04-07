@@ -1,5 +1,5 @@
 import {HeaderSearchDialog} from "./Dialogs/HeaderSearchDialog.tsx";
-import {useState} from "react";
+import {memo, useState} from "react";
 import {useQuery} from "@tanstack/react-query";
 import {useLinks} from "../hooks/useLinks.ts";
 import {Link} from "react-router-dom";
@@ -15,7 +15,7 @@ const contactSchema = z.object({
 })
 type ContactSchema = z.infer<typeof contactSchema>;
 
-export const Footer = () => {
+export const Footer = memo(() => {
     const [ isSearchWindowOpen, setSearchWindowOpen ] = useState(false);
     const { getLinks } = useLinks();
     const methods = useForm<ContactSchema>({ resolver : zodResolver(contactSchema) });
@@ -106,4 +106,4 @@ export const Footer = () => {
             </main>
         </footer>
     )
-}
+})

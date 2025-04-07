@@ -1,14 +1,7 @@
-@import "tailwindcss";
+@import "tailwindcss" important;
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/*
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-
-} */
 :root {
   -webkit-font-smoothing: antialiased;
   font-family: "Poppins", sans-serif;
@@ -65,7 +58,6 @@
   .spin-visible {
     &::-webkit-inner-spin-button,
     &::-webkit-outer-spin-button {
-      -webkit-appearance: auto;
       margin: initial;
     }
   }
@@ -82,7 +74,9 @@
   .scrollbar-view::-webkit-scrollbar-thumb  {
     background-color: rgba(156, 156, 156, 0.479) ;
   }
-
+  .bg-zinc-800 {
+    background: #000;
+  }
 }
 @layer base {
   input[type="number"]::-webkit-inner-spin-button,

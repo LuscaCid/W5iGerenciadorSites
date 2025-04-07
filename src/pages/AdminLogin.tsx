@@ -1,7 +1,7 @@
 import z from 'zod';
 import { FormProvider, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useCallback } from 'react';
+import {memo, useCallback} from 'react';
 import { HookFormInput } from '../UI/FormInput';
 import { RectangleEllipsis, UserIcon } from 'lucide-react';
 import { Button } from '../UI/Button';
@@ -22,7 +22,7 @@ const formSchema = z.object({
 
 export type FormSchemaType = z.infer<typeof formSchema>;
 
-export const AdminLogin = () => {
+export const AdminLogin = memo(() => {
   const { signIn } = useAuth();
   const setUser = useUserContext(state => state.setUser);
   const openToast = useContextSelector(toastContext, (c) => c.open)
@@ -107,4 +107,4 @@ export const AdminLogin = () => {
       </FormProvider>
     </div>
   )
-}
+})

@@ -61,35 +61,31 @@ export function Header ({ isHomePage } : Props)
             localStorage.setItem(StorageKeys.theme, "dark");
 
     }, [])
+
     return (
-        <section className={`flex  flex-col fixed  z-50  w-full   `}>
+        <section className={`flex  flex-col fixed  z-50  w-full`}>
             {
                 <header className={` p-2 px-2 md:px-40 w-full 2xl:px-56 justify-between bg-zinc-300/80 dark:bg-zinc-950/80  backdrop-blur-lg gap-4 ${isHomePage ? "translate-y-0" : "-translate-y-14 "}  transition duration-200 flex items-center `}>
-                    <HeaderSearchDialog
-                        customTrigger={(
-                            <button
-                                onClick={() => setIsSearchWindowOpen(!isSearchWindowOpen) }
-                                className={"w-[300px] rounded-full bg-zinc-200 dark:bg-zinc-700 flex items-center justify-between px-3 py-2 hover:bg-zinc-300 dark:hover:bg-zinc-800 transition duration-150 cursor-text"}
-                            >
-                                <span className={"text-sm text-zinc-700 dark:text-zinc-100"}>
-                                    Pesquisar
-                                </span>
-                                <span className={"rounded-full p-1 bg-zinc-300 dark:bg-zinc-700"}>
-                                    <Search size={15}/>
-                                </span>
-                            </button>
-                        )}
-                        setIsSearchWindowOpen={setIsSearchWindowOpen}
-                        isSearchWindowOpen={isSearchWindowOpen}
-                    />
+                    <button
+                        onClick={() => setIsSearchWindowOpen(!isSearchWindowOpen) }
+                        className={"w-[300px] rounded-full bg-zinc-200 dark:bg-zinc-700 flex items-center justify-between px-3 py-2 hover:bg-zinc-300 dark:hover:bg-zinc-800 transition duration-150 cursor-text"}
+                    >
+                        <span className={"text-sm text-zinc-700 dark:text-zinc-100"}>
+                            Pesquisar
+                        </span>
+                        <span className={"rounded-full p-1 bg-zinc-300 dark:bg-zinc-700"}>
+                            <Search size={15}/>
+                        </span>
+                    </button>
                     <aside className={"flex items-center gap-4"}>
                         <ul className={"flex items-center gap-0"}>
                             <ItemSetSection type={"left"} id={SectionsScroll.banner} title={"Destaque"}/>
+                            <ItemSetSection type={"middle"} id={SectionsScroll.services} title={"Serviços"}/>
                             <ItemSetSection type={"middle"} id={SectionsScroll.news} title={"Conteúdo"}/>
                             <ItemSetSection type={"right"} id={SectionsScroll.footer} title={"Rodapé"}/>
                         </ul>
                         <ul className={"flex items-center gap-4 border-l border-zinc-400 px-4 border-r "}>
-                            <SubMenuLink to={"/"} title={"FAQ"}/>
+                            <SubMenuLink to={"/faq"} title={"FAQ"}/>
                             <SubMenuLink to={"/ouvidoria"} title={"Ouvidoria"}/>
                         </ul>
                         <Button
@@ -115,6 +111,15 @@ export function Header ({ isHomePage } : Props)
                         to={""}
                         title={"Sobre"}
                         onClick={handleCloseDialog}
+                        children={
+                            (
+                                <div className={"flex flex-col  "}>
+                                    <HeaderLink className={"group-hover:text-zinc-950 dark:group-hover:text-zinc-200"} to={'/'} title={"História"} onClick={handleCloseDialog}/>
+                                    <HeaderLink className={"group-hover:text-zinc-950 dark:group-hover:text-zinc-200"} to={'/governo'} title={"Governo"} onClick={handleCloseDialog}/>
+                                    <HeaderLink className={"group-hover:text-zinc-950 dark:group-hover:text-zinc-200"} to={'/'} title={"Informações gerais"} onClick={handleCloseDialog}/>
+                                </div>
+                            )
+                        }
                     />
                     {
                         transparencyLinkContext.transparencyLink && (
@@ -129,7 +134,6 @@ export function Header ({ isHomePage } : Props)
                             />
                         )
                     }
-
                     <HeaderSearchDialog
                         isSearchWindowOpen={isSearchWindowOpen}
                         setIsSearchWindowOpen={setIsSearchWindowOpen}
@@ -162,7 +166,11 @@ const ItemSetSection  = ({id, title, type} : SectionProps) => {
         "middle" : "rounded-none border-l border-r border-blue-300",
     }
     return (
-        <Link smooth to={id} className={` bg-blue-500 rounded-md hover:shadow-2xl shadow-blue-600 cursor-pointer hover:bg-blue-600 font-semibold text-white px-3 py-1.5 transition-all duration-600 ${stylesAccordingType[type]}`}>
+        <Link
+            duration={500}
+            offset={-200}
+            smooth to={id}
+            className={` bg-blue-500 rounded-md hover:shadow-2xl shadow-blue-600 cursor-pointer hover:bg-blue-600 font-semibold text-white px-3 py-1.5 transition-all duration-600 ${stylesAccordingType[type]}`}>
             {title}
         </Link>
     )

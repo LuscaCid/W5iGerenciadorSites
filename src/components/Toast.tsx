@@ -47,7 +47,7 @@ export function Toast({ children } : Props)
         },
     });
 
-    const patternStyle = ` w-80 opacity-0 fixed z-[10000] top-5 max-h-[200px] overflow-auto right-5 border rounded-md backdrop-blur-sm p-2 flex flex-col transition duration-500  ${contextProps.isOpen ? " translate-y-2 opacity-100 " : "-translate-y-24 opacity-0"} `;
+    const patternStyle = ` w-80 opacity-0 fixed z-[10000] bg-zinc-200/70 dark:bg-zinc-800/70 top-5 dark:text-zinc-100 max-h-[200px] overflow-auto right-5  rounded-none backdrop-blur-sm p-2 flex flex-col transition duration-500  ${contextProps.isOpen ? " translate-y-2 opacity-100 " : "-translate-y-24 opacity-0"} `;
 
     const icons  : Record<ToastVariants, JSX.Element > = {
         warning : <OctagonAlert className="text-yellow-700" />,
@@ -69,10 +69,10 @@ export function Toast({ children } : Props)
     };
     const applyStyle :ToastStringRecord =
         {
-            info : `border-blue-400 bg-blue-300/50 dark:bg-blue-400/55`,
-            error : `border-red-400 bg-red-300/50 dark:bg-red-400/55`,
-            warning : `border-yellow-400 bg-yellow-300/50 dark:bg-yellow-400/55`,
-            success : `border-green-300 dark:border-green-400 bg-green-300/50 dark:bg-green-400/55 `
+            info : ` bg-blue-400/50 dark:bg-blue-500/80`,
+            error : ` bg-red-400/50 dark:bg-red-500/80`,
+            warning : ` bg-yellow-400/50 dark:bg-yellow-500/80`,
+            success : ` bg-green-400/50 dark:bg-green-500/80 `
         };
     //renderiza o icone conforme o tipo de toast passado retornandop um jsx
     const renderIcon = () => icons[contextProps.variant];
@@ -86,7 +86,7 @@ export function Toast({ children } : Props)
     }, [ contextProps ]);
     return (
         <toastContext.Provider value={contextProps}>
-            <section className={twMerge([patternStyle, applyStyle[contextProps.variant]])}>
+            <section className={twMerge([patternStyle])}>
                 <header className="flex items-center gap-2">
                     <aside>
                         {renderIcon()}
@@ -101,6 +101,7 @@ export function Toast({ children } : Props)
                             contextProps.message ? contextProps.message : descriptions[contextProps.variant]
                         }
                     </h4>
+                    <div className={` absolute bottom-0 left-0 right-0 ${contextProps.isOpen ? "w-0" : "w-full "}  h-[3px] ease-linear bg-zinc-100 transition-all duration-[6s] ${applyStyle[contextProps.variant]}`}/>
                 </footer>
             </section>
             {children}

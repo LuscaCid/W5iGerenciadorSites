@@ -1,4 +1,5 @@
 import { ChangeEvent } from "react";
+import {twMerge} from "tailwind-merge";
 
 type Variant = "title" | "subtitle" | "paragraph"
 interface Props 
@@ -9,6 +10,8 @@ interface Props
     placeholder : string;
     type? : string;
     maxLength? : number;
+    className? : string;
+    rest? : any[]
 }
 export const NewsDetailInput = (
 { 
@@ -16,7 +19,9 @@ export const NewsDetailInput = (
     variant, 
     maxLength, 
     onChangeFn, 
-    value 
+    value,
+    className,
+    rest
 } : Props) => 
 {
     const styleAccordinVariant : Record<Variant, string> = {
@@ -25,12 +30,13 @@ export const NewsDetailInput = (
         paragraph : "text-md text-zinc-500 max-h-[1000px] min-h-[35px] dark:text-zinc-500",
     }
     return (
-        <textarea 
+        <textarea
+            {...rest}
             rows={variant == "paragraph" ? 5 : 1}
             onChange={onChangeFn}
             value={value}
             maxLength={maxLength}
-            className={`${styleAccordinVariant[variant]} p-1 focus:outline-none border-none bg-transparent w-full   focus:ring-[3px] transition duration-150 focus:ring-blue-300`}
+            className={twMerge([`${styleAccordinVariant[variant]} p-1 focus:outline-none border-none bg-transparent w-full   focus:ring-[3px] transition duration-150 focus:ring-blue-300`], [className]) }
             placeholder={placeholder} 
         >
 

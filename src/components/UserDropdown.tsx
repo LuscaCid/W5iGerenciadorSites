@@ -1,6 +1,6 @@
 import * as Dropdown from '@radix-ui/react-dropdown-menu';
 import { CustomDropdownItem } from './CustomDropdownItem';
-import {Link as LinkIcon, LogOut, Mail} from 'lucide-react';
+import {Link as LinkIcon, LogOut, Mail, RectangleHorizontal} from 'lucide-react';
 import { useUserContext } from '../store/user';
 import { useNavigate } from 'react-router-dom';
 import { Separator } from './Separator';
@@ -8,6 +8,9 @@ import {UserAvatar} from "./UserAvatar.tsx";
 import {StorageKeys} from "../constants/StorageKeys.ts";
 import * as Dialog from "@radix-ui/react-dialog";
 import {LinksDialog} from "./Dialogs/LinksDialog.tsx";
+import {CustomOverlay} from "./Dialogs/CustomOverlay.tsx";
+import {BannerDialog} from "./Dialogs/BannerDialog.tsx";
+import axios from "axios";
 
 export const UserDropdown = () => {
     const { user, setUser } = useUserContext();
@@ -16,6 +19,7 @@ export const UserDropdown = () => {
     const handleLogout = () => {
         setUser(undefined);
         localStorage.removeItem(StorageKeys.user)
+        delete axios.defaults.headers.authorization;
         navigate('/');
     }
     return (
@@ -39,11 +43,23 @@ export const UserDropdown = () => {
                 <Separator />
                 <Dialog.Root>
                     <Dialog.Trigger className={"p-2 items-center justify-between gap-2 flex hover:bg-zinc-200 dark:hover:bg-zinc-900  hover:outline-none transition duration-150 cursor-pointer rounded-md"}>
-                        <span> Links</span> <LinkIcon size={18}/>
+                        <span>Links</span> <LinkIcon size={18}/>
                     </Dialog.Trigger>
                     <Dialog.Portal>
-                        <Dialog.Overlay className={"z-50 fixed inset-0 w-screen bg-zinc-900/30 backdrop-blur-md"}/>
+                        <CustomOverlay />
                         <LinksDialog/>
+                    </Dialog.Portal>
+                </Dialog.Root>
+                <Separator />
+                <Dialog.Root>
+                    <Dialog.Trigger
+                        className={"p-2 items-center justify-between gap-2 flex hover:bg-zinc-200 dark:hover:bg-zinc-900  hover:outline-none transition duration-150 cursor-pointer rounded-md"}
+                    >
+                        <span>Banners</span> <RectangleHorizontal  size={18}/>
+                    </Dialog.Trigger>
+                    <Dialog.Portal>
+                        <CustomOverlay />
+                        <BannerDialog/>
                     </Dialog.Portal>
                 </Dialog.Root>
                 <Separator />
