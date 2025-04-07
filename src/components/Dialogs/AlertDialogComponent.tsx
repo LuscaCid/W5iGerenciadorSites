@@ -37,14 +37,14 @@ export const AlertDialogComponent = React.forwardRef<HTMLDivElement, IAlertDialo
                         <AlertDialog.Cancel asChild>
                             <Button
                                 title="Cancelar"
-                                className="dark:text-white text-md rounded-lg bg-red-400 px-4 hover:bg-red-500  dark:hover:bg-zinc-900 font-bold dark:font-normal"
+                                className="dark:text-white text-white text-md rounded-lg bg-zinc-500 px-4 hover:bg-zinc-600  dark:hover:bg-zinc-900 font-bold dark:font-normal"
                             />
                         </AlertDialog.Cancel>
                         <AlertDialog.Action asChild >
                             <Button
                                 onClick={action}
                                 icon={Trash}
-                                className="text-white text-md rounded-lg bg-red-400 dark:hover:bg-red-500 px-4 py-1 hover:bg-red-500 flex-row-reverse flex gap-2 font-normal dark:bg-opacity-90"
+                                className=" text-white text-md font-bold rounded-lg bg-red-400 dark:hover:bg-red-500 px-4 py-1  hover:bg-red-500 flex gap-2  dark:bg-opacity-90 dark:font-normal"
                                 title={`${buttonActionMessage ? `${buttonActionMessage}` : "Sim, continuar" }`}
                             />
                         </AlertDialog.Action>
