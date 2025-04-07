@@ -14,6 +14,7 @@ import {useContextSelector} from "use-context-selector";
 import {toastContext} from "../components/Toast.tsx";
 import {AxiosError} from "axios";
 import {StorageKeys} from "../constants/StorageKeys.ts";
+import {api} from "../services/api.ts";
 
 const formSchema = z.object({
   nm_email : z.string().email({message : "Precisa ser um e-mail válido"}),
@@ -39,7 +40,11 @@ export const AdminLogin = memo(() => {
         id_usuario : data.user.id_usuario!
       }
       setUser(accessData);
+
+      api.defaults.headers.authorization = "Bearer " + data.access_token;
+
       localStorage.setItem(StorageKeys.user, JSON.stringify(accessData));
+
       navigate('/noticias');
     },
     onError : (err : AxiosError) => {

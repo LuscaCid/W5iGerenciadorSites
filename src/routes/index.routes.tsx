@@ -5,40 +5,30 @@ import {useEffect} from "react";
 import {api} from "../services/api.ts";
 import {useSiteContext} from "../store/site.ts";
 import {StorageKeys} from "../constants/StorageKeys.ts";
+import {User} from "../@types/User";
 
 export function Router ()
 {
-    const { user, setUser } = useUserContext();
+    const { setUser } = useUserContext();
     const setSite = useSiteContext(state => state.setSite);
 
     setSite({
         id_site : import.meta.env['VITE_SITE_CHAVE'],
         nm_site : import.meta.env['VITE_SITE_NOME'],
     })
-    useEffect(() => {
-        if (user){
-            localStorage.setItem(StorageKeys.user, JSON.stringify(user));
 
-            api.interceptors.request.use(
-                async (config) => {
-                    const token = user.access_token;
-                    config.headers["authorization"] = "Bearer " + token;
-                    return config;
-                },
-                error => {
-                    console.log(error);
-                }
-            )
-        }
-    }, [ user, api ]);
     useEffect(() => {
         const userInLocalStorage = window.localStorage.getItem(StorageKeys.user);
         if (userInLocalStorage)
         {
-            const object = JSON.parse(userInLocalStorage);
+            const object = JSON.parse(userInLocalStorage) as User;
+
+            const token = object.access_token;
+            api.defaults.headers.authorization = "Bearer " + token;
+
             setUser(object);
         }
-    }, [ setUser ]);
+    }, [ setUser, api ]);
 
     return (
         <BrowserRouter basename={"/w5i-tecnologia-acesso-2025"}>
