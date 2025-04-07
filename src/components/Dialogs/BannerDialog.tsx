@@ -70,8 +70,9 @@ export const BannerDialog = () => {
     const { mutateAsync : deleteBannerAsync } = useMutation({
         mutationFn : remove,
         mutationKey : ["delete-banner"],
-        onSuccess : () => {
+        onSuccess : (_, variables) => {
             openToast("Banner excluído", "success");
+            queryClient.setQueryData(["banners"], (prev : Banner[]) => prev.filter((b) => b.id_banner != variables) )
         },
         onError : (err: unknown) => {
             if (err instanceof AxiosError && err.response)
