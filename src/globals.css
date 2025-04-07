@@ -58,7 +58,6 @@
   .spin-visible {
     &::-webkit-inner-spin-button,
     &::-webkit-outer-spin-button {
-      -webkit-appearance: auto;
       margin: initial;
     }
   }

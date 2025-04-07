@@ -87,7 +87,6 @@ export function HeaderSearchDialog ({ isSearchWindowOpen, setIsSearchWindowOpen,
                     <span className="text-lg text-zinc-50  h-fit w-full m-auto opacity-70 select-none">
                         pressione 'esc' para fechar ou 'enter' para realizar uma busca
                     </span>
-                    {/*TODO janela de demonstração de resultados de pesquisa em toda a aplicacao*/}
                     <section className={"rounded-lg bg-zinc-300 p-4 dark:bg-zinc-800 dark:text-zinc-100 font-bold"}>
                         <h3 className={"mb-4  text-2xl"}>Resultados</h3>
 

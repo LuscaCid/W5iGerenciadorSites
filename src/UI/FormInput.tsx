@@ -23,7 +23,6 @@ interface InputProps<T extends string>
     buttonPasswordVisible? : boolean;
     label? : string;
 }
-// todos os inputs da aplicação serão "abraçados" pelo ...register("<input_name>") do react-hook-form
 export const HookFormInput = <T extends string>(
     {
         id,
