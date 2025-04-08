@@ -6,7 +6,7 @@ import {
     ShieldUser,
     UtilityPole,
     Link as LinkIcon,
-    SquareArrowOutUpRight, RectangleHorizontal
+    SquareArrowOutUpRight, RectangleHorizontal, Album, MailQuestionIcon
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { CustomDropdownItem } from "./CustomDropdownItem";
@@ -58,6 +58,16 @@ export const MenuDropdown = ({ isMenuDropdownOpen, setIsMenuDropdownOpen, isMobi
                     onClick={() => navigate('/municipio')} 
                     title="Município" 
                     icon={UtilityPole} 
+                />
+                <CustomDropdownItem
+                    onClick={() => navigate('/faq')}
+                    title="FAQ"
+                    icon={MailQuestionIcon}
+                />
+                 <CustomDropdownItem
+                    onClick={() => navigate('/secretarias')}
+                    title="Secretatarias"
+                    icon={MailQuestionIcon}
                 />
 
                 {
