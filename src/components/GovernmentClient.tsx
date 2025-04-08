@@ -64,17 +64,17 @@ const PoliticianSection = (props : PoliticianProps) => (
         <h2 className={"text-lg font-bold pb-2 border-b border-zinc-100 dark:border-zinc-800 w-fit px-4"}>
             {props.title}
         </h2>
-        <header className={"flex gap-4 items-center"}>
+        <header className={"flex lg:flex-row flex-col gap-4 items-center"}>
             <img
                 src={props.url_img ?? Default}
                 alt={"Imagem de perfil do prefeito"}
-                className={"rounded-full w-[200px]  md:w-[300px] h-[200px]  md:h-[300px] 2xl:w-1/3  2xl:h-[500px] object-cover"}
+                className={"rounded-full w-[300px] h-[300px] object-cover lg:w-[400px]  md:h-[400px] 2xl:w-1/3  2xl:h-[500px] "}
             />
             <aside className={"flex flex-col gap-4"}>
                 <h3 className={"text-2xl font-semibold"}>
                     {props.nm_politician}
                 </h3>
-                <p className={"2xl:max-w-2/3"}>
+                <p className={"w-full lg:max-w-2/3"}>
                     {props.ds_about}
                 </p>
             </aside>
