@@ -3,7 +3,6 @@ import z from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {HookFormInput} from "../UI/FormInput.tsx";
 import {Dispatch, SetStateAction, useCallback, useEffect} from "react";
-import {useUserContext} from "../store/user.ts";
 import {SliderComponent} from "../UI/Slider.tsx";
 import {Faq} from "../@types/Faq";
 import {Button} from "../UI/Button.tsx";
@@ -49,18 +48,14 @@ export const FormCreateFaq = ({ faqToEdit, setFaqToEdit } : Props) => {
                 openToast((err.response.data as { message : string }).message, "error");
         }
     })
-    const user = useUserContext(state => state.user);
 
     const handleSubmitForm = useCallback(async(data : FaqFormSchemaType) => {
-        console.log(data);
-
         const dataToSend = {
             ...data,
-            id_usuario : user!.id_usuario,
             id_site : site!.id_site,
         } as unknown as Faq;
         await saveFaqAsync(dataToSend);
-    }, [site, user]);
+    }, [ site ]);
 
     useEffect(() => {
         if (faqToEdit)

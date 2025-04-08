@@ -8,11 +8,11 @@ import { NewsDetailAdmin } from "../components/NewsDetailAdmin.tsx";
 import {NewsDetailClient} from "../components/NewsDetailClient.tsx";
 import {useQueryClient} from "@tanstack/react-query";
 import {Noticia} from "../@types/News";
-import {useEffect, useState} from "react";
+import {memo, useEffect, useState} from "react";
 import {UserAvatar} from "../components/UserAvatar.tsx";
 import {Tooltip} from "@mui/material";
 
-export const NewsDetail = () => {
+export const NewsDetail = memo(() => {
 
   const params = useParams();
   const navigate = useNavigate();
@@ -50,7 +50,7 @@ export const NewsDetail = () => {
                 <UserAvatar
                     subtitle={"Publicado em "+ formatDate(actualNewsSelected.dt_publicacao!, "dd/MM/yyyy 'às' HH'h'mm")}
                     clickable={false}
-                    title={`Por: ${actualNewsSelected.usuario?.nm_usuario}`}
+                    title={`Por: ${actualNewsSelected.usuario?.nm_user}`}
                 />
                 {/* data de publicacao da noticia no portal */}
                 <div className="self-end text-zinc-600 text-sm flex gap-2 items-center">
@@ -80,6 +80,6 @@ export const NewsDetail = () => {
       </main>
     </div>
   )
-}
+})
 
  

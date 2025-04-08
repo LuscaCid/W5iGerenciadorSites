@@ -4,7 +4,6 @@ import {Camera, Check, Plus, Search, X} from "lucide-react";
 import {ChangeEvent, Dispatch, FormEvent, SetStateAction, useCallback, useEffect, useState} from "react";
 import {Button} from "../UI/Button.tsx";
 import {Noticia} from "../@types/News";
-import {useUserContext} from "../store/user.ts";
 import {useSiteContext} from "../store/site.ts";
 import {useNews} from "../hooks/useNews.ts";
 import {useMutation} from "@tanstack/react-query";
@@ -36,7 +35,6 @@ export type ChangeInputValueType = keyof Pick<Paragraph, "ds_subtitulo" | "ds_pa
 export const NewsDetailAdmin = ({ news, setNews } : Props) => {
 
     const { getNewsById } = useNews();
-    const user = useUserContext(state => state.user);
     const site = useSiteContext(state => state.site);
     const openToast = useContextSelector(toastContext, (context) => context.open);
     const [ isDialogOpen, setDialogOpen ] = useState(false);
@@ -86,7 +84,6 @@ export const NewsDetailAdmin = ({ news, setNews } : Props) => {
         //ao enviar ao backend, é necessario passar o filename
         formData.append("url_thumbimg", newsData.url_thumbimg!);
         formData.append("id_site", site!.id_site.toString());
-        formData.append("id_usuario", user!.id_usuario.toString());
         formData.append("dt_atualizacao", new Date().toString());
 
         if (news) formData.append("id_noticia", news.id_noticia.toString());
@@ -101,7 +98,7 @@ export const NewsDetailAdmin = ({ news, setNews } : Props) => {
         formData.append('paragraphsJSON', slotsJson);
         await postNewsAsync(formData);
 
-    }, [ newsData, imageSlots, postNewsAsync, news, site, user, thumbnailSlot, selectedTags, paragraphSlots ]);
+    }, [ newsData, imageSlots, postNewsAsync, news, site, thumbnailSlot, selectedTags, paragraphSlots ]);
 
     const handleAddNewParagraphSlot = useCallback(() => {
         const newParagraphId = crypto.randomUUID()

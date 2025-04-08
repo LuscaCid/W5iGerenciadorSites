@@ -28,7 +28,7 @@ export const UserDropdown = () => {
                 className='flex items-center gap-2'
             >
                 <UserAvatar
-                    title={`Olá, ${user?.nm_usuario}`}
+                    title={`Olá, ${user?.nm_user}`}
                 />
             </Dropdown.Trigger>
             <Dropdown.Content className='rounded-lg shadow-lg bg-zinc-100 dark:bg-zinc-800 p-2 flex flex-col gap-2' >
