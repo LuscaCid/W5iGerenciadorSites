@@ -35,9 +35,9 @@ export const AdminLogin = memo(() => {
     onSuccess :(data) => {
       const accessData = {
         nm_email : data.user.nm_email!,
-        nm_usuario : data.user.nm_usuario!,
+        nm_user : data.user.nm_user!,
         access_token : data.access_token,
-        id_usuario : data.user.id_usuario!
+        id_user : data.user.id_user!
       }
       setUser(accessData);
 

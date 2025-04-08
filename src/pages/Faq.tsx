@@ -75,7 +75,6 @@ export const Faq = memo(() => {
             return () => clearTimeout(timeout);
         }
 
-        queryClient.invalidateQueries({queryKey : ["faqs"]});
         setDebounce(false);
     }, [query, queryClient]);
 
@@ -86,7 +85,6 @@ export const Faq = memo(() => {
                 prev.set("page", page.toString())
                 return prev;
             })
-            console.log("asdasdasdsada");
             queryClient.invalidateQueries({queryKey : ["faqs"]})
         }
     }, [page, searchParams, queryClient]);
@@ -105,7 +103,7 @@ export const Faq = memo(() => {
     }
     {user && <div className={"w-full h-[1px] lg:h-full lg:w-[1px] bg-zinc-200  dark:bg-zinc-800"}/>}
 
-    <main className={"flex flex-col gap-5 w-full lg:w-2/3"}>
+    <main className={"flex flex-col gap-5 w-full"}>
         <header className={"flex items-center gap-4"}>
             <Input
                 onChange={(e) => setQuery(e.target.value)}
