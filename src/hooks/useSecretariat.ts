@@ -13,8 +13,8 @@ export const useSecretariat = () => {
         return response.data;
     }, [])
     const getSecretariats = useCallback(async () => {
-        const query = searchParams.get("query");
-        const page = searchParams.get("page")
+        const query = searchParams.get("query") ?? "";
+        const page = searchParams.get("page") ??1
         const response = await api.get(`${PATH_NAME}/?query=${query}&id_site=${site!.id_site}&page=${page}`);
         return response.data;
     }, [site])
