@@ -49,7 +49,7 @@ export const HookFormInput = <T extends string>(
     };
     const { register, formState: { errors } } = useFormContext();
 
-    const patternStyle = `dark:bg-zinc-700 dark:text-zinc-100 transition duration-200 py-2 group  px-14 pl-1 relative w-full ${type == "file"? "cursor-pointer hover:bg-zinc-300 transition duration-200  w-fit rounded-md p-3 flex items-center justify-center" :"rounded-md  h-10" } mb-1  text-md  bg-zinc-200/60  placeholder:text-zinc-500  ${disabled ? "opacity-70 cursor-not-allowed" : ""}`;
+    const patternStyle = `dark:bg-zinc-700/60 dark:text-zinc-100 transition duration-200 py-2 group  px-14 pl-1 relative w-full ${type == "file"? "cursor-pointer hover:bg-zinc-300 transition duration-200  w-fit rounded-md p-3 flex items-center justify-center" :"rounded-md  h-10" } mb-1  text-md  bg-zinc-200/60  placeholder:text-zinc-500  ${disabled ? "opacity-70 cursor-not-allowed" : ""}`;
     
     return ( 
         <fieldset className="flex flex-col gap-1 w-full">
