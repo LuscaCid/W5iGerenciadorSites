@@ -1,5 +1,5 @@
 import { Logo } from "./Logo";
-import {useCallback, useEffect, useState} from "react";
+import { useEffect, useState} from "react";
 import { HeaderSearchDialog } from "./Dialogs/HeaderSearchDialog.tsx";
 import { MenuDropdown } from "./MenuDropdown";
 import { HeaderLink } from "./HeaderLink";
@@ -13,7 +13,7 @@ import {Link} from "react-scroll"
 import {SectionsScroll} from "../constants/SectionsScroll.ts";
 import {NavLink} from "react-router-dom";
 import {Button} from "../UI/Button.tsx";
-import {StorageKeys} from "../constants/StorageKeys.ts";
+import {appTheme} from "../@shared/AppTheme.ts";
 interface Props {
     isHomePage? : boolean
 }
@@ -29,7 +29,7 @@ export function Header ({ isHomePage } : Props)
     const [ isSearchWindowOpen, setIsSearchWindowOpen ] = useState(false);
     const [ isMenuDropdownOpen, setIsMenuDropdownOpen ] = useState(false);
     const transparencyLinkContext = useTransparencyLinkContext();
-
+    const { handleChangeTheme } = appTheme();
     const { getLinks } = useLinks();
 
     const { data : links } = useQuery({
@@ -47,20 +47,6 @@ export function Header ({ isHomePage } : Props)
             transparencyLink && transparencyLinkContext.setTransparencyLink(transparencyLink);
         }
     }, [ links, transparencyLinkContext.setTransparencyLink ]);
-    const handleChangeTheme = useCallback(() => {
-        const theme = localStorage.getItem(StorageKeys.theme);
-        const html = document.querySelector("html")!;
-
-        if (theme && theme == "dark")
-        {
-            localStorage.removeItem(StorageKeys.theme);
-            html.classList.remove("dark");
-            return;
-        }
-            html.classList.add("dark")
-            localStorage.setItem(StorageKeys.theme, "dark");
-
-    }, [])
 
     return (
         <section className={`flex  flex-col fixed  z-50  w-full`}>
@@ -117,7 +103,7 @@ export function Header ({ isHomePage } : Props)
                                     <HeaderLink className={"group-hover:text-zinc-950 dark:group-hover:text-zinc-200"} to={'/'} title={"História"} onClick={handleCloseDialog}/>
                                     <HeaderLink className={"group-hover:text-zinc-950 dark:group-hover:text-zinc-200"} to={'/governo'} title={"Governo"} onClick={handleCloseDialog}/>
                                     <HeaderLink className={"group-hover:text-zinc-950 dark:group-hover:text-zinc-200"} to={'/'} title={"Informações gerais"} onClick={handleCloseDialog}/>
-
+                                    <HeaderLink className={"group-hover:text-zinc-950 dark:group-hover:text-zinc-200"} to={'/secretaria'} title={"Secretarias"} onClick={handleCloseDialog}/>
                                 </div>
                             )
                         }
