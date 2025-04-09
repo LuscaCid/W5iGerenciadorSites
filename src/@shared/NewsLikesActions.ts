@@ -4,6 +4,7 @@ import {StorageKeys} from "../constants/StorageKeys.ts";
 import {QueryClient, UseMutateAsyncFunction} from "@tanstack/react-query";
 import {DislikeNewsDto, LikeNewsDto} from "../hooks/useNews.ts";
 import {Like} from "../components/NewsCard.tsx";
+import {useSiteContext} from "../store/site.ts";
 
 interface Props {
     queryClient : QueryClient;
@@ -27,6 +28,7 @@ export function NewsLikesActions ({
     dislikeAsync,
 } : Props )
 {
+    const site = useSiteContext(state => state.site);
     /**
      * @summary vai aumentar o numero de dislikes na notícia dentro do contexto em caso de não ter dado o like ainda
      * @param boolean plus, a depender da ação vai diminui um ou aumentar um like
@@ -54,19 +56,19 @@ export function NewsLikesActions ({
 
         toggleDislike(false);
 
-        await dislikeAsync({id_news : news.id_noticia!, unDislike : true});
+        await dislikeAsync({id_news : news.id_noticia!, unDislike : true, id_site : site!.id_site});
     }, [ toggleDislike, dislikeAsync, news.id_noticia ]);
 
     const dislikeInStorageAndDatabase = useCallback(async (storageLikes : Like[]) => {
-        const dislike : Like = { id_news : news.id_noticia! };
+        const dislike : Like = { id_news : news.id_noticia!, id_site : site!.id_site };
         localStorage.setItem(StorageKeys.dislike, JSON.stringify([ ...storageLikes, dislike ]));
 
         await removeLikeIfExistsAfterDislike();
 
         toggleDislike(true);
 
-        await dislikeAsync({id_news : news.id_noticia!, unDislike : false});
-    }, [ dislikeAsync, news.id_noticia, toggleDislike ])
+        await dislikeAsync({id_news : news.id_noticia!, unDislike : false, id_site : site!.id_site});
+    }, [ dislikeAsync, news.id_noticia, toggleDislike, site ])
 
     const removeLikeIfExistsAfterDislike = useCallback(async() => {
         const likesFromStorage = JSON.parse(localStorage.getItem(StorageKeys.like) ?? "[]") as Like[];
@@ -118,18 +120,18 @@ export function NewsLikesActions ({
 
         toggleLike(false);
 
-        await likeAsync({id_news : news.id_noticia!, unlike : true});
-    }, [ toggleLike, likeAsync, news.id_noticia ]);
+        await likeAsync({id_news : news.id_noticia!, unlike : true, id_site : site!.id_site});
+    }, [ toggleLike, likeAsync, news.id_noticia, site ]);
 
     const likeInStorageAndDatabase = useCallback(async (storageLikes : Like[]) => {
-        const like : Like = { id_news : news.id_noticia! };
+        const like : Like = { id_news : news.id_noticia!, id_site : site!.id_site  };
         localStorage.setItem(StorageKeys.like, JSON.stringify([ ...storageLikes, like ]));
 
         await removeDislikeIfExistsAfterLike();
 
         toggleLike(true);
-        await likeAsync({id_news : news.id_noticia!, unlike : false});
-    }, [ likeAsync, news.id_noticia, toggleLike, removeDislikeIfExistsAfterLike ])
+        await likeAsync({ id_news : news.id_noticia!, unlike : false, id_site : site!.id_site });
+    }, [ likeAsync, news.id_noticia, toggleLike, removeDislikeIfExistsAfterLike, site ])
 
 
     return {

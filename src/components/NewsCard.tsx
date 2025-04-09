@@ -18,6 +18,7 @@ import {NewsLikesActions} from "../@shared/NewsLikesActions.ts";
 
 export interface Like {
     id_news : number;
+    id_site : number;
 }
 interface NewsCardProps
 {

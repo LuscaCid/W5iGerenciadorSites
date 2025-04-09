@@ -4,10 +4,12 @@ import {useSiteContext} from "../store/site.ts";
 export interface LikeNewsDto {
     unlike : boolean;
     id_news : number;
+    id_site : number;
 }
 export interface DislikeNewsDto {
     unDislike : boolean;
     id_news : number;
+    id_site : number;
 }
 export interface GetNewsDto {
     page? : number;
@@ -34,7 +36,7 @@ export function useNews ()
     }
 
     async function getNewsById (id : number) {
-        const response = await api.get(`${PATH_NAME}/${id}`);
+        const response = await api.get(`${PATH_NAME}/${id}/${site!.id_site}`);
         return response.data as Noticia;
     }
     async function deleteNews (id : number)
