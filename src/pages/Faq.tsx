@@ -5,7 +5,7 @@ import {FormCreateFaq} from "../components/FormCreateFaq.tsx";
 import {memo, useCallback, useEffect, useState} from "react";
 import {Faq as FaqType} from "../@types/Faq";
 import {Accordion, AccordionDetails, AccordionSummary} from "@mui/material";
-import {ArrowLeft, ArrowRight, ChevronUp, Pencil, Search, Trash, X} from "lucide-react";
+import {ArrowLeft, ArrowRight, ChevronUp, Search, X} from "lucide-react";
 import {Button} from "../UI/Button.tsx";
 import {useSearchParams} from "react-router-dom";
 import {Input} from "../UI/Input.tsx";
@@ -14,6 +14,7 @@ import {AxiosError} from "axios";
 import {getAxiosErrorMessage} from "../utils/treatAxiosError.ts";
 import {useContextSelector} from "use-context-selector";
 import {PaginationDirection} from "./News.tsx";
+import {AccordionValueShow} from "../components/AccordionValueShow.tsx";
 
 export const Faq = memo(() => {
     const user = useUserContext(state => state.user);
@@ -62,12 +63,6 @@ export const Faq = memo(() => {
     }, [page]);
 
     useEffect(() => {
-        setSearchParams(
-            prev => {
-                prev.set("query", query)
-                return prev;
-            }
-        )
         if (query)
         {
             setDebounce(true);
@@ -106,7 +101,15 @@ export const Faq = memo(() => {
     <main className={"flex flex-col gap-5 w-full"}>
         <header className={"flex items-center gap-4"}>
             <Input
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e) => {
+                    setQuery(e.target.value)
+                    setSearchParams(
+                        prev => {
+                            prev.set("query", e.target.value)
+                            return prev;
+                        }
+                    )
+                }}
                 value={query}
                 placeholder={"Pesquisar por alguma pergunta"}
                 icon={Search}
@@ -139,11 +142,16 @@ export const Faq = memo(() => {
                                     </h4>
                                 </AccordionSummary>
                                 <AccordionDetails>
-                                    <ValueShow
+                                    <AccordionValueShow<FaqType>
                                         isAdminInUse={user != undefined}
-                                        handleDeleteFaq={handleDeleteFaq}
-                                        handleSetFaqToEdit={handleSetFaqToEdit}
-                                        faq={faq}
+                                        handleDelete={handleDeleteFaq}
+                                        handleSetToEdit={handleSetFaqToEdit}
+                                        object={faq}
+                                        children={
+                                            <span className="text-zinc-600 dark:text-zinc-400  text-right">
+                                                {faq.ds_resposta}
+                                            </span>
+                                        }
                                     />
                                 </AccordionDetails>
                             </Accordion>
@@ -175,37 +183,3 @@ export const Faq = memo(() => {
     </section>
     );
 })
-interface ValueShowProps {
-    handleSetFaqToEdit : (faq : FaqType) => void;
-    handleDeleteFaq : (faq : FaqType) => void;
-    faq : FaqType;
-    isAdminInUse? : boolean;
-}
-function ValueShow (props : ValueShowProps) {
-    return (
-        <section className="pb-1 border-b border-zinc-300 dark:border-zinc-600 flex w-full flex items-center gap-5">
-            {
-                props.isAdminInUse && (
-                    <>
-                        <aside className={"flex items-center gap-1"}>
-                            <Button
-                                className={"rounded-full p-1 h-10 w-10 text-zinc-100 flex items-center justify-center  bg-blue-500 hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-600" }
-                                icon={Pencil}
-                                onClick={() => props.handleSetFaqToEdit(props.faq)}
-                            />
-                            <Button
-                                className={"rounded-full p-1 h-10 w-10 text-zinc-100 flex items-center justify-center  bg-red-500 hover:bg-red-600 dark:bg-red-500 dark:hover:bg-red-600" }
-                                icon={Trash}
-                                onClick={() => props.handleDeleteFaq(props.faq)}
-                            />
-                        </aside>
-                        <div className={"h-10 bg-zinc-300 dark:bg-zinc-900 w-[1px]"}/>
-                    </>
-                )
-            }
-            <span className="text-zinc-600 dark:text-zinc-400  text-right">
-                {props.faq.ds_resposta}
-            </span>
-        </section>
-    );
-}
