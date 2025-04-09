@@ -137,14 +137,14 @@ export const News = memo(() => {
             ) 
           }
         </section>
-         <footer className="w-full flex justify-between items-center">
-          <Button 
+        <footer className="w-full flex justify-between items-center">
+          <Button
             onClick={() => paginateBackwardsForwards('backwards')}
             icon={ArrowLeft}
             title="Anterior"
             disabled={page == 1}
           />
-          <Button 
+          <Button
             onClick={() => paginateBackwardsForwards('forwards')}
             icon={ArrowRight}
             title="Próxima"

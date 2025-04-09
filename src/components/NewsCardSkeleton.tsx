@@ -17,10 +17,10 @@ export const NewsCardSkeleton = ({ width = 329 } : Props) => {
                 height={192}
                 variant="rectangular"
             />
-            <Skeleton variant={"text"} className={"bg-zinc-400 absolute border-none bottom-24 right-4 left-4 "}/>
-            <Skeleton variant={"text"} className={"bg-zinc-400 absolute border-none bottom-20 right-4 left-4 "}/>
-            <Skeleton variant={"text"} className={"bg-zinc-400 absolute border-none bottom-16 right-4 left-4"}/>
-            <Skeleton variant={"text"} className={"bg-zinc-400 absolute border-none bottom-32 right-4 left-4 p-5"}/>
+            <Skeleton variant={"text"} className={"absolute border-none bottom-24 right-4 left-4 "}/>
+            <Skeleton variant={"text"} className={"absolute border-none bottom-20 right-4 left-4 "}/>
+            <Skeleton variant={"text"} className={"absolute border-none bottom-16 right-4 left-4"}/>
+            <Skeleton variant={"text"} className={"absolute border-none bottom-32 right-4 left-4 p-5"}/>
         </div>
 
 

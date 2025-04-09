@@ -13,7 +13,8 @@ export const locationDictionary : Record<string, string>= {
     'municipio' : 'Município',
     'noticia' : 'Home → Notícia',
     'login' : 'Acesso administrativo',
-    'faq' : "Perguntas Frequentes"
+    'faq' : "Perguntas Frequentes",
+    'secretaria' : "Secretarias"
 }
 
 /**

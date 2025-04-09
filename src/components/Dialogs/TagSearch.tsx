@@ -100,7 +100,7 @@ export const TagSearchDialog = ({ setSelectedTags, selectedTags, setDialogOpen }
                     }
                 </footer>
             </main>
-            <div className={"w-full h-[1px] lg:h-full lg:w-[1px] bg-zinc-200"} />
+            <div className={"w-full h-[1px] lg:h-full lg:w-[1px] bg-zinc-200 dark:bg-zinc-700"} />
             <aside className={"w-full h-1/3  lg:h-full lg:w-1/3"}>
                 <FormCreateTag setTagToEdit={setTagToEdit} tag={tagToEdit}/>
             </aside>
