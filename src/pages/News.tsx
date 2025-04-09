@@ -1,7 +1,7 @@
 import { NewsCard } from "../components/NewsCard";
 import {memo, useCallback, useEffect, useState} from "react";
 import {Button} from "../UI/Button";
-import {ArrowLeft, ArrowRight, EllipsisVertical, Plus, X, FilterX} from "lucide-react";
+import {ArrowLeft, ArrowRight, EllipsisVertical, Plus, X, FilterX, Search} from "lucide-react";
 import { useUserContext } from "../store/user";
 import { Tag as TagComponent } from "../components/Tag";
 import {useNavigate} from "react-router-dom";
@@ -170,6 +170,7 @@ export const News = memo(() => {
                 className="md:hidden rounded-full p-0 items-center justify-center shadow-lg h-10 w-10"
               />
             <Input
+              icon={Search}
               onChange={(e) => setQuery(e.target.value)}
               value={query}
               id={"search"}

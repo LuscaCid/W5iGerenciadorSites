@@ -53,7 +53,7 @@ export const Input = (
         { label }
       </label>
       <div className={twMerge([patternStyle, className ?? undefined])}>
-        { Icon && <Icon size={20}  className="text-black dark:text-white ml-1 mt-0.5"/> }
+        { Icon && <Icon size={20}  className="z-[40]text-black dark:text-white ml-1 mt-0.5"/> }
         <input
           value={value}
           onChange={onChange}
@@ -69,7 +69,7 @@ export const Input = (
           autoComplete="off"
           id={id}
           placeholder={placeholder}
-          className={` rounded-lg  ${type == 'file' ?  "sr-only w-10 ": "" } dark:text-zinc-100 dark:bg-zinc-700  focus:outline-none bg-transparent absolute inset-0 focus:ring-blue-300 dark:focus:ring-blue-500 focus:ring-[4px] transition-all duration-150 ${Icon ? "px-8" : "px-3" }`}
+          className={` rounded-lg  ${type == 'file' ?  "sr-only w-10 ": "" } dark:text-zinc-50 dark:bg-zinc-700/20  focus:outline-none bg-transparent absolute inset-0 focus:ring-blue-300 dark:focus:ring-blue-500 focus:ring-[4px] transition-all duration-150 ${Icon ? "px-8" : "px-3" }`}
           type={type}
         />
       </div>

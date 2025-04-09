@@ -67,6 +67,7 @@ export const TagSearchDialog = ({ setSelectedTags, selectedTags, setDialogOpen }
                     Selecione as tags
                 </h4>
                 <Input
+                    icon={Search}
                     onChange={(e) => setQuery(e.target.value)}
                     value={query}
                     id={"search"}
