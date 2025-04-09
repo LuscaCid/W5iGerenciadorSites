@@ -6,7 +6,7 @@ import {
     ShieldUser,
     UtilityPole,
     Link as LinkIcon,
-    SquareArrowOutUpRight, RectangleHorizontal, Album, MailQuestionIcon
+    SquareArrowOutUpRight, RectangleHorizontal, Album, MailQuestionIcon, SunMoon
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { CustomDropdownItem } from "./CustomDropdownItem";
@@ -19,6 +19,7 @@ import {LinksDialog} from "./Dialogs/LinksDialog.tsx";
 import {useQueryClient} from "@tanstack/react-query";
 import {CustomOverlay} from "./Dialogs/CustomOverlay.tsx";
 import {BannerDialog} from "./Dialogs/BannerDialog.tsx";
+import {appTheme} from "../@shared/AppTheme.ts";
 interface Props 
 {
     setIsMenuDropdownOpen : Dispatch<SetStateAction<boolean>>;
@@ -30,6 +31,7 @@ export const MenuDropdown = ({ isMenuDropdownOpen, setIsMenuDropdownOpen, isMobi
     const queryClient = useQueryClient();
     const links = queryClient.getQueryData(['links']) as Link[] ?? [];
     const user = useUserContext(state => state.user);
+    const { handleChangeTheme } = appTheme();
     return (
         <Dropdown.Root
             modal={false}
@@ -42,7 +44,12 @@ export const MenuDropdown = ({ isMenuDropdownOpen, setIsMenuDropdownOpen, isMobi
                 <Menu />
             </Dropdown.Trigger>
             <Dropdown.Content className="grid grid-cols-2 2xl:flex 2xl:flex-col gap-2 -top-10 border bg-zinc-100 dark:bg-zinc-800 -mt-5 border-zinc-200 dark:border-zinc-800 shadow-lg rounded-lg p-2">
-                <CustomDropdownItem 
+                <button
+                    onClick={handleChangeTheme}
+                    className={"p-2 items-center justify-between gap-2 flex hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-900  hover:outline-none transition duration-150 cursor-pointer rounded-md"}>
+                    Contraste <SunMoon size={15}/>
+                </button>
+                <CustomDropdownItem
                     onClick={() => navigate('/noticias')} 
                     title="Notícias" 
                     icon={Newspaper} 
@@ -65,9 +72,9 @@ export const MenuDropdown = ({ isMenuDropdownOpen, setIsMenuDropdownOpen, isMobi
                     icon={MailQuestionIcon}
                 />
                  <CustomDropdownItem
-                    onClick={() => navigate('/secretarias')}
+                    onClick={() => navigate('/secretaria')}
                     title="Secretatarias"
-                    icon={MailQuestionIcon}
+                    icon={Album}
                 />
 
                 {
