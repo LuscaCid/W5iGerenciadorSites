@@ -1,4 +1,4 @@
-import {useParams, useSearchParams} from "react-router-dom";
+import {useSearchParams} from "react-router-dom";
 import {memo, useCallback, useEffect, useState} from "react";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {useSecretariat} from "../hooks/useSecretariat.ts";
@@ -23,7 +23,7 @@ export const SecretariatPage = memo(() => {
     const [ isDialogOpen, setIsDialogOpen ] = useState(false);
     const { getSecretariats, deleteSecretariat } = useSecretariat();
     const [ page, setPage ] = useState<number>(1);
-    const [ query, setquery ] = useState("");
+    const [ query, setQuery ] = useState("");
     const [ searchParams, setSearchParams ] = useSearchParams();
     const [ debounce, setDebounce ] = useState(false);
 
@@ -61,26 +61,29 @@ export const SecretariatPage = memo(() => {
     }, [secretariatToEdit]);
 
     useEffect(() => {
-        if (query) {
+        if (query)
+        {
             setDebounce(true);
             const timeout = setTimeout(() => setDebounce(false), 500);
             return () => clearTimeout(timeout);
         }
+        queryClient.invalidateQueries({queryKey : ["get-secretariat"]});
         setDebounce(false);
-    }, [debounce, query]);
+    }, [query, queryClient]);
 
     useEffect(() => {
-        if (!debounce){
-            queryClient.invalidateQueries({queryKey : ["get-secretariat"]})
+        if (!debounce)
+        {
+            queryClient.invalidateQueries({queryKey : ["get-secretariat"]});
         }
-    }, [debounce]);
+    }, [ debounce, queryClient ]);
     return (
-        <section className={"flex flex-col gap-4 my-20"}>
-            <header className={'flex items-center justify-between '}>
+        <section className={"flex flex-col gap-4 my-20 h-fulll"}>
+            <header className={'flex items-center justify-between lg:flex-row flex-col gap-2'}>
                 <Input
                     placeholder={"Pesquisar por secretarias"}
-                    className={"w-1/3"}
-                    onChange={(e) => setquery(e.target.value)}
+                    className={"w-full lg:w-1/3"}
+                    onChange={(e) => setQuery(e.target.value)}
                     value={query}
                     icon={Search}
                 />
@@ -93,7 +96,7 @@ export const SecretariatPage = memo(() => {
                         >
                             <Dialog.Trigger asChild>
                                 <Button
-                                    className={"mr-2"}
+                                    className={" self-end "}
                                     title={"Novo"}
                                 />
                             </Dialog.Trigger>
@@ -104,7 +107,7 @@ export const SecretariatPage = memo(() => {
                         </Dialog.Root>
                     )
                 }
-                <aside className="w-fit flex justify-between items-center gap-2 self-end ">
+                <aside className="w-full lg:w-fit flex justify-between items-center gap-2 self-end ">
                     <Button
                         onClick={() => paginateBackwardsForwards('backwards')}
                         icon={ArrowLeft}
