@@ -10,6 +10,6 @@ export interface SecretariatDepartment
     nu_phone : string;
     ds_address : string;
     ds_attributions : string;
-    secretariat : Secretariat
-    site : Site
+    id_site : number;
+    id_secretariat? : number;
 }

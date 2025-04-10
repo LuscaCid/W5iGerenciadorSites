@@ -8,10 +8,16 @@ export const useSecretariat = () => {
     const site = useSiteContext(state => state.site);
     const [ searchParams ] = useSearchParams();
 
-    const addSecretariat = useCallback(async () => {
-        const response = await api.get(`${PATH_NAME}/`);
+    const addSecretariat = useCallback(async (payload : FormData) => {
+        const response = await api.post(`${PATH_NAME}/`, payload);
         return response.data;
     }, [])
+
+    const updateSecretariat = useCallback(async (payload : FormData) => {
+        const response = await api.patch(`${PATH_NAME}/`, payload);
+        return response.data;
+    }, [])
+
     const getSecretariats = useCallback(async () => {
         const query = searchParams.get("query") ?? "";
         const page = searchParams.get("page") ??1
@@ -24,6 +30,7 @@ export const useSecretariat = () => {
     }, [site])
 
     return {
+        updateSecretariat,
         addSecretariat,
         getSecretariats,
         deleteSecretariat
