@@ -22,6 +22,7 @@ import {IconButton, TableFooter, Tooltip} from "@mui/material";
 import {Link as LinkNav} from "react-router-dom";
 import {useSiteContext} from "../../store/site.ts";
 import {PreviewImageDialog} from "./PreviewImageDialog.tsx";
+import {CustomOverlay} from "./CustomOverlay.tsx";
 
 export type FormBannerSchemaType = {
     url_link : string;
@@ -253,6 +254,7 @@ const BannerRow = ({ banner, handleEditBanner, handleDeleteBanner } : BannerRowP
                         </Tooltip>
                     </Dialog.Trigger>
                     <Dialog.Portal>
+                        <CustomOverlay/>
                         <PreviewImageDialog src={banner.url_thumbnail!} alt={"Imagem do banner"} />
                     </Dialog.Portal>
                 </Dialog.Root>
