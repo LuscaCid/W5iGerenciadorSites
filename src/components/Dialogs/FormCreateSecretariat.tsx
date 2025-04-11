@@ -26,6 +26,7 @@ import {useSiteContext} from "../../store/site.ts";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import {AlertDialogComponent} from "./AlertDialogComponent.tsx";
 import {FormTextarea} from "../../UI/FormTextarea.tsx";
+import {getAxiosErrorMessage} from "../../utils/treatAxiosError.ts";
 
 const formSchema = z.object({
     nm_secretariat : z.string().min(3, "Nome muito pequeno para secretaria"),
@@ -42,7 +43,11 @@ interface Props {
 }
 
 export const FormCreateSecretariat = ({ secretariatData } : Props) => {
-    const { addSecretariat, updateSecretariat } = useSecretariat();
+    const {
+        addSecretariat,
+        updateSecretariat
+    } = useSecretariat();
+
     const queryClient = useQueryClient();
     const openToast = useContextSelector(toastContext, s => s.open);
     const methods = useForm<FormSchemaType>({ resolver : zodResolver(formSchema) })
@@ -89,6 +94,11 @@ export const FormCreateSecretariat = ({ secretariatData } : Props) => {
         onSuccess : async () => {
             openToast("Secretaria adicionada");
             await queryClient.invalidateQueries({queryKey : ["get-secretariat"]});
+        },
+        onError : (err) =>{
+            console.log(err.message)
+            const message = getAxiosErrorMessage(err);
+            openToast(message, "error")
         }
     });
     const { mutateAsync : updateSecretariatAsync, isPending: isPendingUpdate } = useMutation({
@@ -112,6 +122,7 @@ export const FormCreateSecretariat = ({ secretariatData } : Props) => {
         if (formImages.organizationalChart) formData.append("organizationalChart", formImages.organizationalChart);
 
         if (departments.length > 0) formData.append("secretariatDepartmentsJSON", JSON.stringify(departments));
+
         if(secretariatData) return await updateSecretariatAsync(formData)
         return await createSecretariatAsync(formData);
 
@@ -153,8 +164,6 @@ export const FormCreateSecretariat = ({ secretariatData } : Props) => {
                                 name={"ds_address"}
                                 placeholder={"Descreva o endereço"}
                             />
-
-
                         </main>
                         <FormTextarea<keyof FormDepartmentSchemaType>
                             name={"ds_about"}
@@ -173,7 +182,7 @@ export const FormCreateSecretariat = ({ secretariatData } : Props) => {
                                 imagePreview={formPreviewImages.secretariatImage}
                             />
                             <DropImageSlot<keyof typeof formImages>
-                                className={"w-full rounded-lg"}
+                                className={"w-full lg:w-full rounded-lg"}
                                 description={"Imagem do organograma da secretaria"}
                                 getRootProps={chartDropzoneMethods.getRootProps}
                                 getInputProps={chartDropzoneMethods.getInputProps}
@@ -244,7 +253,6 @@ const FormCreateDepartment = (
         const departmentWithSameNameInSecretariat = departments.find(
             (d) => (d.nm_department == data.nm_department) && !(departmentToEdit && departmentToEdit.nm_department == d.nm_department)
         );
-        console.log(departmentWithSameNameInSecretariat);
         if (departmentWithSameNameInSecretariat) return openToast("Departamento com mesmo nome criado", "error");
         methods.reset();
         setDepartmentToEdit(undefined);
@@ -264,7 +272,7 @@ const FormCreateDepartment = (
         }
         const department : SecretariatDepartment = {
             ...data,
-            id_site : site!.id_site
+            id_site : site!.id_site,
         }
         setDepartments([...departments, department])
     }, [departments, site, departmentToEdit])
@@ -351,7 +359,7 @@ const FormCreateDepartment = (
                                 departments && departments.length > 0 && (
                                     departments.map((d) => (
                                         <SecretariatDepartmentRow
-                                            key={d.id_department}
+                                            key={d.nm_department}
                                             handleEditSecretariatDepartment={handleSetDepartmentToEdit}
                                             handleDeleteSecretariatDepartment={handleDeleteSecretariatDepartment}
                                             secretariatDepartment={d}

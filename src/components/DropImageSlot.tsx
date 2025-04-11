@@ -29,7 +29,7 @@ export function DropImageSlot <U extends string>(
     const patternStyle = `rounded-full ${!imagePreview ? "border-dashed border-[4px]" : ""} w-full flex h-[250px] w-[250px] items-center justify-center font-bold  text-lg text-zinc-800 dark:text-zinc-500  overflow-hidden border-zinc-200 dark:border-zinc-500 bg-zinc-100 dark:bg-zinc-700 transition duration-150 ${isDragActive ? "animate-pulse" : ""}`;
 
     return (
-        <article className={"relative w-full"}>
+        <article className={"relative w-fit"}>
             <button
                 type={"button"}
                 id={name}

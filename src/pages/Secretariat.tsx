@@ -15,6 +15,8 @@ import { Dialog } from "radix-ui"
 import {Button} from "../UI/Button.tsx";
 import {PaginationDirection} from "./News.tsx";
 import {Input} from "../UI/Input.tsx";
+import {SecretariatDepartment} from "../@types/SecretariatDepartment";
+
 export const SecretariatPage = memo(() => {
     const queryClient = useQueryClient();
     const openToast = useContextSelector(toastContext, (s) => s.open);
@@ -59,6 +61,7 @@ export const SecretariatPage = memo(() => {
     const handleDeleteSecretariat = useCallback(async(secretariat : Secretariat) => {
         await deleteSecretariatAsync(secretariat.id_secretariat!)
     }, [secretariatToEdit]);
+
 
     useEffect(() => {
         if (query)
@@ -144,6 +147,15 @@ export const SecretariatPage = memo(() => {
                                     handleSetToEdit={handleSetSecretariatToEdit}
                                     object={secretariat}
                                 />
+                                {
+                                    data.secretariatDepartments && data.secretariatDepartments.length >0 && data.secretariatDepartments.map(
+                                        (dp : SecretariatDepartment) => (
+                                        <section>
+                                            {dp.nm_department}
+                                        </section>
+                                        )
+                                    )
+                                }
                             </AccordionDetails>
                         </Accordion>
                     ))
