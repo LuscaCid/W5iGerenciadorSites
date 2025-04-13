@@ -27,6 +27,7 @@ import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import {AlertDialogComponent} from "./AlertDialogComponent.tsx";
 import {FormTextarea} from "../../UI/FormTextarea.tsx";
 import {getAxiosErrorMessage} from "../../utils/treatAxiosError.ts";
+import {AxiosError} from "axios";
 
 const formSchema = z.object({
     nm_secretariat : z.string().min(3, "Nome muito pequeno para secretaria"),
@@ -50,7 +51,17 @@ export const FormCreateSecretariat = ({ secretariatData } : Props) => {
 
     const queryClient = useQueryClient();
     const openToast = useContextSelector(toastContext, s => s.open);
-    const methods = useForm<FormSchemaType>({ resolver : zodResolver(formSchema) })
+    const methods = useForm<FormSchemaType>({
+        resolver : zodResolver(formSchema),
+        defaultValues : {
+            nm_secretariat : secretariatData ? secretariatData.nm_secretariat : '',
+            nm_secretary : secretariatData ? secretariatData.nm_secretary : '',
+            ds_about : secretariatData ? secretariatData.ds_about : '',
+            nm_email : secretariatData ? secretariatData.nm_email : '',
+            nu_phone : secretariatData ? secretariatData.nu_phone : '',
+            ds_address : secretariatData ? secretariatData.ds_address : '',
+        }
+    })
 
     //informação para atualizar em tempo real e para ser usada para ser enviada para se conectar com secretariat
     const [departmentToEdit, setDepartmentToEdit ] = useState<SecretariatDepartment|undefined>(undefined);
@@ -96,9 +107,8 @@ export const FormCreateSecretariat = ({ secretariatData } : Props) => {
             await queryClient.invalidateQueries({queryKey : ["get-secretariat"]});
         },
         onError : (err) =>{
-            console.log(err.message)
-            const message = getAxiosErrorMessage(err);
-            openToast(message, "error")
+            if (err instanceof AxiosError)
+                openToast(getAxiosErrorMessage(err), "error");
         }
     });
     const { mutateAsync : updateSecretariatAsync, isPending: isPendingUpdate } = useMutation({
@@ -132,11 +142,11 @@ export const FormCreateSecretariat = ({ secretariatData } : Props) => {
             <main className={"overflow-y-auto w-full p-1 lg:p-4 .on-open-modal flex  flex-col lg:flex-row gap-3 "}>
                 <FormProvider {...methods}>
                     <form
-                        className={"flex px-2 py-4 flex-col gap-3 h-1/2 w-full relative h-full min-h-[340px] lg:w-3/5 relative overflow-y-auto "}
+                        className={"flex px-2 py-4 flex-col gap-3 w-full relative h-full min-h-[340px] lg:w-3/5 overflow-y-auto "}
                         onSubmit={methods.handleSubmit(handleSubmit)}
                     >
                         <DialogTitle className={"text-2xl font-bold p-1 mb-2 dark:text-zinc-100 border-b border-zinc-200 dark:border-zinc-700"}>
-                            Cadastro de secretarias
+                            {secretariatData ? `Edição da secretaria:  ${secretariatData.nm_secretariat}` : `Cadastro de secretarias`}
                         </DialogTitle>
                         <main className={"flex flex-col gap-2 lg:grid grid-cols-2 "}>
                             <HookFormInput<keyof FormSchemaType>
@@ -209,7 +219,6 @@ export const FormCreateSecretariat = ({ secretariatData } : Props) => {
                     setDepartmentToEdit={setDepartmentToEdit}
                     departments={departments}
                     setDepartments={setDepartments}
-                    secretariat={secretariatData}
                 />
             </main>
 
@@ -231,7 +240,6 @@ type FormDepartmentSchemaType = z.infer<typeof formDepartmentSchema>
 interface FormCreateDepartmentProps {
     departments : SecretariatDepartment[];
     setDepartments : Dispatch<SetStateAction<SecretariatDepartment[]>>;
-    secretariat? : Secretariat;
     departmentToEdit : SecretariatDepartment|undefined;
     setDepartmentToEdit :  Dispatch<SetStateAction<SecretariatDepartment | undefined>>;
 }
@@ -240,7 +248,6 @@ const FormCreateDepartment = (
     {
         setDepartments,
         departments,
-        secretariat,
         departmentToEdit,
         setDepartmentToEdit
     } : FormCreateDepartmentProps) =>
@@ -279,8 +286,13 @@ const FormCreateDepartment = (
 
     const handleSetDepartmentToEdit = useCallback((secretariatDepartment : SecretariatDepartment) => {
         setDepartmentToEdit(secretariatDepartment);
-    }, [departmentToEdit])
-    const handleDeleteSecretariatDepartment = useCallback(() => {}, []);
+    }, [departmentToEdit]);
+
+    const handleDeleteSecretariatDepartment = useCallback((department : SecretariatDepartment) => {
+        setDepartments(
+            departments.filter((d) => d.nm_department != department.nm_department)
+        )
+    }, [departments]);
 
     useEffect(() => {
         if (departmentToEdit){
@@ -298,11 +310,12 @@ const FormCreateDepartment = (
         <FormProvider {...methods}>
             <form
                 onSubmit={methods.handleSubmit(handleSubmit)}
-                className={"flex flex-col  p-1 lg:p-4 gap-2 relative  w-full h-full lg:w-2/5 h-full "}>
-                <main className={"flex flex-col lg:grid grid cols-2 gap-2  py-1"}>
-                    <h3 className={"text-lg font-bol p-1 mb-2 dark:text-zinc-100 border-b border-zinc-200 dark:border-zinc-700"}>
-                        Cadastro do departamentos
-                    </h3>
+                className={"flex flex-col  p-1 lg:p-4 gap-2 relative  w-full h-full lg:w-2/5 "}>
+                <h3 className={"text-lg font-bol p-1 mb-2 dark:text-zinc-100 border-b border-zinc-200 dark:border-zinc-700"}>
+                    Adicione departamentos à secretaria
+                </h3>
+                <main className={"flex flex-col 2xl:grid grid-cols-2 gap-2  py-1"}>
+
                     <HookFormInput<keyof FormDepartmentSchemaType>
                         id={"nm_department"}
                         name={"nm_department"}
@@ -393,10 +406,9 @@ const FormCreateDepartment = (
                         }}
                     />
                     <Button
-                        className={""}
                         type={"submit"}
                         icon={Check}
-                        title={"Salvar"}
+                        title={"Adicionar"}
                     />
 
                 </footer>
