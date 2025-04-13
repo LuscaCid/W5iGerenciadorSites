@@ -11,23 +11,24 @@ export const useSecretariat = () => {
     const addSecretariat = useCallback(async (payload : FormData) => {
         const response = await api.post(`${PATH_NAME}/`, payload);
         return response.data;
-    }, [])
+    }, []);
 
     const updateSecretariat = useCallback(async (payload : FormData) => {
         const response = await api.patch(`${PATH_NAME}/`, payload);
         return response.data;
-    }, [])
+    }, []);
 
     const getSecretariats = useCallback(async () => {
         const query = searchParams.get("query") ?? "";
         const page = searchParams.get("page") ??1
         const response = await api.get(`${PATH_NAME}/?query=${query}&id_site=${site!.id_site}&page=${page}`);
         return response.data;
-    }, [site])
+    }, [site, searchParams]);
+
     const deleteSecretariat = useCallback(async (id : number) => {
         const response = await api.get(`${PATH_NAME}/${id}`);
         return response.data;
-    }, [site])
+    }, [site]);
 
     return {
         updateSecretariat,

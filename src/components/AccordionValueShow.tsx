@@ -12,7 +12,7 @@ interface ValueShowProps <T extends object>{
 export function AccordionValueShow <T extends object>(props : ValueShowProps<T>)
 {
     return (
-        <section className="pb-1 border-b border-zinc-300 dark:border-zinc-600 flex w-full flex items-center gap-5">
+        <section className= "flex-col lg:flex-row pb-1 border-b border-zinc-300 dark:border-zinc-600 flex w-full h-full items-center gap-5">
             {
                 props.isAdminInUse && (
                     <>
@@ -28,7 +28,7 @@ export function AccordionValueShow <T extends object>(props : ValueShowProps<T>)
                                 onClick={() => props.handleDelete(props.object)}
                             />
                         </aside>
-                        <div className={"h-10 bg-zinc-300 dark:bg-zinc-900 w-[1px]"}/>
+                        <div className={"h-full bg-zinc-300 dark:bg-zinc-800 w-[1px]"}/>
                     </>
                 )
             }
