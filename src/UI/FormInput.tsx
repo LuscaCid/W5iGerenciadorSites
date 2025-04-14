@@ -84,7 +84,7 @@ export const HookFormInput = <T extends string>(
                 }
                 {
                     errors && (
-                        <footer className="text-sm text-red-600 absolute top-[39px] left-0.5 font-semibold rounded-sm p-0.5  ">
+                        <footer className="text-sm text-red-600 absolute top-[39px] left-0.5 font-normal rounded-sm p-0.5  ">
                         {
                             errors[name]! && errors[name]!.message as unknown as string
                         }
