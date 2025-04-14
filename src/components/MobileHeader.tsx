@@ -88,6 +88,12 @@ export function MobileHeader ()
                 />
                 <HeaderLink 
                     onClick={handleOpenSideBar} 
+                    title="Secretarias" 
+                    to="/secretaria"   
+                    className="w-full py-3 bg-zinc-100 dark:bg-zinc-800"
+                />
+                <HeaderLink 
+                    onClick={handleOpenSideBar} 
                     title="Notícias" 
                     to="/noticias" 
                     className="w-full py-3 bg-zinc-100 dark:bg-zinc-800"
