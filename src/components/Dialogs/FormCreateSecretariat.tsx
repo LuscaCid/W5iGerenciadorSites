@@ -32,10 +32,10 @@ import {AxiosError} from "axios";
 const formSchema = z.object({
     nm_secretariat : z.string().min(3, "Nome muito pequeno para secretaria"),
     nm_secretary : z.string().min(3, "Nome muito pequeno para o secretário"),
+    nm_email : z.string().email("Precisa ser uma e-mail válido"),
+    ds_address : z.string().min(5, "Insira um endereço válido"),
     ds_about : z.string(),
-    nm_email : z.string(),
-    nu_phone : z.string(),
-    ds_address : z.string(),
+    nu_phone : z.string().max(10, "Número de telefone inválido"),
 });
 
 type FormSchemaType = z.infer<typeof formSchema>;
@@ -138,17 +138,17 @@ export const FormCreateSecretariat = ({ secretariatData } : Props) => {
 
     }, [secretariatData, departments, formImages, site])
     return (
-        <CustomDialogContent className={"w-[95%] h-[95%] lg:h-[95%] lg:w-[80%] flex lg:flex-row flex-col"}>
-            <main className={"overflow-y-auto w-full p-1 lg:p-4 .on-open-modal flex  flex-col lg:flex-row gap-3 "}>
+        <CustomDialogContent className={"w-[95%] h-[95%] lg:h-[95%] lg:w-[80%] py-14 flex lg:flex-row flex-col"}>
+            <main className={"overflow-y-auto w-full p-1 lg:px-4 lg:py-1 .on-open-modal flex h-full flex-col lg:flex-row gap-3 "}>
                 <FormProvider {...methods}>
                     <form
-                        className={"flex px-2 py-4 flex-col gap-3 w-full relative h-full min-h-[340px] lg:w-3/5 overflow-y-auto "}
+                        className={"flex px-2 py-1 flex-col gap-6 w-full relative lg:w-3/5 "}
                         onSubmit={methods.handleSubmit(handleSubmit)}
                     >
                         <DialogTitle className={"text-2xl font-bold p-1 mb-2 dark:text-zinc-100 border-b border-zinc-200 dark:border-zinc-700"}>
                             {secretariatData ? `Edição da secretaria:  ${secretariatData.nm_secretariat}` : `Cadastro de secretarias`}
                         </DialogTitle>
-                        <main className={"flex flex-col gap-2 lg:grid grid-cols-2 "}>
+                        <main className={"flex flex-col gap-6 lg:grid grid-cols-2 "}>
                             <HookFormInput<keyof FormSchemaType>
                                 id={"nm_secretariat"}
                                 name={"nm_secretariat"}
@@ -178,10 +178,9 @@ export const FormCreateSecretariat = ({ secretariatData } : Props) => {
                         <FormTextarea<keyof FormDepartmentSchemaType>
                             name={"ds_about"}
                             id={"ds_about"}
-                            label={"Descrição"}
                             placeholder={"Descrição sobre a secretaria"}
                         />
-                        <footer className={"flex lg:flex-row flex-col gap-2 w-full "}>
+                        <footer className={"flex flex-col lg:flex-row gap-3"}>
                             <DropImageSlot<keyof typeof formImages>
                                 description={"clique ou arraste aqui a foto do secretário"}
                                 getRootProps={secretariatDropzoneMethods.getRootProps}
@@ -202,9 +201,8 @@ export const FormCreateSecretariat = ({ secretariatData } : Props) => {
                                 imagePreview={formPreviewImages.organizationalChart}
                             />
                         </footer>
-
                         <Button
-                            className={"lg:absolute bottom-0 right-0"}
+                            className={""}
                             type={"submit"}
                             icon={Check}
                             isLoading={isPending || isPendingUpdate}
@@ -228,10 +226,10 @@ export const FormCreateSecretariat = ({ secretariatData } : Props) => {
 
 const formDepartmentSchema = z.object({
     nm_department : z.string().min(4, "Insira um nome válido para o departamento"),
+    nm_email : z.string().email("Precisa ser uma e-mail válido"),
+    ds_address : z.string().min(5, "Insira um endereço válido"),
+    nu_phone : z.string().max(10, "Número de telefone inválido"),
     ds_about : z.string(),
-    nm_email : z.string(),
-    nu_phone : z.string(),
-    ds_address : z.string(),
     ds_attributions : z.string(),
 });
 
@@ -310,11 +308,11 @@ const FormCreateDepartment = (
         <FormProvider {...methods}>
             <form
                 onSubmit={methods.handleSubmit(handleSubmit)}
-                className={"flex flex-col  p-1 lg:p-4 gap-2 relative  w-full h-full lg:w-2/5 "}>
+                className={"flex flex-col  p-1 lg:px-4 gap-2 relative  w-full lg:w-2/5 "}>
                 <h3 className={"text-lg font-bol p-1 mb-2 dark:text-zinc-100 border-b border-zinc-200 dark:border-zinc-700"}>
                     Adicione departamentos à secretaria
                 </h3>
-                <main className={"flex flex-col 2xl:grid grid-cols-2 gap-2  py-1"}>
+                <main className={"flex flex-col 2xl:grid grid-cols-2 gap-3  py-1"}>
 
                     <HookFormInput<keyof FormDepartmentSchemaType>
                         id={"nm_department"}
@@ -324,7 +322,6 @@ const FormCreateDepartment = (
                     <HookFormInput<keyof FormDepartmentSchemaType>
                         id={"nm_email_department"}
                         name={"nm_email"}
-                        type={"email"}
                         placeholder={"E-mail do responsável pelo departamento"}
                     />
                     <HookFormInput<keyof FormDepartmentSchemaType>
@@ -349,7 +346,7 @@ const FormCreateDepartment = (
                     />
                 </main>
                 <TableContainer
-                    className='rounded-lg border relative sm:min-h-[250px] lg:min-h-[300px]  2xl:min-h-[350px]  max-h-max  border-zinc-200 dark:border-zinc-700  dark:text-zinc-100  shadow-lg h-full lg:h-[50%] 2xl:h-[70.4%]'
+                    className='rounded-lg border relative sm:min-h-[250px] lg:min-h-[300px]  2xl:min-h-[350px]  h-[200px] border-zinc-200 dark:border-zinc-700  dark:text-zinc-100  shadow-lg  lg:h-[50%] 2xl:h-[70.4%]'
                 >
                     <Table >
                         <TableHead className={'text-lg font-bold'}>
@@ -390,7 +387,7 @@ const FormCreateDepartment = (
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <footer className={"self-end lg:absolute bottom-0 right-0 flex gap-2 "}>
+                <footer className={"self-end  flex gap-2 "}>
 
                     <Button
                         className={`text-zinc-100 font-bold p-2 px-3 bg-blue-500 hover:bg-blue-600 ${departmentToEdit ? "" : "hidden"}`}
