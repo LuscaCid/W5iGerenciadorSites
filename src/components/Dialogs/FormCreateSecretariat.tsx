@@ -35,7 +35,7 @@ const formSchema = z.object({
     nm_email : z.string().email("Precisa ser uma e-mail válido"),
     ds_address : z.string().min(5, "Insira um endereço válido"),
     ds_about : z.string(),
-    nu_phone : z.string().max(10, "Número de telefone inválido"),
+    nu_phone : z.string().max(11, "Número de telefone inválido"),
 });
 
 type FormSchemaType = z.infer<typeof formSchema>;
@@ -142,13 +142,13 @@ export const FormCreateSecretariat = ({ secretariatData } : Props) => {
             <main className={"overflow-y-auto w-full p-1 lg:px-4 lg:py-1 .on-open-modal flex h-full flex-col lg:flex-row gap-3 "}>
                 <FormProvider {...methods}>
                     <form
-                        className={"flex px-2 py-1 flex-col gap-6 w-full relative lg:w-3/5 "}
+                        className={"flex px-2 py-1 flex-col gap-4 w-full relative lg:w-3/5 "}
                         onSubmit={methods.handleSubmit(handleSubmit)}
                     >
                         <DialogTitle className={"text-2xl font-bold p-1 mb-2 dark:text-zinc-100 border-b border-zinc-200 dark:border-zinc-700"}>
                             {secretariatData ? `Edição da secretaria:  ${secretariatData.nm_secretariat}` : `Cadastro de secretarias`}
                         </DialogTitle>
-                        <main className={"flex flex-col gap-6 lg:grid grid-cols-2 "}>
+                        <main className={"flex flex-col gap-4 lg:grid grid-cols-2 "}>
                             <HookFormInput<keyof FormSchemaType>
                                 id={"nm_secretariat"}
                                 name={"nm_secretariat"}
@@ -228,7 +228,7 @@ const formDepartmentSchema = z.object({
     nm_department : z.string().min(4, "Insira um nome válido para o departamento"),
     nm_email : z.string().email("Precisa ser uma e-mail válido"),
     ds_address : z.string().min(5, "Insira um endereço válido"),
-    nu_phone : z.string().max(10, "Número de telefone inválido"),
+    nu_phone : z.string().max(11, "Número de telefone inválido"),
     ds_about : z.string(),
     ds_attributions : z.string(),
 });
@@ -312,7 +312,7 @@ const FormCreateDepartment = (
                 <h3 className={"text-lg font-bol p-1 mb-2 dark:text-zinc-100 border-b border-zinc-200 dark:border-zinc-700"}>
                     Adicione departamentos à secretaria
                 </h3>
-                <main className={"flex flex-col 2xl:grid grid-cols-2 gap-3  py-1"}>
+                <main className={"flex flex-col 2xl:grid grid-cols-2 gap-4  py-1"}>
 
                     <HookFormInput<keyof FormDepartmentSchemaType>
                         id={"nm_department"}

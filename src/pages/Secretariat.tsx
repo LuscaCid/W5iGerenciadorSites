@@ -209,11 +209,11 @@ export const SecretariatPage = memo(() => {
                                         {
                                             secretariat.secretariatDepartments && secretariat.secretariatDepartments.length > 0 && secretariat.secretariatDepartments.map(
                                                 (dp : SecretariatDepartment) => (
-                                                    <div key={dp.id_department} className={" bg-zinc-200 dark:bg-zinc-700 lg:w-1/2 2xl:w-1/2  p-4 rounded-lg text-zinc-900 dark:text-zinc-300 text-lg flex flex-col gap-2"}>
+                                                    <div key={dp.id_department} className={" bg-zinc-100 border-l-[2px] border-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 lg:w-1/2 2xl:w-1/2  p-4 text-zinc-900 dark:text-zinc-300 text-lg flex flex-col gap-2"}>
                                                         <main className={"flex flex-col gap-5"}>
                                                             <header className={"flex flex-col gap-1"}>
-                                                                {dp.nm_department}
-                                                                {dp.ds_about}
+                                                                <span className={"text-lg font-semibold dark:text-zinc-100"}>{dp.nm_department}</span>
+                                                                <p>{dp.ds_about}</p>
                                                             </header>
                                                             <footer className={"flex flex-col"}>
                                                                 <h3 className={"text-lg font-bold border-b border-zinc-300 dark:border-zinc-600 mb-2"}>
@@ -221,7 +221,7 @@ export const SecretariatPage = memo(() => {
                                                                 </h3>
                                                                 <span className={"py-1 border-b border-zinc-300 dark:border-zinc-600"}> E-mail: {dp.nm_email} </span>
                                                                 <span className={"py-1 border-b border-zinc-300 dark:border-zinc-600"}> Endereço: {dp.ds_address} </span>
-                                                                <span className={"py-1 border-b border-zinc-300 dark:border-zinc-600"}> Atribuições: {dp.ds_address} </span>
+                                                                <span className={"py-1 border-b border-zinc-300 dark:border-zinc-600"}> Atribuições: {dp.ds_attributions} </span>
                                                                 <span className={"py-1 border-b border-zinc-300 dark:border-zinc-600"}> Telefone: {dp.nu_phone} </span>
                                                             </footer>
                                                         </main>
