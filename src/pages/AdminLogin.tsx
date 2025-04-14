@@ -40,7 +40,6 @@ export const AdminLogin = memo(() => {
         nm_email : data.user.nm_email!,
         nm_user : data.user.nm_user!,
         access_token : data.access_token,
-        id_user : data.user.id_user!
       }
       setUser(accessData);
 
