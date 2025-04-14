@@ -26,7 +26,7 @@ export const useSecretariat = () => {
     }, [site, searchParams]);
 
     const deleteSecretariat = useCallback(async (id : number) => {
-        const response = await api.get(`${PATH_NAME}/${id}`);
+        const response = await api.delete(`${PATH_NAME}/${id}/${site!.id_site}`);
         return response.data;
     }, [site]);
 
