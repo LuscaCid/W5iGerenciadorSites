@@ -15,10 +15,12 @@ import {toastContext} from "../components/Toast.tsx";
 import {AxiosError} from "axios";
 import {StorageKeys} from "../constants/StorageKeys.ts";
 import {api} from "../services/api.ts";
+import {useSiteContext} from "../store/site.ts";
 
 const formSchema = z.object({
   nm_email : z.string().email({message : "Precisa ser um e-mail válido"}),
-  nm_senha : z.string().min(5, { message : "A senha deve ter no mínimo 5 caracteres"})
+  nm_senha : z.string().min(5, { message : "A senha deve ter no mínimo 5 caracteres"}),
+  id_site : z.number().optional()
 });
 
 export type FormSchemaType = z.infer<typeof formSchema>;
@@ -29,6 +31,7 @@ export const AdminLogin = memo(() => {
   const openToast = useContextSelector(toastContext, (c) => c.open)
   const navigate = useNavigate();
   const methods = useForm<FormSchemaType>({ resolver : zodResolver(formSchema) });
+  const site = useSiteContext(state => state.site);
 
   const { mutateAsync : signInAsync, isPending } = useMutation({
     mutationFn : signIn,
@@ -56,8 +59,9 @@ export const AdminLogin = memo(() => {
   });
 
   const handleSubmitForm = useCallback(async (data : FormSchemaType) => {
-    await signInAsync(data);
-  }, [signInAsync]);
+    const payload = { ...data, id_site : site?.id_site } as FormSchemaType;
+    await signInAsync(payload);
+  }, [signInAsync, site ]);
   const revokePassword = useCallback(() => {
 
   }, []);
