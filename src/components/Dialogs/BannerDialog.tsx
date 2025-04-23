@@ -56,12 +56,19 @@ export const BannerDialog = () => {
     const { mutateAsync : saveBannerAsync, isPending } = useMutation({
         mutationFn : save,
         mutationKey : ["save-banner"],
-        onSuccess : async () => {
-            openToast("Banner criado com sucesso", "success");
+        onSuccess : async (_, variables) => {
             methods.reset();
             setImagePreview(undefined);
+            setBannerToEdit(undefined);
             setFile(undefined);
+
+            const id = variables.get("id_banner");
             await queryClient.invalidateQueries({queryKey : ["banners"]})
+            if (id) {
+                openToast("Banner editado com sucesso", "success");
+                return;
+            }
+            openToast("Banner criado com sucesso", "success");
         },
         onError: (err : unknown) => {
             if (err instanceof AxiosError && err.response)
@@ -90,9 +97,9 @@ export const BannerDialog = () => {
 
     const handleSubmit = useCallback(async (payload : FormBannerSchemaType) => {
         const formData = new FormData();
-        if (!file)  return openToast("É necessário enviar a imagem do banner", "error");
+        if (!file && !bannerToEdit) return openToast("É necessário enviar a imagem do banner", "error");
 
-        formData.append("image", file);
+        file && formData.append("image", file);
         formData.append("url_link", payload.url_link);
         formData.append("id_site", site!.id_site!.toString())
         bannerToEdit && formData.append("id_banner", bannerToEdit.id_banner.toString())
@@ -101,8 +108,11 @@ export const BannerDialog = () => {
     }, [file, site, bannerToEdit, methods.setValue]);
 
     useEffect(() => {
-        if (bannerToEdit) return methods.setValue("url_link", bannerToEdit.url_link);
-
+        if (bannerToEdit) {
+            methods.setValue("url_link", bannerToEdit.url_link);
+            setImagePreview(bannerToEdit.url_thumbnail!);
+            return;
+        }
         methods.reset();
     }, [bannerToEdit, methods]);
     return (
